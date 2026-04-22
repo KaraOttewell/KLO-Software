@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BeebRFSMakerCL — KLO Software</title>
+<style>
+body {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10pt;
+    margin: 1in;
+    max-width: 7in;
+}
+h1 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 20pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-bottom: 0.1em;
+}
+h2 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 14pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-top: 1.4em;
+    margin-bottom: 0.3em;
+}
+h3 {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10pt;
+    color: #0F4761;
+    margin-top: 1em;
+    margin-bottom: 0.2em;
+}
+p {
+    margin-top: 0.4em;
+    line-height: 1.5;
+}
+a { color: #467886; }
+a:visited { color: #96607D; }
+pre.bbc {
+    background: black;
+    color: limegreen;
+    font-family: Courier, monospace;
+    font-size: 13.5pt;
+    padding: 0.5em;
+    line-height: normal;
+}
+pre.console {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: Courier, monospace;
+    font-size: 9.5pt;
+    padding: 0.8em 1em;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+pre.console .prompt { color: #569cd6; }
+pre.console .cmd    { color: #9cdcfe; }
+pre.console .label  { color: #4ec9b0; }
+pre.console .value  { color: #ce9178; }
+pre.console .ok     { color: #6a9955; }
+pre.console .err    { color: #f44747; }
+.kw  { color: aqua; }
+.str { color: fuchsia; }
+.num { color: limegreen; }
+.wh  { color: white; }
+.yl  { color: yellow; }
+.subtitle {
+    font-size: 11pt;
+    color: #467886;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+}
+.badge {
+    display: inline-block;
+    background: #0F4761;
+    color: white;
+    font-size: 8pt;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    margin: 0.8em 0;
+}
+.feature-item {
+    border-left: 3px solid #0F4761;
+    padding-left: 0.7em;
+}
+.feature-item h3 { margin-top: 0; }
+.cli-block {
+    background: #f4f4f4;
+    border-left: 3px solid #467886;
+    font-family: Courier, monospace;
+    font-size: 9pt;
+    padding: 0.5em 0.8em;
+    margin: 0.5em 0;
+    white-space: pre;
+}
+.download-box {
+    border: 1px solid #0F4761;
+    padding: 0.8em 1em;
+    margin: 1.2em 0;
+    background: #f0f6f9;
+}
+.download-box h3 {
+    margin-top: 0;
+    color: #0F4761;
+    font-size: 11pt;
+}
+.back-link {
+    font-size: 9pt;
+    margin-bottom: 1.5em;
+    display: block;
+}
+.note {
+    background: #f8f4e8;
+    border-left: 3px solid #c8a84b;
+    padding: 0.5em 0.8em;
+    margin: 0.8em 0;
+    font-size: 9.5pt;
+}
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+
+<h1>BeebRFSMakerCL</h1>
+<p class="subtitle">Command-line tool for packing and extracting BBC Micro Compressed ROM Filing System images</p>
+
+<span class="badge">Windows</span>
+<span class="badge">Command Line</span>
+<span class="badge">MSI Installer</span>
+<span class="badge">BBC Micro</span>
+<span class="badge">Free</span>
+
+<p>BeebRFSMakerCL is a command-line tool for packing files into a BBC Micro Compressed ROM Filing System (CompRFS) sideways ROM image, and extracting files back out again. It is compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and is designed for use in batch files, build scripts, and automated pipelines.</p>
+
+<p>BeebRFSMakerCL is the compression and extraction engine that powers the <a href="BeebRFSMaker.htm">BeebRFSMaker</a> Windows application, but it is designed to be used completely standalone &#8212; no GUI installation is required.</p>
+
+<hr>
+
+<h2>Usage</h2>
+
+<div class="cli-block"><b>BeebRFSMakerCL pack    &lt;input-dir&gt; &lt;output.rom&gt; [options]
+BeebRFSMakerCL extract &lt;input.rom&gt;  &lt;output-dir&gt; [options]
+
+Pack options:
+  --catalogtitle &lt;str&gt;    Catalogue title shown by *CAT  (e.g. "MyTools" &#8594; "*MyTools*")
+  --romtitle &lt;str&gt;        ROM title shown by *ROMS       (e.g. "My Tools ROM")
+  --copyright &lt;str&gt;       Copyright string
+  --versionstring &lt;str&gt;   Version string
+
+Extract options:
+  -i  --inf               Generate .inf sidecar files</b></div>
+
+<hr>
+
+<h2>Example: packing files</h2>
+
+<p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with matching <code>.inf</code> sidecar files will have their BBC Micro filename, load address, and execution address set accordingly; any file without a sidecar defaults to address &amp;0000 unless we spot that it is a binary, tokenized BBC Basic file, the we set the load address to &amp;1900 and the exec address to &amp;8023.</p>
+
+<pre class="console">
+<span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ MyTools.rom --catalogtitle "MyTools" --romtitle "My Tools ROM" --copyright "(C) KLO 2026"</span>
+
+BeebRFSMakerCL v1.0.0 &#8212; Compressed RFS Pack and Extract Tool
+Compatible with compressed BBC RFS ROM format v2.10 by Greg Cook
+
+<span class="label">Files packed (3):</span>
+
+  <span class="label">Name          Load        Exec           Raw  Compressed</span>
+  <span class="label">------------  ----------  ----------  ------  ----------</span>
+  <span class="value">DefenMC       &amp;00001900  &amp;00000E00    8960     8003 ( 89.3%)</span>  (.inf)
+  <span class="value">Defende       &amp;00005000  &amp;00008023    4672     3015 ( 64.5%)</span>  (.inf)
+  <span class="value">Zeddy         &amp;00000000  &amp;00000000     134      153 (114.2%)</span>
+
+  <span class="label">Dictionary entries :</span>   97
+  <span class="label">Digraph entries    :</span>   83
+  <span class="label">Uncompressed total :</span> 13766 bytes
+  <span class="label">Compressed stream  :</span> 11171 bytes
+  <span class="label">ROM overhead       :</span>  2193 bytes  (header + stub + dict + digraphs)
+  <span class="label">ROM total          :</span> 16384 bytes (padded to full 0x4000 size)
+  <span class="label">  of which used    :</span> 13364 bytes  (81% utilised)
+
+<span class="ok">ROM Image Saved: MyTools.rom</span>
+</pre>
+
+<hr>
+
+<h2>Example: extracting files</h2>
+
+<p>Extract all files from an existing CompRFS ROM image. The <code>-i</code> flag generates <code>.inf</code> sidecar files alongside each extracted file, preserving the BBC Micro filename, load address, execution address, and file length.</p>
+
+<pre class="console">
+<span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL extract BeebRFSROM.rom output\ -i</span>
+
+BeebRFSMakerCL v2026-04-21_23:05 - Compressed RFS Pack and Extract Tool
+Compatible with compressed BBC RFS ROM format v2.10 by Greg Cook
+<span class="ok">ROM header verified: standard BBC Micro ROM signature found.</span>
+<span class="ok">Success: 21598 bytes extracted.</span>
+<span class="label">Extracted:</span> <span class="value">*Defender*</span> | Blocks:   1 | Size: 0x000000 [000000 bytes] as *Defender* FFFFFFFF FFFFFFFF 000000
+<span class="label">Extracted:</span> <span class="value">DefenMC   </span> | Blocks:  35 | Size: 0x002300 [008960 bytes] as DefenMC    001900 000E00 002300
+<span class="label">Extracted:</span> <span class="value">Defende   </span> | Blocks:  19 | Size: 0x001240 [004672 bytes] as Defende    005000 008023 001240
+<span class="label">Extracted:</span> <span class="value">Zeddy_txt </span> | Blocks:   1 | Size: 0x000086 [000134 bytes] as Zeddy_txt  000000 000000 000086
+<span class="label">Extracted:</span> <span class="value">aaa_txt   </span> | Blocks:   1 | Size: 0x00000D [000013 bytes] as aaa_txt    000000 000000 00000D
+<span class="label">Extracted:</span> <span class="value">test_nocom</span> | Blocks:   1 | Size: 0x00000A [000010 bytes] as test_nocom 000000 000000 00000A
+End of ROM marker '+' seen at byte 0x00376A [014186]
+Output folder is:
+"C:\Users\...\...\extracted"
+<span class="value">        Defender</span>
+<span class="value">        DefenMC</span>
+<span class="value">        Defende</span>
+<span class="value">        Zeddy_txt</span>
+<span class="value">        aaa_txt</span>
+<span class="value">        test_nocom</span>
+</pre>
+
+<p>Each extracted file is written to the output folder with its BBC Micro filename. With <code>-i</code>, a corresponding <code>.inf</code> file is written alongside it, for example:</p>
+
+<div class="cli-block">$.DefenMC FF1900 FF0E00 8960</div>
+
+<hr>
+
+<h2>Features</h2>
+
+<div class="feature-grid">
+    <div class="feature-item">
+        <h3>Pack files into ROM images</h3>
+        <p>Pack a folder of files into a standard 16&nbsp;KB CompRFS sideways ROM image, with optional ROM title, catalogue title, copyright, and version string.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Extract from ROM images</h3>
+        <p>Extract files from any compatible CompRFS ROM image, with optional <code>.inf</code> sidecar generation preserving BBC Micro metadata.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Compression feedback</h3>
+        <p>Detailed output shows per-file raw and compressed sizes, dictionary and digraph statistics, and overall ROM utilisation.</p>
+    </div>
+    <div class="feature-item">
+        <h3>comprom.pl compatible</h3>
+        <p>Produces byte-identical ROM images to the original comprom.pl v2.10 Perl script by Greg Cook, requiring no Perl installation.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Scripting and automation</h3>
+        <p>Designed for use in batch files and build pipelines. Exit codes and error messages are written to standard error, output to standard out.</p>
+    </div>
+    <div class="feature-item">
+        <h3>.inf sidecar support</h3>
+        <p>Reads and writes <code>.inf</code> sidecar files in the standard BBC Micro format used by DFS tools, preserving load addresses, execution addresses, and BBC filenames.</p>
+    </div>
+</div>
+
+<hr>
+
+<h2>Download and source code</h2>
+
+<div class="download-box">
+    <h3>BeebRFSMakerCL</h3>
+    <p>Distributed as a Windows MSI installer. Download from the GitHub releases page:<br>
+    <a href="https://github.com/KaraOttewell/BeebRFSMaker/releases">https://github.com/KaraOttewell/BeebRFSMaker/releases</a></p>
+    <p>The source code for BeebRFSMakerCL is part of the same repository as <a href="BeebRFSMaker.htm">BeebRFSMaker</a>:<br>
+    <a href="https://github.com/KaraOttewell/BeebRFSMaker">https://github.com/KaraOttewell/BeebRFSMaker</a></p>
+    <p>Requires Windows 10 or later and .NET 8 or later.</p>
+</div>
+
+<div class="note">
+    <b>Note:</b> If you need a graphical interface rather than a command line, <a href="BeebRFSMaker.htm">BeebRFSMaker</a> provides the same packing and extraction functionality as a WinUI&nbsp;3 Windows application.
+</div>
+
+<hr>
+
+<h2>Compatibility</h2>
+
+<p>BeebRFSMakerCL is compatible with the <b>Compressed ROM Filing System v2.10</b> format. ROM images it produces can be used with:</p>
+
+<ul style="line-height:1.8">
+    <li>A real BBC Micro Model B, B+, or Master 128 with a suitable ROM board</li>
+    <li>BeebEm and other BBC Micro emulators that support sideways ROMs</li>
+    <li>Any other tool that reads the comprom.pl v2.10 format</li>
+</ul>
+
+<hr>
+
+<p style="font-size:9pt; color:#666;">BeebRFSMakerCL is free software. The CompRFS format and original comprom.pl script are by Greg Cook.
+<br><a href="BeebRFSMaker.htm">&#8592; BeebRFSMaker</a> &nbsp;&nbsp; <a href="index.htm">&#8592; Back to KLO Software</a></p>
+
+</body>
+</html>

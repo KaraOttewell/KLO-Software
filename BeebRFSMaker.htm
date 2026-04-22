@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BeebRFSMaker — KLO Software</title>
+<style>
+body {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10pt;
+    margin: 1in;
+    max-width: 7in;
+}
+h1 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 20pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-bottom: 0.1em;
+}
+h2 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 14pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-top: 1.4em;
+    margin-bottom: 0.3em;
+}
+h3 {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10pt;
+    color: #0F4761;
+    margin-top: 1em;
+    margin-bottom: 0.2em;
+}
+p {
+    margin-top: 0.4em;
+    line-height: 1.5;
+}
+a { color: #467886; }
+a:visited { color: #96607D; }
+pre.bbc {
+    background: black;
+    color: limegreen;
+    font-family: Courier, monospace;
+    font-size: 13.5pt;
+    padding: 0.5em;
+    line-height: normal;
+}
+.kw  { color: aqua; }
+.str { color: fuchsia; }
+.num { color: limegreen; }
+.wh  { color: white; }
+.yl  { color: yellow; }
+.subtitle {
+    font-size: 11pt;
+    color: #467886;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+}
+.badge {
+    display: inline-block;
+    background: #0F4761;
+    color: white;
+    font-size: 8pt;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
+.screenshot {
+    margin: 1em 0;
+    border: 1px solid #ccc;
+    max-width: 100%;
+    display: block;
+}
+.screenshot-caption {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+}
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    margin: 0.8em 0;
+}
+.feature-item {
+    border-left: 3px solid #0F4761;
+    padding-left: 0.7em;
+}
+.feature-item h3 { margin-top: 0; }
+.download-box {
+    border: 1px solid #0F4761;
+    padding: 0.8em 1em;
+    margin: 1.2em 0;
+    background: #f0f6f9;
+}
+.download-box h3 {
+    margin-top: 0;
+    color: #0F4761;
+    font-size: 11pt;
+}
+.back-link {
+    font-size: 9pt;
+    margin-bottom: 1.5em;
+    display: block;
+}
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+
+<h1>BeebRFSMaker</h1>
+<p class="subtitle">Compressed ROM Filing System packer and extractor for the BBC Micro</p>
+
+<span class="badge">Windows</span>
+<span class="badge">WinUI 3</span>
+<span class="badge">BBC Micro</span>
+<span class="badge">Free</span>
+
+<p>BeebRFSMaker is a Windows application for packing files into a BBC Micro Compressed ROM Filing System (CompRFS) image, and extracting files back out again. It is compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and produces sideways ROM images that can be used directly with a <a href="https://bbcmicro.computer/">BBC Microcomputer</a> or <a href="https://codeberg.org/chrisn/beebem-windows/releases/">emulator</a>.</p>
+
+<p>To use it, simply drag and drop files from you PC onto the area labeled "Drop PC files here". The files will be listed in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list, or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the combined total file size after compression wil fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will be enabled, and you can choose where to save the ROM image with a <b>.rom</b> extension.
+</p>
+
+<p>
+If you drop a .rom file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. You can also use this feature just to extract files from a compatible ROM image.
+</p>
+<hr>
+
+<h2>Screenshots</h2>
+
+<img class="screenshot" src="BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen" width="700">
+<p class="screenshot-caption">Packing a set of BBC Micro files into a 16 KB sideways ROM image</p>
+
+<img class="screenshot" src="BeebRFSMaker Screenshot 06.png" alt="BeebRFSMaker extraction screen" width="700">
+<p class="screenshot-caption">Extracting files from an existing CompRFS ROM image, with optional .inf sidecar files</p>
+
+<hr>
+
+<h2>Features</h2>
+
+<div class="feature-grid">
+    <div class="feature-item">
+        <h3>Pack files into ROM images</h3>
+        <p>Select a folder of files and pack them into a standard 16&nbsp;KB sideways ROM image. BBC Micro filenames, load addresses, and execution addresses are read from <code>.inf</code> sidecar files if present.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Extract from ROM images</h3>
+        <p>Open any compatible CompRFS ROM image and extract its files back to a folder, generating <code>.inf</code> sidecar files that have become the de facto standard for preserving BBC Micro metadata &#8212; filename, load and execution addresses, and file length.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Compression feedback</h3>
+        <p>The pack output shows each file&#8217;s raw and compressed sizes so you can see at a glance how efficiently your files compress, and whether everything fits in the 16&nbsp;KB slot.</p>
+    </div>
+    <div class="feature-item">
+        <h3>comprom.pl compatible</h3>
+        <p>Produces byte-identical ROM images to the original comprom.pl v2.10 Perl script by Greg Cook, so ROMs built with BeebRFSMaker work with any <a href="https://bbcmicro.computer/">BBC Microcomputer</a> or emulator such as <a href="https://codeberg.org/chrisn/beebem-windows/releases/">BeebEm</a>.</p>
+    </div>
+    <div class="feature-item">
+        <h3>ROM header options</h3>
+        <p>Customise the ROM title (shown by <code>*ROMS</code>), catalogue title (shown by <code>*CAT</code>), copyright string, and version string.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Command-line interface</h3>
+        <p>A corresponding command-line tool, <a href="BeebRFSMakerCL.htm">BeebRFSMakerCL</a>, which uses the same pack and extract classes as the UX app, provides a full command-line interface for scripting and automation, compatible with batch files and build pipelines.</p>
+    </div>
+</div>
+
+<hr>
+
+<h2>How the resulting ROM appears on a BBC Micro or emulator</h2>
+<img class="screenshot" src="BeebRFSMaker Beeb Screenshot 01.png" alt="A BeebRFSMaker ROM image as seen by a BBC Micro or emulator" width="700">
+
+<hr>
+
+<h2>How it works</h2>
+
+<p>The Compressed ROM Filing System format, created by Greg Cook, stores files in a standard BBC Micro 16&nbsp;KB sideways ROM using a compressed stream that begins after a conventional Acorn ROM header at &amp;8000 and a small 6502 decompressor stub at &amp;8040. The stream uses four compression mechanisms: a digraph table of up to 85 frequent two-byte pairs each encoded as a single byte token, a dictionary of up to 128 longer repeated sequences each referenced by a two-byte address token, run-length encoding for repeated byte values, and literal escape sequences for bytes that cannot otherwise be represented. Dictionary entries may chain up to nine levels deep, and since the ROM Filing System requires each file header to be directly addressable, each file&#8217;s stream is generated separately and chained to the next via a link field. The result is a self-delimiting compressed stream that the decompressor stub decodes on the fly in response to standard MOS ROM Filing System service calls, requiring no RAM workspace beyond a handful of zero-page locations.</p>
+
+<p>BeebRFSMaker implements the full comprom.pl v2.10 compression algorithm:</p>
+
+<ol style="line-height:1.8">
+    <li>A <b>digraph table</b> of up to 31 frequent 2-byte pairs, each encoded as a single byte token</li>
+    <li>A <b>dictionary</b> of up to 128 longer repeated sequences, each encoded as a 2-byte address token</li>
+    <li><b>Run-length encoding</b> for repeated byte values</li>
+    <li><b>Literal escape sequences</b> for bytes that cannot be represented by any of the above</li>
+</ol>
+
+<p>The compressor analyses all the files together to build a shared dictionary, so common patterns across multiple files all benefit from the same tokens.</p>
+
+<hr>
+
+<h2>Download and source code</h2>
+
+<div class="download-box">
+    <h3>BeebRFSMaker</h3>
+    <p>Source code and releases are available on GitHub:<br>
+    <a href="https://github.com/KaraOttewell/BeebRFSMaker">https://github.com/KaraOttewell/BeebRFSMaker</a></p>
+    <p>Requires Windows 10 (build 1809) or later.</p>
+</div>
+
+<hr>
+
+<h2>Compatibility</h2>
+
+<p>BeebRFSMaker is compatible with the <b>Compressed ROM Filing System v2.10</b> format. ROM images produced by BeebRFSMaker can be used with:</p>
+
+<ul style="line-height:1.8">
+    <li>A real BBC Micro Model B, B+, or Master 128 with a suitable ROM board</li>
+    <li>BeebEm and other BBC Micro emulators that support sideways ROMs</li>
+    <li>Any other tool that reads the comprom.pl v2.10 format</li>
+</ul>
+
+<hr>
+
+<p style="font-size:9pt; color:#666;">BeebRFSMaker is free software. The CompRFS format and original comprom.pl script are by Greg Cook.
+<br><a href="BeebRFSMakerCL.htm">&#8592; BeebRFSMakerCL</a> &nbsp;&nbsp; <a href="index.htm">&#8592; Back to KLO Software</a></p>
+
+
+</body>
+</html>
