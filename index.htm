@@ -30,7 +30,7 @@
 			background: black;
 			color: limegreen;
 			font-family: Courier, monospace;
-			font-size: 13.5pt;
+			font-size: 12pt;
 			padding: 0.5em;
 			line-height: normal;
 		}
@@ -84,12 +84,19 @@
 			margin: 2em 0;
 		}
 	
+		.screenshot {
+			margin: 1em 0;
+			border: 1px solid #ccc;
+			max-width: 800px;
+			display: block;
+		}
+
 		@media (max-width: 600px) {
-			body    { font-size: 13pt; margin: 0.4in; }
-			h1      { font-size: 18pt; }
-			h2      { font-size: 13pt; }
+			body        { font-size: 13pt; margin: 0.4in; }
+			h1          { font-size: 18pt; }
+			h2          { font-size: 13pt; }
 			pre.bbc     { font-size: 10pt; }
-			pre.console { font-size: 10pt; }
+			.screenshot { max-width: 100%; }
 		}
 	</style>
 </head>
@@ -127,7 +134,7 @@
 		<p><span class="badge">Windows</span><span class="badge">WinUI 3</span><span class="badge">Free</span></p>
 		<p><b><a href="BeebRFSMaker.htm">BeebRFSMaker</a></b> &#8212; a Windows GUI application for packing files into a Compressed ROM Filing System sideways ROM image, and extracting them back out. Compatible with comprom.pl v2.10 by Greg Cook.</p>
 		<p>Here is how a ROM built with BeebRFSMaker appears on a BBC Micro or emulator:</p>
-                <img class="screenshot" src="BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen" width="700">
+                <img class="screenshot" src="BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen">
 	</div>
 
 	<div class="software-entry">
