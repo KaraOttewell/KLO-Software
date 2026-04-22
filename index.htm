@@ -32,7 +32,6 @@
 			font-size: 13.5pt;
 			padding: 0.5em;
 			line-height: normal;
-			margin-bottom: 1em;
 		}
 
 		pre.console {
@@ -87,7 +86,7 @@
 		.screenshot {
 			margin: 1em 0;
 			border: 1px solid #ccc;
-			max-width: 100%;
+			max-width: min(100%, 600px);
 			display: block;
 		}
 	</style>
@@ -118,7 +117,7 @@
 </pre>
 <hr>
 
-	<h2>BBC Micro ROM Filing System tools</h2>
+	<h2>BBC Micro utilities for Windows</h2>
 
 	<p>Getting the BBC Micro running again led me to write two tools for working with BBC Micro Compressed ROM Filing System images &#8212; a format that squeezes multiple files into a single 16&nbsp;KB sideways ROM slot.</p>
 
@@ -126,7 +125,7 @@
 		<p><span class="badge">Windows</span><span class="badge">WinUI 3</span><span class="badge">Free</span></p>
 		<p><b><a href="BeebRFSMaker.htm">BeebRFSMaker</a></b> &#8212; a Windows GUI application for packing files into a Compressed ROM Filing System sideways ROM image, and extracting them back out. Compatible with comprom.pl v2.10 by Greg Cook.</p>
 		<p>Here is how a ROM built with BeebRFSMaker appears on a BBC Micro or emulator:</p>
-                <img class="screenshot" src="BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen" width="700">
+                <img class="screenshot" src="BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen">
 	</div>
 
 	<div class="software-entry">
