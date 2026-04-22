@@ -1,105 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<style>
-		body {
-			font-family: "Trebuchet MS", sans-serif;
-			font-size: 10pt;
-			margin: 1in;
-		}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 10pt;
+	margin: 1in;
+	max-width: 100%;
+}
 
-		h1 {
-			font-family: "Aptos Display", Calibri, sans-serif;
-			font-size: 20pt;
-			color: #0F4761;
-			font-weight: normal;
-		}
 
-		h2 {
-			font-family: "Aptos Display", Calibri, sans-serif;
-			font-size: 14pt;
-			color: #0F4761;
-			font-weight: normal;
-			margin-top: 1.6em;
-			margin-bottom: 0.3em;
-		}
+h1 {
+	font-family: "Aptos Display", Calibri, sans-serif;
+	font-size: 20pt;
+	color: #0F4761;
+	font-weight: normal;
+}
 
-		pre.bbc {
-			background: black;
-			color: limegreen;
-			font-family: Courier, monospace;
-			font-size: 13.5pt;
-			padding: 0.5em;
-			line-height: normal;
-			overflow-x: auto;
-		}
+h2 {
+	font-family: "Aptos Display", Calibri, sans-serif;
+	font-size: 14pt;
+	color: #0F4761;
+	font-weight: normal;
+	margin-top: 1.6em;
+	margin-bottom: 0.3em;
+}
 
-		pre.console {
-			background: #1e1e1e;
-			color: #d4d4d4;
-			font-family: Courier, monospace;
-			font-size: 9.5pt;
-			padding: 0.8em 1em;
-			line-height: 1.5;
-		}
+pre.bbc {
+	background: black;
+	color: limegreen;
+	font-family: Courier, monospace;
+	font-size: 13.5pt;
+	padding: 0.5em;
+	line-height: normal;
+	overflow-x: auto;
+}
 
-		pre.console .label  { color: #4ec9b0; }
-		pre.console .value  { color: #ce9178; }
-		pre.console .ok     { color: #6a9955; }
+pre.console {
+	background: #1e1e1e;
+	color: #d4d4d4;
+	font-family: Courier, monospace;
+	font-size: 9.5pt;
+	padding: 0.8em 1em;
+	line-height: 1.5;
+}
 
-		.kw  { color: aqua; }
-		.str { color: fuchsia; }
-		.num { color: limegreen; }
-		.wh  { color: white; }
-		.yl  { color: yellow; }
+pre.console .label  { color: #4ec9b0; }
+pre.console .value  { color: #ce9178; }
+pre.console .ok     { color: #6a9955; }
 
-		a         { color: #467886; }
-		a:visited { color: #96607D; }
+.kw  { color: aqua; }
+.str { color: fuchsia; }
+.num { color: limegreen; }
+.wh  { color: white; }
+.yl  { color: yellow; }
 
-		.software-entry {
-			border-left: 3px solid #0F4761;
-			padding-left: 0.8em;
-			margin: 1em 0 1.5em 0;
-		}
+a         { color: #467886; }
+a:visited { color: #96607D; }
 
-		.software-entry p {
-			margin: 0.3em 0;
-			line-height: 1.5;
-		}
+.software-entry {
+	border-left: 3px solid #0F4761;
+	padding-left: 0.8em;
+	margin: 1em 0 1.5em 0;
+}
 
-		.badge {
-			display: inline-block;
-			background: #0F4761;
-			color: white;
-			font-size: 8pt;
-			padding: 2px 8px;
-			margin-right: 4px;
-			margin-bottom: 6px;
-		}
+.software-entry p {
+	margin: 0.3em 0;
+	line-height: 1.5;
+}
 
-		hr {
-			border: none;
-			border-top: 1px solid #ccc;
-			margin: 2em 0;
-		}
-	
-		.screenshot {
-			margin: 1em 0;
-			border: 1px solid #ccc;
-			max-width: 100%;
-			display: block;
-		}
+.badge {
+	display: inline-block;
+	background: #0F4761;
+	color: white;
+	font-size: 8pt;
+	padding: 2px 8px;
+	margin-right: 4px;
+	margin-bottom: 6px;
+}
 
-		@media (max-width: 600px) {
-			body        { font-size: 13pt; margin: 0.4in; }
-			h1          { font-size: 18pt; }
-			h2          { font-size: 13pt; }
-			pre.bbc     { font-size: 10pt; }
-			.screenshot { max-width: 100%; }
-		}
-	</style>
+hr {
+	border: none;
+	border-top: 1px solid #ccc;
+	margin: 2em 0;
+}
+
+.screenshot {
+	margin: 1em 0;
+	border: 1px solid #ccc;
+	max-width: 100%;
+	display: block;
+}
+
+@media (max-width: 600px) {
+	body        { font-size: 13pt; margin: 0.4in; }
+	h1          { font-size: 18pt; }
+	h2          { font-size: 13pt; }
+	pre.bbc     { font-size: 10pt; }
+	.screenshot { max-width: 100%; }
+}
+</style>
 </head>
 <body>
 	<h1>KLO Free Software Page</h1>
