@@ -46,6 +46,7 @@ pre.bbc {
     font-size: 13.5pt;
     padding: 0.5em;
     line-height: normal;
+    overflow-x: auto;
 }
 pre.console {
     background: #1e1e1e;
@@ -132,11 +133,13 @@ hr {
 }
 
 		@media (max-width: 600px) {
-			body    { font-size: 13pt; margin: 0.4in; }
-			h1      { font-size: 18pt; }
-			h2      { font-size: 13pt; }
-			pre.bbc     { font-size: 10pt; }
-			pre.console { font-size: 10pt; }
+			body         { font-size: 13pt; margin: 0.4in; }
+			h1           { font-size: 18pt; }
+			h2           { font-size: 13pt; }
+			pre.bbc      { font-size: 10pt; }
+			pre.console  { font-size: 10pt; }
+			.feature-grid { grid-template-columns: 1fr; }
+			.cli-block   { white-space: pre-wrap; font-size: 8.5pt; }
 		}
 	</style>
 </head>
