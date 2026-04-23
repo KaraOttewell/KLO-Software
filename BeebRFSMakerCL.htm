@@ -8,7 +8,7 @@
 body {
     font-family: "Trebuchet MS", sans-serif;
     font-size: 10pt;
-    margin: 1in;
+    margin: 0.5in;
     max-width: 100%;
 }
 h1 {
@@ -180,7 +180,7 @@ Extract options:
 
 <h2>Example: packing files</h2>
 
-<p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with matching <code>.inf</code> sidecar files will have their BBC Micro filename, load address, and execution address set accordingly; any file without a sidecar defaults to address &amp;0000 unless we spot that it is a binary, tokenized BBC Basic file, the we set the load address to &amp;1900 and the exec address to &amp;8023.</p>
+<p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with a matching <code>.inf</code> "sidecar" file (file in the same folder with exactly the same name and type but with ".inf" at the end) will have their BBC Micro filename, load address, and execution address set according to the metadata in that file. Any file without a matching sidecar defaults to a sanitized, legal Beeb filename, with a load and exec address set to &amp;0000 and the length taken from the PC file length, unless we spot that it is a binary, tokenized BBC Basic file, then we set the load address to &amp;1900 and the exec address to &amp;8023.</p>
 
 <pre class="console">
 <span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ BeebRFSText.rom --catalogtitle "Defender" --romtitle "Defende" --copyright "KLO 2026/G.Cook 2022"</span>
@@ -197,6 +197,7 @@ Compatible with compressed BBC RFS ROM format v2.10 by Greg Cook
 <span class="value"> 3) Zeddy_txt    &amp;00000000 &amp;00000000    167    155 92.8%</span>
 <span class="value"> 4) aaa_txt      &amp;00000000 &amp;00000000     44     33 75.0%</span>
 <span class="value"> 5) test_nocom   &amp;00000000 &amp;00000000     44     38 86.4%</span>
+
 <span class="label">ROM Uncompressed:</span>  13789 bytes
 <span class="label">ROM Compressed  :</span>  11275 bytes
 <span class="label">ROM Overhead    :</span>   1403 bytes (header + stub + dictionary + digraphs)
