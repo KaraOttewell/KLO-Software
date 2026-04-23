@@ -183,28 +183,26 @@ Extract options:
 <p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with matching <code>.inf</code> sidecar files will have their BBC Micro filename, load address, and execution address set accordingly; any file without a sidecar defaults to address &amp;0000 unless we spot that it is a binary, tokenized BBC Basic file, the we set the load address to &amp;1900 and the exec address to &amp;8023.</p>
 
 <pre class="console">
-<span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ MyTools.rom --catalogtitle "MyTools" --romtitle "My Tools ROM" --copyright "(C) KLO 2026"</span>
-
-BeebRFSMakerCL v1.0.0 &#8212; Compressed RFS Pack and Extract Tool
+<span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ BeebRFSText.rom --catalogtitle "Defender" --romtitle "Defende" --copyright "KLO 2026/G.Cook 2022"</span>
+BeebRFSMakerCL v2026-04-22_17:51 - Compressed RFS Pack and Extract Tool
 Compatible with compressed BBC RFS ROM format v2.10 by Greg Cook
-
-<span class="label">Files packed (3):</span>
-
-  <span class="label">Name          Load        Exec           Raw  Compressed</span>
-  <span class="label">------------  ----------  ----------  ------  ----------</span>
-  <span class="value">DefenMC       &amp;00001900  &amp;00000E00    8960     8003 ( 89.3%)</span>  (.inf)
-  <span class="value">Defende       &amp;00005000  &amp;00008023    4672     3015 ( 64.5%)</span>  (.inf)
-  <span class="value">Zeddy         &amp;00000000  &amp;00000000     134      153 (114.2%)</span>
-
-  <span class="label">Dictionary entries :</span>   97
-  <span class="label">Digraph entries    :</span>   83
-  <span class="label">Uncompressed total :</span> 13766 bytes
-  <span class="label">Compressed stream  :</span> 11171 bytes
-  <span class="label">ROM overhead       :</span>  2193 bytes  (header + stub + dict + digraphs)
-  <span class="label">ROM total          :</span> 16384 bytes (padded to full 0x4000 size)
-  <span class="label">  of which used    :</span> 13364 bytes  (81% utilised)
-
-<span class="ok">ROM Image Saved: MyTools.rom</span>
+<span class="label"> Title          :</span> <span class="value">"Defende"</span>
+<span class="label"> Copyright      :</span> <span class="value">"KLO 2026/G.Cook 2022"</span>
+<span class="label"> Version string :</span> <span class="value">"v2.10 14-Oct-2022"</span>
+<span class="label"> Catalog title  :</span> <span class="value">"*Defender*"</span>
+<span class="label">    Name              Load      Exec    Raw Compr.</span>
+<span class="label">    ------------  --------  -------- ------ ------</span>
+<span class="value"> 1) DefenMC      &amp;00001900 &amp;00000E00   9121   8011 87.8%</span>  (.inf)
+<span class="value"> 2) Defende      &amp;00005000 &amp;00008023   4785   3014 63.0%</span>  (.inf)
+<span class="value"> 3) Zeddy_txt    &amp;00000000 &amp;00000000    167    155 92.8%</span>
+<span class="value"> 4) aaa_txt      &amp;00000000 &amp;00000000     44     33 75.0%</span>
+<span class="value"> 5) test_nocom   &amp;00000000 &amp;00000000     44     38 86.4%</span>
+<span class="label">ROM Uncompressed:</span>  13789 bytes
+<span class="label">ROM Compressed  :</span>  11275 bytes
+<span class="label">ROM Overhead    :</span>   1403 bytes (header + stub + dictionary + digraphs)
+<span class="label">ROM Total       :</span>  16384 bytes (padded to full &amp;4000 size)
+<span class="label">ROM Space Used  :</span>  12678 bytes  (77% utilised)
+<span class="ok">ROM Image Saved: .\CompressedRFSOutput\BeebRFSText.rom</span>
 </pre>
 
 <hr>
@@ -239,7 +237,7 @@ Output folder is:
 
 <p>Each extracted file is written to the output folder with its BBC Micro filename. With <code>-i</code>, a corresponding <code>.inf</code> file is written alongside it, for example:</p>
 
-<div class="cli-block">$.DefenMC FF1900 FF0E00 8960</div>
+<div class="cli-block"><b>$.DefenMC FF1900 FF0E00 8960</b></div>
 
 <hr>
 
@@ -279,9 +277,9 @@ Output folder is:
 <div class="download-box">
     <h3>BeebRFSMakerCL</h3>
     <p>Distributed as a Windows MSI installer. Download from the GitHub releases page:<br>
-    <a href="https://github.com/KaraOttewell/BeebRFSMaker/releases">https://github.com/KaraOttewell/BeebRFSMaker/releases</a></p>
+    <a href="https://github.com/KaraOttewell/BeebRFSMaker/releases">BeebRFSMaker/releases</a></p>
     <p>The source code for BeebRFSMakerCL is part of the same repository as <a href="BeebRFSMaker.htm">BeebRFSMaker</a>:<br>
-    <a href="https://github.com/KaraOttewell/BeebRFSMaker">https://github.com/KaraOttewell/BeebRFSMaker</a></p>
+    <a href="https://github.com/KaraOttewell/BeebRFSMaker">BeebRFSMaker</a></p>
     <p>Requires Windows 10 or later and .NET 8 or later.</p>
 </div>
 
