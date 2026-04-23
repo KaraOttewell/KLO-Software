@@ -7,10 +7,15 @@
 body {
 	font-family: "Trebuchet MS", sans-serif;
 	font-size: 10pt;
-	margin: 1in;
+	margin: 0.5in;
 	max-width: 100%;
 }
 
+.big-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0F4761;
+}
 
 h1 {
 	font-family: "Aptos Display", Calibri, sans-serif;
@@ -102,11 +107,12 @@ hr {
 	.screenshot { max-width: 100%; }
 }
 </style>
+
 </head>
 <body>
-	<h1>KLO Free Software Page</h1>
+<div class="big-title" align=center>KLO Free Software Page</div>
 
-	<p>I recently got round to repairing and re-capping the power supply in my <b>BBC Micro Model B</b>, which I bought 40 years ago. Because I was downloading various things on my Windows PC so I wrote some Windows-based&nbsp;<a href="BBC%20Micro%20Utilities.htm">BBC Micro Utilities</a>&nbsp;to display BBC Basic files, BBC BASIC data files, and disk images. Welcome!</p>
+<p>I recently got round to repairing and re-capping the power supply in my <b>BBC Micro Model B</b>, which I bought 40 years ago. Because I was downloading various things on my Windows PC so I wrote some Windows-based&nbsp;<a href="BBC%20Micro%20Utilities.htm">BBC Micro Utilities</a>&nbsp;to display BBC Basic files, BBC BASIC data files, and disk images. Welcome!</p>
 
 <pre class="bbc">
 <span class="num">  10</span> <span class="kw">REM</span> <span class="yl">New version of 'INTRO' from</span>
@@ -128,22 +134,19 @@ hr {
 <span class="yl">[Snip rest of "Welcome" BASIC program]</span>
 </pre>
 <hr>
-
-	<h2>BBC Micro utilities for Windows</h2>
-
-	<p>Getting the BBC Micro running again led me to write two tools for working with BBC Micro Compressed ROM Filing System images &#8212; a format that squeezes multiple files into a single 16&nbsp;KB sideways ROM slot.</p>
-
-	<div class="software-entry">
-		<p><span class="badge">Windows</span><span class="badge">WinUI 3</span><span class="badge">Free</span></p>
-		<p><b><a href="BeebRFSMaker.htm">BeebRFSMaker</a></b> &#8212; a Windows GUI application for packing files into a Compressed ROM Filing System sideways ROM image, and extracting them back out. Compatible with comprom.pl v2.10 by Greg Cook.</p>
-		<p>Here is how a ROM built with BeebRFSMaker appears on a BBC Micro or emulator:</p>
-                <img class="screenshot" src="BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen">
-	</div>
-
-	<div class="software-entry">
-		<p><span class="badge">Windows</span><span class="badge">Command Line</span><span class="badge">MSI Installer</span><span class="badge">Free</span></p>
-		<p><b><a href="BeebRFSMakerCL.htm">BeebRFSMakerCL</a></b> &#8212; the command-line version, designed for use in batch files and build pipelines. Shares the same compression engine as BeebRFSMaker but runs standalone with no GUI required.</p>
-		<pre class="console">
+<h1>BBC Micro utilities for Windows</h1>
+<p>Getting the BBC Micro running again led me to write two tools for working with BBC Micro Compressed ROM Filing System images &#8212; a format that squeezes multiple files into a single 16&nbsp;KB sideways ROM slot.</p>
+<div class="software-entry">
+	<p><b><h2><a href="BeebRFSMaker.htm">BeebRFSMaker</a></b></h2> &#8212; a Windows GUI application for packing files into a Compressed ROM Filing System sideways ROM image, and extracting them back out. Compatible with comprom.pl v2.10 by Greg Cook.</p>
+	<p><span class="badge">Windows</span><span class="badge">WinUI 3</span><span class="badge">Free</span></p>
+	<p>Here is how a ROM built with BeebRFSMaker appears on a BBC Micro or emulator:</p>
+        <img class="screenshot" src="BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen">
+</div>
+<hr>
+<div class="software-entry">
+	<p><b><h2><a href="BeebRFSMakerCL.htm">BeebRFSMakerCL</a></b></h2> &#8212; the command-line version, designed for use in batch files and build pipelines. Shares the same compression engine as BeebRFSMaker but runs standalone with no GUI required.</p>
+	<p><span class="badge">Windows</span><span class="badge">Command Line</span><span class="badge">MSI Installer</span><span class="badge">Free</span></p>
+<pre class="console">
 <span class="label">Files packed (3):</span>
 
   <span class="label">Name          Load        Exec           Raw  Compressed</span>
@@ -153,13 +156,12 @@ hr {
   <span class="value">Zeddy_txt     &amp;00000000  &amp;00000000     134      153 (114.2%)</span>
 
 <span class="ok">ROM Image Saved: MyTools.rom</span></pre>
-	</div>
+</div>
+<hr>
 
-	<hr>
+<h2>PGP Key and Contact Information</h2>
 
-	<h2>PGP Key and Contact Information</h2>
-
-	<p>My PGP Public Key is available on Key Servers like the <a href="https://keyserver.ubuntu.com/">Hockeypuck OpenPGP keyserver</a> or the <a href="https://keys.openpgp.org/">keys.openpgp.org Key Server</a> under my key ID <b>6D1A2D5536CD052E50B96A8F595E7CC0A343AEAA</b>&nbsp;. You can obtain my email address from that, if you wish to contact me with comments.</p>
+<p>My PGP Public Key is available on Key Servers like the <a href="https://keyserver.ubuntu.com/">Hockeypuck OpenPGP keyserver</a> or the <a href="https://keys.openpgp.org/">keys.openpgp.org Key Server</a> under my key ID <b>6D1A2D5536CD052E50B96A8F595E7CC0A343AEAA</b>&nbsp;. You can obtain my email address from that, if you wish to contact me with comments.</p>
 
 </body>
 </html>
