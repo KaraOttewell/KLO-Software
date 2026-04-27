@@ -20,7 +20,7 @@ h1 {
 }
 h2 {
     font-family: "Aptos Display", Calibri, sans-serif;
-    font-size: 14pt;
+    font-size: 16pt;
     color: #0F4761;
     font-weight: normal;
     margin-top: 1.4em;
@@ -133,15 +133,38 @@ hr {
 
 <span class="badge">Windows</span>
 <span class="badge">WinUI 3</span>
+<span class="badge">Microsoft Store</span>
 <span class="badge">BBC Micro</span>
 <span class="badge">Free</span>
 
 <p>BeebRFSMaker is a Windows application for packing files into a BBC Micro Compressed ROM Filing System (CompRFS) image, and extracting files back out again. It is compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and produces sideways ROM images that can be used directly with a <a href="https://bbcmicro.computer/">BBC Microcomputer</a> or <a href="https://codeberg.org/chrisn/beebem-windows/releases/">emulator</a>.</p>
 
 <img width="18%" src="BeebRFSMakerROMBoard.png" alt="BeebRFSMaker app icon" style="float:left; margin-right:16px; margin-bottom:8px; border-radius: 12px;">
-<p>To use it, simply drag and drop files from you PC onto the area labeled "Drop PC files here". The files will be listed in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list, or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the combined total file size after compression wil fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will be enabled, and you can choose where to save the ROM image with a <b><code>.rom</code></b> extension.
+<p>To use it, simply drag and drop files from your PC onto the area labeled "Drop PC files here". The files will be listed in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list, or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the combined total file size after compression will fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will be enabled, and you can choose where to save the ROM image with a <b><code>.rom</code></b> extension. If you attempt to add a file which will clash with the name of one already in the list, it will not be included and you will be informed and given advice on workarounds.
 </p>
 <div style="clear:both;"></div>
+
+<h2 id="inf_sidecar_file">The <code>.inf</code> sidecar file format</h2>
+
+<p>When packing, BeebRFSMaker reads the accompanying <code>.inf</code> sidecar file for each PC file if one exists. When extracting, it creates one alongside each extracted file. The <code>.inf</code> file is the <a href="https://beebwiki.mdfs.net/INF_file_format">de facto standard</a> for preserving BBC Micro file metadata on a modern PC filing system, and is recognised by BeebEm and most other emulators and tools in the BBC Micro ecosystem.</p>
+
+<p>Each <code>.inf</code> file is a single line of plain text with the following fields, separated by whitespace:</p>
+
+<pre class="bbc">$.FILENAME  <span class="yl">LLLLLL</span>  <span class="wh">EEEEEE</span>  <span class="num">SSSSSS</span></pre>
+
+<p>Where:</p>
+<ul style="line-height:1.8">
+    <li><code>$.FILENAME</code> &mdash; the BBC Micro filename, including the DFS directory prefix (usually <code>$</code> for the default directory, not used in the cassette or ROM filing systems)</li>
+    <li><span class="yl" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">LLLLLL</span> &mdash; the load address as an 8-digit hex value (e.g. <code>FF1900</code>)</li>
+    <li><span class="wh" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">EEEEEE</span> &mdash; the execution address as an 8-digit hex value (e.g. <code>FF1900</code>)</li>
+    <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSS</span> &mdash; the file length in bytes, in hex</li>
+</ul>
+
+<p>The <b>load address</b> is the 6502 memory address at which the file should be loaded when transferred back to a BBC Micro. The <b>execution address</b> is the address to jump to if the file is run with <code>*RUN</code> or <code>CHAIN""</code>. For non-executable files such as data files these two addresses are often identical. Addresses are stored as 32-bit values to accommodate the Master 128's extended address space, though on a Model B only the lower 16&nbsp;bits are significant.</p>
+
+<p>Example &mdash; a BBC BASIC program called <code>GAME</code>:</p>
+
+<pre class="bbc">$.GAME  <span class="yl">001900</span>  <span class="wh">008023</span>  <span class="num">003A4F</span></pre>
 
 <img width="18%" src="BeebRFSMaker Screenshot 07.png" alt="BeebRFSMaker file drop area" style="float:left; margin-right:16px; margin-bottom:8px; border-radius: 12px;">
 <img width="35%" src="BeebRFSMaker Screenshot 08.png" alt="BeebRFSMaker file drop area" style="float:right; margin-left:16px; margin-bottom:8px; border-radius: 12px;">
@@ -149,6 +172,11 @@ hr {
 If you drop a <code>.rom</code> file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. You can also <b>use this feature just to extract files from a compatible ROM image</b>. The corresponding <code>.inf</code> file will be created during extraction.
 </p>
 <div style="clear:both;"></div>
+<hr>
+
+
+<h2>"Burning" an EEPROM</h2>
+Rather than using the old-style, UV-erasable EPROMs I bought 5 compatible <a href="https://amzn.to/4cAXFak">W27E257-12 32K × 8-bit EEPROMs</a> for around $11 on Amazon. The "257" in the part number refers to its 256Kbit capacity (which equals 32KB), and the "-12" indicates a 120ns access time. I use the upper 16K since the A14 address line is held high making that half of the capacity visible to the Beeb. The chips linked to are second-hand but all worked, though I did throw out one of the chips because it was missing a leg. I used the <a href="https://amzn.to/48XfnT7">Xgecu T48 TL866-3G EEPROM Programmer</a> with the downloadable <a href="http://xgecu.com/EN/Download.html?refreshed=1760331446093">Xgpro</a> software to "burn" the EEPROM content. The EEPROMs I have created so far all worked in my actual BBC Micro.
 <hr>
 
 <h2>Screenshots</h2>
@@ -199,7 +227,7 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
 
 <h2>How it works</h2>
 
-<p>The Compressed ROM Filing System format, created by Greg Cook, stores files in a standard BBC Micro 16&nbsp;KB sideways ROM using a compressed stream that begins after a conventional Acorn ROM header at &amp;8000 and a small 6502 decompressor stub at &amp;8040. The stream uses four compression mechanisms: a digraph table of up to 85 frequent two-byte pairs each encoded as a single byte token, a dictionary of up to 128 longer repeated sequences each referenced by a two-byte address token, run-length encoding for repeated byte values, and literal escape sequences for bytes that cannot otherwise be represented. Dictionary entries may chain up to nine levels deep, and since the ROM Filing System requires each file header to be directly addressable, each file&#8217;s stream is generated separately and chained to the next via a link field. The result is a self-delimiting compressed stream that the decompressor stub decodes on the fly in response to standard MOS ROM Filing System service calls, requiring no RAM workspace beyond a handful of zero-page locations.</p>
+<p>The Compressed ROM Filing System format, created by Greg Cook, stores files in a standard BBC Micro 16&nbsp;KB sideways ROM using a compressed stream that begins after a conventional Acorn ROM header at &amp;8000 and a small 6502 decompressor stub at &amp;8040. The stream uses four compression mechanisms: a digraph table of up to 31 frequent two-byte pairs each encoded as a single byte token, a dictionary of up to 128 longer repeated sequences each referenced by a two-byte address token, run-length encoding for repeated byte values, and literal escape sequences for bytes that cannot otherwise be represented. Dictionary entries may chain up to nine levels deep, and since the ROM Filing System requires each file header to be directly addressable, each file&#8217;s stream is generated separately and chained to the next via a link field. The result is a self-delimiting compressed stream that the decompressor stub decodes on the fly in response to standard MOS ROM Filing System service calls, requiring no RAM workspace beyond a handful of zero-page locations.</p>
 
 <p>BeebRFSMaker implements the full comprom.pl v2.10 compression algorithm:</p>
 
@@ -220,7 +248,7 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
     <h3>BeebRFSMaker</h3>
     <p>The app can be installed from the Microsoft Store. Source code is available on GitHub:<br>
     <a href="https://github.com/KaraOttewell/BeebRFSMaker">BeebRFSMaker</a></p>
-    <p>Requires Windows 10 (build 1809) or later.</p>
+    <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
 </div>
 
 <hr>

@@ -20,7 +20,7 @@ h1 {
 }
 h2 {
     font-family: "Aptos Display", Calibri, sans-serif;
-    font-size: 14pt;
+    font-size: 16pt;
     color: #0F4761;
     font-weight: normal;
     margin-top: 1.4em;
@@ -98,7 +98,7 @@ pre.console .err    { color: #f44747; }
     background: #f4f4f4;
     border-left: 3px solid #467886;
     font-family: Courier, monospace;
-    font-size: 9pt;
+    font-size: 12pt;
     padding: 0.5em 0.8em;
     margin: 0.5em 0;
     white-space: pre;
@@ -180,7 +180,7 @@ Extract options:
 
 <h2>Example: packing files</h2>
 
-<p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with a matching <code>.inf</code> "sidecar" file (file in the same folder with exactly the same name and type but with ".inf" at the end) will have their BBC Micro filename, load address, and execution address set according to the metadata in that file. Any file without a matching sidecar defaults to a sanitized, legal Beeb filename, with a load and exec address set to &amp;0000 and the length taken from the PC file length, unless we spot that it is a binary, tokenized BBC Basic file, then we set the load address to &amp;1900 and the exec address to &amp;8023.</p>
+<p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with a matching <code>.inf</code> <a href="BeebRFSMaker.htm#inf_sidecar_file">sidecar</a> file (file in the same folder with exactly the same name and type but with ".inf" at the end) will have their BBC Micro filename, load address, and execution address set according to the metadata in that file. Any file without a matching sidecar defaults to a sanitized, legal Beeb filename, with a load and exec address set to &amp;0000 and the length taken from the PC file length, unless we spot that it is a binary, tokenized BBC Basic file, then we set the load address to &amp;1900 and the exec address to &amp;8023.</p>
 
 <pre class="console">
 <span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ BeebRFSText.rom --catalogtitle "Defender" --romtitle "Defende" --copyright "KLO 2026/G.Cook 2022"</span>
@@ -239,6 +239,8 @@ Output folder is:
 <p>Each extracted file is written to the output folder with its BBC Micro filename. With <code>-i</code>, a corresponding <code>.inf</code> file is written alongside it, for example:</p>
 
 <div class="cli-block"><b>$.DefenMC FF1900 FF0E00 8960</b></div>
+
+in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
 
 <hr>
 
