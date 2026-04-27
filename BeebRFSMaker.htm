@@ -139,13 +139,14 @@ hr {
 <p>BeebRFSMaker is a Windows application for packing files into a BBC Micro Compressed ROM Filing System (CompRFS) image, and extracting files back out again. It is compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and produces sideways ROM images that can be used directly with a <a href="https://bbcmicro.computer/">BBC Microcomputer</a> or <a href="https://codeberg.org/chrisn/beebem-windows/releases/">emulator</a>.</p>
 
 <img width="18%" src="BeebRFSMakerROMBoard.png" alt="BeebRFSMaker app icon" style="float:left; margin-right:16px; margin-bottom:8px;">
-<p>To use it, simply drag and drop files from you PC onto the area labeled "Drop PC files here". The files will be listed in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list, or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the combined total file size after compression wil fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will be enabled, and you can choose where to save the ROM image with a <b>.rom</b> extension.
+<p>To use it, simply drag and drop files from you PC onto the area labeled "Drop PC files here". The files will be listed in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list, or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the combined total file size after compression wil fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will be enabled, and you can choose where to save the ROM image with a <b><code>.rom</code></b> extension.
 </p>
 <div style="clear:both;"></div>
 
 <img width="18%" src="BeebRFSMaker Screenshot 07.png" alt="BeebRFSMaker file drop area" style="float:left; margin-right:16px; margin-bottom:8px;">
+<img width="35%" src="BeebRFSMaker Screenshot 08.png" alt="BeebRFSMaker file drop area" style="float:right; margin-left:16px; margin-bottom:8px;">
 <p>
-If you drop a .rom file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. You can also use this feature just to extract files from a compatible ROM image.
+If you drop a <code>.rom</code> file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. You can also <b>use this feature just to extract files from a compatible ROM image</b>. The corresponding <code>.inf</code> file will be created during extraction.
 </p>
 <div style="clear:both;"></div>
 <hr>
@@ -156,7 +157,7 @@ If you drop a .rom file onto the app it will offer to extract the content into a
 <p class="screenshot-caption">Packing a set of BBC Micro files into a 16 KB sideways ROM image</p>
 
 <img class="screenshot" src="BeebRFSMaker Screenshot 06.png" alt="BeebRFSMaker extraction screen">
-<p class="screenshot-caption">Extracting files from an existing CompRFS ROM image, with optional .inf sidecar files</p>
+<p class="screenshot-caption">Extracting files from an existing CompRFS ROM image, with optional <code>.inf</code> sidecar files</p>
 
 <hr>
 
