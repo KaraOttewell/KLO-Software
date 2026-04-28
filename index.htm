@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KLO Software — BBC Micro Tools for Windows</title>
 <style>
 body {
 	font-family: "Trebuchet MS", sans-serif;
@@ -15,6 +16,7 @@ body {
     font-size: 2rem;
     font-weight: bold;
     color: #0F4761;
+    text-align: center;
 }
 
 h1 {
@@ -52,6 +54,8 @@ pre.console {
 	line-height: 1.5;
 }
 
+pre.console .prompt { color: #569cd6; }
+pre.console .cmd    { color: #9cdcfe; }
 pre.console .label  { color: #4ec9b0; }
 pre.console .value  { color: #ce9178; }
 pre.console .ok     { color: #6a9955; }
@@ -104,15 +108,19 @@ hr {
 	h1          { font-size: 18pt; }
 	h2          { font-size: 13pt; }
 	pre.bbc     { font-size: 10pt; }
+	pre.console { font-size: 10pt; }
 	.screenshot { max-width: 100%; }
 }
 </style>
 
 </head>
 <body>
-<div class="big-title" align=center>KLO Free Software Page</div>
+<div class="big-title">KLO Free Software Page</div>
 <h1>BBC Micro File and ROM Tools for Windows</h1>
-<p>Getting the BBC Micro running again led me to write some tools for working with BBC Micro Compressed ROM Filing System images &#8212; a format that squeezes multiple files into a single 16&nbsp;KB sideways ROM slot.</p>
+<p>Getting the BBC Micro running again led me to write some tools viewing BBC disk images,
+tokenized BASIC files, data files, and for working with BBC Micro Compressed ROM
+Filing System images which squeezes multiple files into a single 16&nbsp;KB "sideways ROM".
+These are explained in more detail below, and have links to their own help and download pages.</p>
 <div class="software-entry">
 <h2><a href="BeebRFSMaker.htm">BeebRFSMaker</a></h2>
 <p>This is a Windows WinUI 3 GUI application for packing files into a Compressed ROM Filing System sideways ROM image, and extracting them back out. Compatible with comprom.pl v2.10 by Greg Cook.</p>
@@ -174,15 +182,15 @@ Compatible with compressed BBC RFS ROM format v2.10 by Greg Cook
 <span class="badge">BBC Micro</span>
 <span class="badge">Free</span>
 </p>
- I wanted some command line utilities to display the content of .dsd files, and decode 
- BBC BASIC files along with "PRINT#"-type BBC data files, so I wrote them as console
- applications using the .NET framework. The utilities are:
+<p>I wanted some command line utilities to display the content of .dsd files, and decode
+BBC BASIC files along with "PRINT#"-type BBC data files, so I wrote them as console
+applications using the .NET framework. The utilities are:</p>
 <ul>
   <li><b>BBCBasicToText</b> — display a tokenized, binary BBC Micro BASIC file as text, HTML, or bbcode.</li>
   <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as text, HTML, or bbcode.</li>
   <li><b>BBCReadDiskImage</b> — display <code>*DIR</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</li>
 </ul>
-<p>All three tools can produce colour output - strings, keywords, and so forth are coloured differently -
+<p>All three tools can produce colour output — strings, keywords, and so forth are coloured differently —
 and can output plain text (in colour when writing to a command prompt window), bbcode, or HTML.</p>
 
 <pre class="bbc">
@@ -204,6 +212,7 @@ and can output plain text (in colour when writing to a command prompt window), b
 <span class="num"> 160</span> <span class="wh">$COM%=</span><span class="str">"DISC SYSTEM"</span>
 <span class="yl">[Snip rest of "Welcome" BASIC program]</span>
 </pre>
+</div>
 <hr>
 
 <h2>PGP Key and Contact Information</h2>
