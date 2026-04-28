@@ -1,183 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<title>KLO BBC Micro Utilities</title>
-	<style>
-		body {
-			font-family: "Trebuchet MS", sans-serif;
-			font-size: 10pt;
-			margin: 1in;
-		}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BBC Micro Utilities — KLO Software</title>
+<style>
+body {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10pt;
+    margin: 0.5in;
+    max-width: 100%;
+}
 
-		h1 {
-			font-family: "Aptos Display", Calibri, sans-serif;
-			font-size: 20pt;
-			color: #0F4761;
-			font-weight: normal;
-		}
+h1 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 20pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-bottom: 0.1em;
+}
 
-		p {
-			margin-top: 0;
-			margin-bottom: 8pt;
-			line-height: 115%;
-		}
+h2 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 14pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-top: 1.4em;
+    margin-bottom: 0.3em;
+}
 
-		a {
-			color: #467886;
-		}
+h3 {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10pt;
+    color: #0F4761;
+    margin-top: 1em;
+    margin-bottom: 0.2em;
+}
 
-			a:visited {
-				color: #96607D;
-			}
+p {
+    margin-top: 0.4em;
+    line-height: 1.5;
+}
 
-		ul {
-			margin-left: 0.5in;
-			margin-bottom: 8pt;
-			padding-left: 0;
-		}
+a { color: #467886; }
+a:visited { color: #96607D; }
 
-		li {
-			font-size: 11pt;
-			margin-bottom: 4pt;
-		}
+pre.bbc {
+    background: black;
+    color: limegreen;
+    font-family: Courier, monospace;
+    font-size: 13.5pt;
+    padding: 0.5em;
+    line-height: normal;
+    overflow-x: auto;
+}
 
-		.util {
-			color: #215E99;
-			font-weight: bold;
-		}
+pre.bbc7 {
+    background: black;
+    color: limegreen;
+    font-family: "Courier New", monospace;
+    font-size: 12pt;
+    padding: 0.5em;
+    line-height: normal;
+    overflow-x: auto;
+}
 
-		.kw {
-			color: aqua;
-		}
+pre.console {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: Courier, monospace;
+    font-size: 9.5pt;
+    padding: 0.8em 1em;
+    line-height: 1.5;
+    overflow-x: auto;
+}
 
-		.str {
-			color: fuchsia;
-		}
+pre.console .prompt { color: #569cd6; }
+pre.console .cmd    { color: #9cdcfe; }
+pre.console .label  { color: #4ec9b0; }
+pre.console .value  { color: #ce9178; }
+pre.console .ok     { color: #6a9955; }
+pre.console .dg     { color: #808080; }
+pre.console .dr     { color: #f44747; }
 
-		.num {
-			color: limegreen;
-		}
+.kw  { color: aqua; }
+.str { color: fuchsia; }
+.num { color: limegreen; }
+.wh  { color: white; }
+.yl  { color: yellow; }
+.dg  { color: #808080; }
+.dr  { color: darkred; }
+.blue { color: #0B76A0; }
 
-		.wh {
-			color: white;
-		}
+.subtitle {
+    font-size: 11pt;
+    color: #467886;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+}
 
-		.yl {
-			color: yellow;
-		}
+.badge {
+    display: inline-block;
+    background: #0F4761;
+    color: white;
+    font-size: 8pt;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
 
-		.dg {
-			color: darkgray;
-		}
+.download-box {
+    border: 1px solid #0F4761;
+    padding: 0.8em 1em;
+    margin: 1.2em 0;
+    background: #f0f6f9;
+}
 
-		.dr {
-			color: darkred;
-		}
+.download-box h3 {
+    margin-top: 0;
+    color: #0F4761;
+    font-size: 11pt;
+}
 
-		.blue {
-			color: #0B76A0;
-		}
+.back-link {
+    font-size: 9pt;
+    margin-bottom: 1.5em;
+    display: block;
+}
 
-		.cmd {
-			color: #215E99;
-		}
+.indent {
+    margin-left: 0.5in;
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 10pt;
+    line-height: 1.6;
+}
 
-		pre.bbc {
-			background: black;
-			font-family: Courier, monospace;
-			font-size: 13.5pt;
-			padding: 0.5em;
-			line-height: normal;
-			margin: 0;
-		}
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
 
-		pre.bbc7 {
-			background: black;
-			font-family: "Courier New", monospace;
-			font-size: 12pt;
-			padding: 0;
-			line-height: normal;
-			margin: 0;
-		}
-
-		pre.console {
-			background: black;
-			font-family: "Trebuchet MS", sans-serif;
-			font-size: 11pt;
-			padding: 0.5em;
-			line-height: normal;
-			margin: 0;
-		}
-
-		pre.console2 {
-			background: black;
-			font-family: "Trebuchet MS", sans-serif;
-			font-size: 10pt;
-			padding: 0.5em;
-			line-height: normal;
-			margin: 0;
-		}
-
-		.indent {
-			margin-left: 0.5in;
-			font-family: "Cascadia Code", Consolas, monospace;
-			font-size: 10pt;
-		}
-
-		.colour {
-			color: #A02B93;
-		}
-	</style>
+@media (max-width: 600px) {
+    body        { font-size: 13pt; margin: 0.4in; }
+    h1          { font-size: 18pt; }
+    h2          { font-size: 13pt; }
+    pre.bbc     { font-size: 10pt; }
+    pre.bbc7    { font-size: 10pt; }
+    pre.console { font-size: 10pt; }
+}
+</style>
 </head>
 <body>
-	<h1>KLO BBC Micro Utilities</h1>
 
-	<p>
-		I recently got round to repairing and re-capping the power supply in my <b>BBC Micro Model B</b>, which I bought 40
-		years ago. Of course I started grabbing various programs and data from it, transferring to my Windows PC as .dsd files,
-		then using those with <b>Beebem</b>, and I bought a copy of <b>BBC BASIC for Windows</b> so that I could play with
-		that too. I wanted some command line utilities to display the content of .dsd files, and decode <b>BBC BASIC</b>
-		files along with "<b>PRINT#</b>"-type BBC data files, so I wrote them as console applications using the .NET framework.
-		The utilities are:
-	</p>
+<a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-	<ul>
-		<li><span class="util">BBCBasicToText</span> - display a <b>tokenized</b>, binary <b>BBC Micro BASIC file</b> as text, HTML, or bbcode.</li>
-		<li><span class="util">BBCDataFileToText</span> - show <b>BBC "PRINT#" type data files</b> as text, HTML, or bbcode.</li>
-		<li><span class="util">BBCReadDiskImage</span> - display *DIR-style output of a <b>.DSD or .SSD disk images</b>, with the <b>ability to export files</b> individually, and <b>dump sectors</b>.</li>
-	</ul>
+<h1>BBC Micro Utilities</h1>
+<p class="subtitle">Command-line tools for viewing BBC Micro files and disk images</p>
 
-	<p>
-		They can all produce <span class="colour">colour</span> output, e.g. string, <span class="blue">keywords</span> and
-		so forth are coloured differently, and can either produce plain text (which is only in colour if output is to a command
-		prompt window, of course), bbcode, or HTML, optionally launching the browser for the latter. They take wildcards as
-		input and can traverse down through folders. I realize that not everyone is comfortable downloading such things other
-		than from "official" sites, but I've put a .zip file with the setup.exe and corresponding .MSI (see lower down). I am
-		currently fiddling around to get them published on the Windows Store (where I recently published contour mapping app to
-		familiarize myself with the process, but it is different, and IMHO fiddlier, for console apps) so if anyone would like
-		to try them, I'd love to get feedback and suggestions.
-	</p>
+<span class="badge">Windows</span>
+<span class="badge">Command Line</span>
+<span class="badge">MSI Installer</span>
+<span class="badge">BBC Micro</span>
+<span class="badge">Free</span>
 
-	<p>
-		Here's an example of .html output using the Sketch program from&nbsp;<a href="https://www.bbcbasic.co.uk/bbcwin/tutorial/appendixe.html">https://www.bbcbasic.co.uk/bbcwin/tutor...ndixe.html</a>&nbsp;as
-		input, saved on the PC in BBC Basic tokenized binary as <b>Sketch.bbc</b>.
-	</p>
+<p>I recently got round to repairing and re-capping the power supply in my <b>BBC Micro Model B</b>, which I bought 40
+years ago. Of course I started grabbing various programs and data from it, transferring to my Windows PC as .dsd files,
+then using those with <b>BeebEm</b>, and I bought a copy of <b>BBC BASIC for Windows</b> so that I could play with
+that too. I wanted some command-line utilities to display the content of .dsd files, and decode <b>BBC BASIC</b>
+files along with "<b>PRINT#</b>"-type BBC data files, so I wrote them as console applications using the .NET framework.
+The utilities are:</p>
 
-	<p><span class="cmd">C:\...\WelcomeDiskFiles&gt; <b>bbcbasictotext Sketch.bbc Sketch.html</b></span></p>
+<ul>
+    <li><b>BBCBasicToText</b> — display a tokenized, binary BBC Micro BASIC file as text, HTML, or bbcode.</li>
+    <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as text, HTML, or bbcode.</li>
+    <li><b>BBCReadDiskImage</b> — display <code>*DIR</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</li>
+</ul>
 
-<pre class="console">
+<p>All three tools can produce colour output — strings, keywords, and so forth are coloured differently — and can
+output plain text (in colour when writing to a command prompt window), bbcode, or HTML, optionally launching the
+browser for the latter. They take wildcards as input and can traverse down through folders.</p>
+
+<hr>
+
+<h2>Example: BBCBasicToText</h2>
+
+<p>Here's an example of HTML output using the Sketch program from
+<a href="https://www.bbcbasic.co.uk/bbcwin/tutorial/appendixe.html">bbcbasic.co.uk</a> as input,
+saved on the PC in BBC BASIC tokenized binary as <b>Sketch.bbc</b>:</p>
+
+<pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcbasictotext Sketch.bbc Sketch.html</span>
 <span class="dg">BBCBasicToText found 1 file matching Sketch.bbc
 Escape non-printable characters: True
 
 BBCBasicToText: processing 1/1, C:\Users\...\BBCMicro\Sketch.bbc
 
-BBCBasicToText Success: 1/1, C:\Users\Kara Ottewell\OneDrive\Documents\BBCMicro\Sketch.bbc, dialect WindowsOrSDLWithoutLineNumbers
+BBCBasicToText Success: 1/1, C:\Users\...\BBCMicro\Sketch.bbc, dialect WindowsOrSDLWithoutLineNumbers
 
 Output: C:\Users\...\BBCMicro\Sketch.html
 
-BBCBasicToText found and processed 1 file, ignored 0, excluded 0, produced results for 1
-</span><span class="kw">REM</span><span class="yl"> Sketch</span></pre>
+BBCBasicToText found and processed 1 file, ignored 0, excluded 0, produced results for 1</span></pre>
 
 <pre class="bbc7">
 <span class="num"> </span><span class="wh">X%=10</span>
@@ -200,31 +222,27 @@ BBCBasicToText found and processed 1 file, ignored 0, excluded 0, produced resul
 <span class="num"> </span><span class="kw">END</span>
 </pre>
 
-	<p>&nbsp;</p>
+<p>It tries to detect the indentation style automatically based on whether the file is an Acorn format BASIC file or
+BBC BASIC for Windows/SDL, but you can override this with the <code>/w</code> or <code>--windows-style-indent</code>
+switches. Indentation is applied to <span class="blue">FOR</span>, <span class="blue">REPEAT</span>,
+<span class="blue">WHILE</span>, and <span class="blue">CASE</span>, and it respects
+<span class="blue">EXIT REPEAT</span> etc. You can turn indentation off entirely with <code>--noindent</code>.</p>
 
-	<p>
-		It tries to change the indentation style automatically based on whether it is an Acorn format BASIC file, or BBC BASIC
-		for Windows/SDL, but you can override via the /w or --windows-style-indent switches. I extracted the program using
-	</p>
+<p>I extracted the program from the Welcome disk using:</p>
 
-	<p><span class="cmd">C:\...\WelcomeDiskFiles\&gt;&nbsp;<b>bbcreaddiskimage Welcome.ssd --export=*welcome*</b></span></p>
+<pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcreaddiskimage Welcome.ssd --export=*welcome*</span></pre>
 
-	<p>then used</p>
+<p>then converted it to bbcode using:</p>
 
-	<p><span class="cmd">C:\...\WelcomeDiskFiles\&gt;&nbsp;<b>bbcbasictotext 0_W.WELCOME *.bbcode /w</b></span></p>
+<pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcbasictotext 0_W.WELCOME *.bbcode /w</span>
+<span class="dg">BBCBasicToText found 1 file matching 0_W.WELCOME
+Escape non-printable characters: </span><span class="dr">True</span><span class="dg">
 
-<pre class="console2"><span class="dg">BBCBasicToText found 1 file matching 0_W.WELCOME
-Escape non-printable charaters:&nbsp;</span><span class="dr">True</span><span class="dg">
-
-BBCBasicToText: processing 1/1, C:\Users\...\BeebEm\DiscIms\WelcomeDiskFiles\0_W.WELCOME
-BBCBasicToText Success: 1/1, C:\Users\...\BeebEm\DiscIms\WelcomeDiskFiles\0_W.WELCOME
+BBCBasicToText: processing 1/1, C:\...\WelcomeDiskFiles\0_W.WELCOME
+BBCBasicToText Success: 1/1, C:\...\WelcomeDiskFiles\0_W.WELCOME
 Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 
-	<p>&nbsp;</p>
-
-	<p>Which produced</p>
-
-<pre class="console2"><span class="dg">BBCBasicToText: processing 1/1, C:\...\WelcomeDiskFiles\0_W.WELCOME</span></pre>
+<p>Which produced:</p>
 
 <pre class="bbc">
 <span class="num">  10</span> <span class="kw">REM</span><span class="yl"> New version of 'INTRO' from</span>
@@ -233,7 +251,7 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 <span class="num">  40</span> <span class="kw">ON ERROR GOTO</span> <span class="num">630</span>
 <span class="num">  50</span> <span class="kw">ENVELOPE</span><span class="wh"> 1,1,-<span class="kw">RND</span>(50),-<span class="kw">RND</span>(50),-<span class="kw">RND</span>(45),255,255,255,127,0,0,-127,127,0</span>
 <span class="num">  60</span> <span class="kw">SOUND</span><span class="wh"> 1,1,255,255</span>
-<span class="num">  70</span> <span class="kw">DIM</span><span class="wh">COM%11</span>
+<span class="num">  70</span> <span class="kw">DIM</span><span class="wh"> COM%11</span>
 <span class="num">  80</span><span class="wh"> M0=650:M1=500:M2=708:M3=104:M4=288:M5=550:M6=720:M7=450:M8=5</span>
 <span class="num">  90</span> <span class="kw">MODE</span><span class="wh">5</span>
 <span class="num"> 100</span> <span class="kw">VDU</span><span class="wh">5</span>
@@ -246,48 +264,50 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 <span class="yl">[Snip rest of "Welcome" BASIC program]</span>
 </pre>
 
-<pre class="console2">
-<span class="dg">BBCBasicToText Success: 1/1, C:\...\WelcomeDiskFiles\0_W.WELCOME
-Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span>
-</pre>
-	<p>&nbsp;</p>
+<hr>
 
-	<p>
-		Indentation is applied to <span class="blue">FOR</span>, <span class="blue">REPEAT</span>, <span class="blue">WHILE</span>,
-		and <span class="blue">CASE</span>, and it respects <span class="blue">EXIT REPEAT</span> etc. but you can turn it off with <b>--noindent</b>.
-	</p>
+<h2>DOSKEY shortcuts</h2>
 
-	<p>Because I am too lazy to type the full command names, I created some DOSKEY macros in a command file named <i>cmdsetup.cmd</i></p>
+<p>Because typing the full command names is tedious, you can create DOSKEY macros in a command file named <code>cmdsetup.cmd</code>:</p>
 
-	<p class="indent">
-		doskey brd="&lt;path to exe&gt;\BBCReadDiskImage.exe" $*<br>
-		doskey btt="&lt;path to exe&gt;\BBCBasicToText.exe" $*<br>
-		doskey bdt="%&lt;path to exe&gt;\BBCDataFileToText.exe" $*
-	</p>
+<div class="indent">
+    doskey brd="&lt;path to exe&gt;\BBCReadDiskImage.exe" $*<br>
+    doskey btt="&lt;path to exe&gt;\BBCBasicToText.exe" $*<br>
+    doskey bdt="&lt;path to exe&gt;\BBCDataFileToText.exe" $*
+</div>
 
-	<p>and this runs in every new command window because I have added this to the registry:</p>
+<p>To run this automatically in every new command window, add the following to the registry:</p>
 
-	<p class="indent">
-		Windows Registry Editor Version 5.00<br>
-		<br>
-		[HKEY_CURRENT_USER\Software\Microsoft\Command Processor]<br>
-		"CompletionChar"=dword:00000009<br>
-		"DefaultColor"=dword:00000000<br>
-		"EnableExtensions"=dword:00000001<br>
-		"PathCompletionChar"=dword:00000009<br>
-		"AutoRun"="\"%OneDrive%\\&lt;wherever&gt;\\ cmdsetup.cmd\""
-	</p>
+<div class="indent">
+    Windows Registry Editor Version 5.00<br>
+    <br>
+    [HKEY_CURRENT_USER\Software\Microsoft\Command Processor]<br>
+    "CompletionChar"=dword:00000009<br>
+    "DefaultColor"=dword:00000000<br>
+    "EnableExtensions"=dword:00000001<br>
+    "PathCompletionChar"=dword:00000009<br>
+    "AutoRun"="\"%OneDrive%\\&lt;wherever&gt;\\cmdsetup.cmd\""
+</div>
 
-	<h2>Latest Version</h2>
-	<p>
-		The <b>most recent version</b>, which you can open with <b>zip</b>, is v1.0.60 here <bigger><b><a href="BBC Micro Utilities v1.0.60.zip">BBC Micro Utilities v1.0.60.zip</a></b></bigger>
-		<!-- <a href="https://img1.wsimg.com/blobby/go/8ec357ef-35e4-496a-a273-966a6aa22e0c/downloads/BBC%20Micro%20Utilities1.0.60.zip?ver=1681673145970">https://img1.wsimg.com/blobby/go/8ec357...1673145970</a> -->
-	</p>
+<hr>
 
-	<p>
-		I'm investigating the best way to get it published on Windows Store, but for now the .zip file is located on a Git web site,
-		hence the signature in the .zip file. As always you should be cautious and do due diligence before downloading
-		and running an installer. Please let me know what you think.
-	</p>
+<h2>Download</h2>
+
+<div class="download-box">
+    <h3>BBC Micro Utilities</h3>
+    <p>Distributed as a Windows MSI installer inside a .zip file. Download from the GitHub releases page:<br>
+    <a href="BBC Micro Utilities v1.0.60.zip"><b>BBC Micro Utilities v1.0.60.zip</b></a></p>
+    <p>Requires Windows 10 or later and .NET 8 or later.</p>
+</div>
+
+<p>As always you should be cautious and do due diligence before downloading and running an installer.
+Please let me know what you think — you can find my contact details via my PGP key on the
+<a href="index.htm">KLO Software page</a>.</p>
+
+<hr>
+
+<p style="font-size:9pt; color:#666;">BBC Micro Utilities is free software.
+<br><a href="index.htm">&#8592; Back to KLO Software</a></p>
+
 </body>
 </html>
