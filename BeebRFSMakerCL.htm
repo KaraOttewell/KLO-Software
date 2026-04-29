@@ -181,7 +181,12 @@ Extract options:
 
 <h2>Example: packing files</h2>
 
-<p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with a matching <code>.inf</code> <a href="BeebRFSMaker.htm#inf_sidecar_file">sidecar</a> file (file in the same folder with exactly the same name and type but with ".inf" at the end) will have their BBC Micro filename, load address, and execution address set according to the metadata in that file. Any file without a matching sidecar defaults to a sanitized, legal Beeb filename, with a load and exec address set to &amp;0000 and the length taken from the PC file length, unless we spot that it is a binary, tokenized BBC Basic file, then we set the load address to &amp;1900 and the exec address to &amp;8023.</p>
+<p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with a matching <code>.inf</code>
+ <a href="BeebRFSMaker.htm#inf_sidecar_file">sidecar</a> file (file in the same folder with exactly the same name and type but with
+ ".inf" at the end) will have their BBC Micro filename, load address, and execution address set according to the metadata in that file.
+ Any file without a matching sidecar defaults to a sanitized, legal Beeb filename, with a load and exec address set to &amp;0000
+ and the length taken from the PC file length, unless we spot that it is a binary, tokenized BBC Basic file, then we set the load
+ address to &amp;1900 and the exec address to &amp;8023.</p>
 
 <pre class="console">
 <span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ BeebRFSText.rom --catalogtitle "Defender" --romtitle "Defende" --copyright "KLO 2026/G.Cook 2022"</span>

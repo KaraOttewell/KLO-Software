@@ -47,12 +47,13 @@ pre.bbc {
 }
 
 pre.console {
-	background: #1e1e1e;
-	color: #d4d4d4;
-	font-family: Courier, monospace;
-	font-size: 9.5pt;
-	padding: 0.8em 1em;
-	line-height: 1.5;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: Courier, monospace;
+    font-size: 9.5pt;
+    padding: 0.8em 1em;
+    line-height: 1.5;
+    overflow-x: auto;
 }
 
 pre.console .prompt { color: #569cd6; }
@@ -137,15 +138,16 @@ These are explained in more detail below, and have links to their own help and d
 </div>
 <hr>
 <div class="software-entry">
-<h2><a href="BeebRFSMakerCL.htm">BeebRFSMakerCL</a></h2>
-<p>This is the corresponding command-line version, designed for use in batch files and build pipelines. Shares the same compression engine as BeebRFSMaker but runs standalone with no GUI required.</p>
-<p>
-<span class="badge">Windows</span>
-<span class="badge">Command Line</span>
-<span class="badge">MSI Installer</span>
-<span class="badge">BBC Micro</span>
-<span class="badge">Free</span>
-</p>
+	<h2><a href="BeebRFSMakerCL.htm">BeebRFSMakerCL</a></h2>
+	<p>This is the corresponding command-line version, designed for use in batch files and build pipelines. Shares the same compression engine as BeebRFSMaker but runs standalone with no GUI required.</p>
+	<p>
+		<span class="badge">Windows</span>
+		<span class="badge">Command Line</span>
+		<span class="badge">MSI Installer</span>
+		<span class="badge">BBC Micro</span>
+		<span class="badge">Free</span>
+	</p>
+
 <pre class="console">
 <span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ BeebRFSText.rom --catalogtitle "Defender" --romtitle "Defende" --copyright "KLO 2026/G.Cook 2022"</span>
 BeebRFSMakerCL v2026-04-22_17:51 - Compressed RFS Pack and Extract Tool
@@ -156,8 +158,8 @@ Compatible with compressed BBC RFS ROM format v2.10 by Greg Cook
 <span class="label"> Catalog title  :</span> <span class="value">"*Defender*"</span>
 <span class="label">    Name              Load      Exec    Raw Compr.</span>
 <span class="label">    ------------  --------  -------- ------ ------</span>
-<span class="value"> 1) DefenMC      &amp;00001900 &amp;00000E00   9121   8011 87.8%</span>  <a href="BeebRFSMaker.htm#inf_sidecar_file">(.inf)</a>
-<span class="value"> 2) Defende      &amp;00005000 &amp;00008023   4785   3014 63.0%</span>  <a href="BeebRFSMaker.htm#inf_sidecar_file">(.inf)</a>
+<span class="value"> 1) DefenMC      &amp;00001900 &amp;00000E00   9121   8011 87.8%</span>  (.inf)
+<span class="value"> 2) Defende      &amp;00005000 &amp;00008023   4785   3014 63.0%</span>  (.inf)
 <span class="value"> 3) Zeddy_txt    &amp;00000000 &amp;00000000    167    155 92.8%</span>
 <span class="value"> 4) aaa_txt      &amp;00000000 &amp;00000000     44     33 75.0%</span>
 <span class="value"> 5) test_nocom   &amp;00000000 &amp;00000000     44     38 86.4%</span>
