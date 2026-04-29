@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
-<title>KOContour Help — KLO Software</title>
+<title>KOContour — KLO Software</title>
 <style>
 body {
     font-family: "Trebuchet MS", sans-serif;
@@ -68,7 +68,7 @@ pre.data {
 .screenshot {
     margin: 1em 0;
     border: 1px solid #ccc;
-    max-width: 100%;
+    max-width: 95%;
     display: block;
 }
 .screenshot-caption {
@@ -110,23 +110,26 @@ hr {
 </head>
 <body>
 
-<a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+    <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-<h1>KOContour Help</h1>
-<p class="subtitle">Contour map display for elevation data files</p>
+    <h1>KOContour</h1>
+    <p class="subtitle">
+        Contour map display for elevation data files, or elevation servers such as the
+        <a href="https://www.opentopodata.org/datasets/mapzen/">Open Topo Data server</a>.
+    </p>
 
-<span class="badge">Windows</span>
-<span class="badge">UWP</span>
-<span class="badge">Microsoft Store</span>
-<span class="badge">Free</span>
+    <span class="badge">Windows</span>
+    <span class="badge">UWP</span>
+    <span class="badge">Microsoft Store</span>
+    <span class="badge">Free</span>
 
-<img class="screenshot" src="kocontour_screenshot7.png" alt="KOContour main screen">
+    <img class="screenshot" src="kocontour_screenshot7.png" alt="KOContour main screen">
 
-<hr>
+    <hr>
 
-<h2>Overview</h2>
+    <h2>Overview</h2>
 
-<p>KOContour reads in elevation data files from your computer and displays them as contour maps. A typical data file would look like this:</p>
+    <p>KOContour reads in elevation data files from your computer and displays them as contour maps. A typical data file would look like this:</p>
 
 <pre class="data">type  latitude        longitude       altitude (ft)  name         desc
 T     53.231479474    -6.299506408    1672.9         Stillorgan   Ireland
@@ -137,167 +140,166 @@ T     53.231479474    -6.297956845    1704.0
 T     53.231479474    -6.297569454    1708.2
 T     53.231479474    -6.297182063    1709.2</pre>
 
-<p>The example above assumes tab-separated columns, which is recommended so that your description field can then use commas. In the sections below there are screenshots showing how the main features work.</p>
+    <p>The example above assumes tab-separated columns, which is recommended so that your description field can then use commas. In the sections below there are screenshots showing how the main features work.</p>
+    <hr>
 
-<div class="download-box">
-    <h3>KOContour</h3>
+    <h2>Creating the Input Data Files</h2>
+
+    <img src="kocontour_screenshot_top_toolbar_gpx_and_dem.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 15%;">
+    <h3>Use a DEM Server (recommended for most people)</h3>
+    <img class="screenshot" src="kocontour_dem_data_download_dialog_screenshot.png" alt="KOContour DEM data download dialog" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+    <p>There are a number of Digital Elevation Model (DEM) servers on the internet. KOContour can get data from the <a href="https://www.opentopodata.org/datasets/mapzen/">Open Topo Data server</a>. This is the easiest way, but because the site limits you to 100 locations per call, at one-second intervals, and no more than 100,000 points per day, it can be a little slow depending on the grid resolution you choose from the dropdown below the dataset name. You can use a different server so long as the API format matches Open Topo. You can also follow the instructions for hosting the server yourself, but that is not necessary if you use the default of <code>https://api.opentopodata.org/</code>. When you click on the <b>Create TSV from DEM server</b> button you will see a file picker which lets you specify where to save the data — I recommend making a <em>ContourMaps</em> folder under your <em>Pictures</em> folder.</p>
+    <div style="clear:both;"></div>
+
+    <img class="screenshot" src="kocontour_dem_data_download_progress.png" alt="KOContour DEM data download progress dialog" style="float:right; margin-left:16px; max-width:30%;">
+    <p>You will then see a progress information popup, which you can hide by clicking the <b>Close and keep going</b> button (click on the main toolbar button to see it again), and you can cancel the operation if, for example, you are warned that the dataset you chose does not have elevations for the points you requested. A good choice for North America and the UK seems to be the <b>Mapzen</b> dataset, but your mileage may vary. Once the download is complete you can close the progress box and then use the <a href="#LoadData">Load Data</a> button to load the file you created.</p>
+    <div style="clear:both;"></div>
+
+    <h3>Use Azure Maps</h3>
+
+    <img class="screenshot" src="kocontour_bing_data_download_dialog_screenshot.png" alt="KOContour Maps data download dialog" style="float: right; margin-left: 16px; margin-top: 2px; max-width: 40%;">
+
     <p>
-        The app can be installed from:
-        <ul>
-            <li>The <a href="https://apps.microsoft.com/store/detail/kocontour/9N0KL98F6TMH" target="_blank">KOContour Microsoft Store web page</a></li>
-            <li><a href="ms-windows-store://pdp/?productid=9N0KL98F6TMH"><img src="ms_store_badge.svg" alt="Get KOContour from the Microsoft Store app" style="height:40px;"></a></li>
-        </ul>
+        For an individual the free/low cost option is likely more than adequate in the number of transactions available.
+        See <a href="https://portal.azure.com/#browse/Microsoft.Maps%2Faccounts">getting an Azure Maps subscription</a>.
     </p>
-    <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
-</div>
 
-<hr>
+    <div style="clear:both;"></div>
 
-<h2>Creating the Input Data Files</h2>
+    <img class="screenshot" src="kocontour_dem_data_secret_key.png" alt="KOContour secret key dialog" style="float:right; margin-left:16px; max-width:40%;">
 
-<img class="screenshot" src="kocontour_screenshot_top_toolbar_gpx_and_dem.png" alt="KOContour top toolbar showing GPX and DEM buttons">
+    <p>Once you have your key, click on the padlock button and paste your key into the dialog that pops up. Click <b>Save</b> to securely save the key in the local storage for your app. You are now ready to download data from the Microsoft Maps service. Click on <b>Generate TSV from Bing Maps</b> to create the data file and, as with the DEM server, the progress dialog will be displayed.</p>
 
-<h3>Use a DEM Server (recommended for most people)</h3>
+    <div style="clear:both;"></div>
 
-<img class="screenshot" src="kocontour_dem_data_download_dialog_screenshot.png" alt="KOContour DEM data download dialog" style="float:right; margin-left:16px; max-width:40%;">
+    <h3>Create a GPX file</h3>
 
-<p>There are a number of Digital Elevation Model (DEM) servers on the internet. KOContour can get data from the <a href="https://www.opentopodata.org/datasets/mapzen/">Open Topo Data server</a>. This is the easiest way, but because the site limits you to 100 locations per call, at one-second intervals, and no more than 100,000 points per day, it can be a little slow depending on the grid resolution you choose from the dropdown below the dataset name. You can use a different server so long as the API format matches Open Topo. You can also follow the instructions for hosting the server yourself, but that is not necessary if you use the default of <code>https://api.opentopodata.org/</code>. When you click on the <b>Create TSV from DEM server</b> button you will see a file picker which lets you specify where to save the data — I recommend making a <em>ContourMaps</em> folder under your <em>Pictures</em> folder.</p>
+    <p>This is a bit trickier, but you can get more points if you need a high-resolution grid. If you have access to a data source and the technical wherewithal to do so, you can create your own file. I give mine the extension <em>.tsv</em> to distinguish them from ordinary text files, but that is up to you. The way to make data files with this method is to select the <b>Create GPX file</b> radio button and use the <b>Generate GPX file</b> button to create a GPX track file. The output is stored wherever you specify on your computer, then you feed it into <a href="https://www.gpsvisualizer.com/convert_input">gpsvisualizer.com/convert_input</a>. Download the result file, rename it as <em>&lt;Placename&gt;.txt</em> or <em>.tsv</em>, then copy the file from <em>Downloads</em> to your data folder. This process looks a little complex at first, but you only need to do it once per new map area, and it is pretty simple once you have done it a few times.</p>
 
-<div style="clear:both;"></div>
+    <p>Alternatively, here is a link to <a href="https://drive.google.com/file/d/1ctRFKvqf59-r3CVI-bwBHndlTzCWMeWb/view?usp=sharing">download Maui.tsv</a> — a tab-separated data file for Maui, ready to use. As always, do a virus scan just as you would for any file you download.</p>
 
-<img class="screenshot" src="kocontour_dem_data_download_progress.png" alt="KOContour DEM data download progress dialog" style="float:right; margin-left:16px; max-width:40%;">
+    <h3>Example: Create data for Maui</h3>
 
-<p>You will then see a progress information popup, which you can hide by clicking the <b>Close and keep going</b> button (click on the main toolbar button to see it again), and you can cancel the operation if, for example, you are warned that the dataset you chose does not have elevations for the points you requested. A good choice for North America and the UK seems to be the <b>Mapzen</b> dataset, but your mileage may vary. Once the download is complete you can close the progress box and then use the <a href="#LoadData">Load Data</a> button to load the file you created.</p>
+    <p>To generate a GPX grid for Maui, go to your favourite map source, e.g. <a href="http://maps.google.com/">Google Maps</a>, and enter <em>Maui</em> into the search box. Copy the coordinates of the centre of the area of interest — with Google Maps, right-click on the chosen spot and left-click on the coordinates that pop up, which will put them in the clipboard. In this example it will be something like <code>20.800841499225772, -156.32722033846065</code>. Then click on the GPX button and the following dialog will appear.</p>
 
-<div style="clear:both;"></div>
+    <img class="screenshot" src="kocontour_create_gpx_data_dialog_screenshot.png" alt="KOContour Create GPX Data dialog">
 
-<h3>Use Microsoft Maps (register for a free basic key)</h3>
+    <p>Click on the field labelled <b>Paste lat,lon here</b> and paste the coordinates you just copied. This will fill the Latitude and Longitude fields — you can also fill in those fields individually if you prefer, and they will stay in sync. Fill in the other fields until they all show a green border indicating they are valid. The grid generated will be a 500&times;300 (lon&times;lat) grid, regardless of the extent you choose. When the <b>Generate GPX File</b> button becomes enabled, click on it and save the file as <em>Maui.gpx</em>.</p>
 
-<img class="screenshot" src="kocontour_bing_data_download_dialog_screenshot.png" alt="KOContour Bing Maps data download dialog" style="float:right; margin-left:16px; max-width:40%;">
+    <img class="screenshot" src="kocontour_screenshotgpsvisualizercontrols.png" alt="GPS Visualizer conversion controls">
 
-<p>You can register for a free, basic, Microsoft Bing Maps key which, for an individual, is likely more than adequate in the number of transactions available, and is very fast. To get a free key see <a href="https://learn.microsoft.com/en-us/bingmaps/getting-started/bing-maps-dev-center-help/getting-a-bing-maps-key">Getting a Bing Maps Key</a>. These are free and do not require a credit card.</p>
+    <p>Then go to <a href="https://www.gpsvisualizer.com/convert_input">gpsvisualizer.com/convert_input</a> and add the file you created using the control marked <b>1</b> in the screenshot above. Set <em>Add DEM elevation data</em> to <em>best available source</em> using control <b>2</b>, then click the green <b>Convert</b> button marked <b>3</b> and wait for the file to finish processing.</p>
 
-<div style="clear:both;"></div>
+    <img class="screenshot" src="kocontour_screenshotgpsvisualizeroutput.png" alt="GPS Visualizer output download link">
 
-<img class="screenshot" src="kocontour_dem_data_secret_key.png" alt="KOContour secret key dialog" style="float:right; margin-left:16px; max-width:40%;">
+    <p>When the download link appears, click it and open the <em>Downloads</em> folder. Rename the file to something like <em>Maui.tsv</em> and copy or move it to your preferred folder under <em>Pictures</em>. You are now ready to load the data into KOContour.</p>
 
-<p>Once you have your key, click on the padlock button and paste your key into the dialog that pops up. Click <b>Save</b> to securely save the key in the local storage for your app. You are now ready to download data from the Microsoft Maps service. Click on <b>Generate TSV from Bing Maps</b> to create the data file and, as with the DEM server, the progress dialog will be displayed.</p>
+    <hr>
 
-<div style="clear:both;"></div>
+    <h2 id="LoadData">Loading the Input Data Files</h2>
 
-<h3>Create a GPX file</h3>
+    <img class="screenshot" src="kocontour_screenshot_top_toolbar_loaddata.png" alt="KOContour load data toolbar button" style="float: left; margin-right: 16px; margin-top: 2px; margin-bottom: 8px; border-radius: 12px; max-width: 40%;">
+    <p>Click the highlighted button, which will show a standard file picker letting you select one of the input files you created above. A contour map will be generated from the data and should look similar to the picture below.</p>
+    <div style="clear:both;"></div>
 
-<p>This is a bit trickier, but you can get more points if you need a high-resolution grid. If you have access to a data source and the technical wherewithal to do so, you can create your own file. I give mine the extension <em>.tsv</em> to distinguish them from ordinary text files, but that is up to you. The way to make data files with this method is to select the <b>Create GPX file</b> radio button and use the <b>Generate GPX file</b> button to create a GPX track file. The output is stored wherever you specify on your computer, then you feed it into <a href="https://www.gpsvisualizer.com/convert_input">gpsvisualizer.com/convert_input</a>. Download the result file, rename it as <em>&lt;Placename&gt;.txt</em> or <em>.tsv</em>, then copy the file from <em>Downloads</em> to your data folder. This process looks a little complex at first, but you only need to do it once per new map area, and it is pretty simple once you have done it a few times.</p>
+    <img class="screenshot" src="kocontour_screenshot_maui.png" alt="KOContour contour map of Maui">
+    <p class="screenshot-caption">Contour map of Maui generated from the downloaded elevation data</p>
 
-<p>Alternatively, here is a link to <a href="https://drive.google.com/file/d/1ctRFKvqf59-r3CVI-bwBHndlTzCWMeWb/view?usp=sharing">download Maui.tsv</a> — a tab-separated data file for Maui, ready to use. As always, do a virus scan just as you would for any file you download.</p>
+    <p>When you load a data file it is added to the <b>Show Favourites list</b> dialog, and you can double-click on entries there to load the data again. Entries are sorted with the most recently loaded at the top. Superimposed on the map you can see the zoom and pan controls, along with the height scale to the left and the distance scale in the lower right.</p>
 
-<h3>Example: Create data for Maui</h3>
+    <hr>
 
-<p>To generate a GPX grid for Maui, go to your favourite map source, e.g. <a href="http://maps.google.com/">Google Maps</a>, and enter <em>Maui</em> into the search box. Copy the coordinates of the centre of the area of interest — with Google Maps, right-click on the chosen spot and left-click on the coordinates that pop up, which will put them in the clipboard. In this example it will be something like <code>20.800841499225772, -156.32722033846065</code>. Then click on the GPX button and the following dialog will appear.</p>
+    <h2>Adding and Editing Places</h2>
 
-<img class="screenshot" src="kocontour_create_gpx_data_dialog_screenshot.png" alt="KOContour Create GPX Data dialog">
+    <img src="kocontour_screenshot_top_toolbar_addeditplaces.png" alt="KOContour add/edit places toolbar button" style="float: right; margin-left: 16px; margin-top: 2px; max-width: 40%;">
 
-<p>Click on the field labelled <b>Paste lat,lon here</b> and paste the coordinates you just copied. This will fill the Latitude and Longitude fields — you can also fill in those fields individually if you prefer, and they will stay in sync. Fill in the other fields until they all show a green border indicating they are valid. The grid generated will be a 500&times;300 (lon&times;lat) grid, regardless of the extent you choose. When the <b>Generate GPX File</b> button becomes enabled, click on it and save the file as <em>Maui.gpx</em>.</p>
+    <p>Click the highlighted button to show the <b>Add or Edit a Place</b> dialog. This lets you enter a place name, description, coordinates, and elevation for a new place, and add it to the list in the <b>Show Places list</b> dialog. If you double-click on a place in that list it will also invoke the <b>Add or Edit a Place</b> dialog. If the place does not have elevation data (shown as empty or &minus;1000000) and it is within the currently loaded map data, the elevation field will be highlighted in purple with a suggested value filled in. Click <b>Update Place</b> / <b>Add Place</b> to save, or <b>Cancel</b> to exit without changes.</p>
 
-<img class="screenshot" src="kocontour_screenshotgpsvisualizercontrols.png" alt="GPS Visualizer conversion controls">
+    <p>As an example, let's add Lahaina.</p>
 
-<p>Then go to <a href="https://www.gpsvisualizer.com/convert_input">gpsvisualizer.com/convert_input</a> and add the file you created using the control marked <b>1</b> in the screenshot above. Set <em>Add DEM elevation data</em> to <em>best available source</em> using control <b>2</b>, then click the green <b>Convert</b> button marked <b>3</b> and wait for the file to finish processing.</p>
+    <img class="screenshot" src="kocontour_screenshot_add_lahaina2.png" alt="Add or Edit a Place dialog for Lahaina">
 
-<img class="screenshot" src="kocontour_screenshotgpsvisualizeroutput.png" alt="GPS Visualizer output download link">
+    <p>Use Google Maps as described above to get the coordinates for Lahaina and paste them into the dialog, then add the other details.</p>
 
-<p>When the download link appears, click it and open the <em>Downloads</em> folder. Rename the file to something like <em>Maui.tsv</em> and copy or move it to your preferred folder under <em>Pictures</em>. You are now ready to load the data into KOContour.</p>
+    <img class="screenshot" src="kocontour_screenshot_add_lahaina3.png" alt="Lahaina details filled in">
 
-<hr>
+    <p>Lahaina will appear on the map and be highlighted as shown.</p>
 
-<h2 id="LoadData">Loading the Input Data Files</h2>
+    <img class="screenshot" src="kocontour_screenshot_add_lahaina4.png" alt="Lahaina shown on map">
 
-<img class="screenshot" src="kocontour_screenshot_top_toolbar_loaddata.png" alt="KOContour load data toolbar button">
+    <p>Try adding another place such as Waikapu. Leave the elevation unset and save the new place, then continue to the next section.</p>
 
-<p>Click the highlighted button, which will show a standard file picker letting you select one of the input files you created above. A contour map will be generated from the data and should look similar to the picture below.</p>
+    <hr>
 
-<img class="screenshot" src="kocontour_screenshot_maui.png" alt="KOContour contour map of Maui">
-<p class="screenshot-caption">Contour map of Maui generated from the downloaded elevation data</p>
+    <h2>Showing the Places List</h2>
 
-<p>When you load a data file it is added to the <b>Show Favourites list</b> dialog, and you can double-click on entries there to load the data again. Entries are sorted with the most recently loaded at the top. Superimposed on the map you can see the zoom and pan controls, along with the height scale to the left and the distance scale in the lower right.</p>
+    <img class="screenshot" src="kocontour_screenshot_top_toolbar_showplaces.png" alt="KOContour show places toolbar button" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 25%;">
+    <p>Click the highlighted button to show the <b>Show Places list</b> dialog. Places are maintained in alphabetical order. Double-clicking an entry launches the <b>Add or Edit a Place</b> dialog. If a place does not have elevation data and it is within the currently loaded map data, the elevation field will be highlighted in purple with a suggested value.</p>
+    <div style="clear:both;"></div>
 
-<hr>
+    <img class="screenshot" src="kocontour_screenshot_placeslist.png" alt="KOContour places list dialog">
 
-<h2>Adding and Editing Places</h2>
+    <p>Try looking for Waikapu — you can jump to the <em>W</em> section by pressing the <b>W</b> key. Double-click on Waikapu; if the elevation was left as the default (&minus;1000000 means undefined), it will suggest an elevation based on the nearest contour line and highlight as shown below.</p>
 
-<img class="screenshot" src="kocontour_screenshot_top_toolbar_addeditplaces.png" alt="KOContour add/edit places toolbar button">
+    <img class="screenshot" src="kocontour_screenshot_waikapuelevationsuggestion.png" alt="Waikapu elevation suggestion highlighted in purple">
 
-<p>Click the highlighted button to show the <b>Add or Edit a Place</b> dialog. This lets you enter a place name, description, coordinates, and elevation for a new place, and add it to the list in the <b>Show Places list</b> dialog. If you double-click on a place in that list it will also invoke the <b>Add or Edit a Place</b> dialog. If the place does not have elevation data (shown as empty or &minus;1000000) and it is within the currently loaded map data, the elevation field will be highlighted in purple with a suggested value filled in. Click <b>Update Place</b> / <b>Add Place</b> to save, or <b>Cancel</b> to exit without changes.</p>
+    <p>Click <b>Update Place</b> to save the suggested elevation, which will then appear on the map under the place name.</p>
 
-<p>As an example, let's add Lahaina.</p>
+    <img class="screenshot" src="kocontour_screenshot_waikapuelevationadded.png" alt="Waikapu shown on map with elevation">
 
-<img class="screenshot" src="kocontour_screenshot_add_lahaina2.png" alt="Add or Edit a Place dialog for Lahaina">
+    <hr>
 
-<p>Use Google Maps as described above to get the coordinates for Lahaina and paste them into the dialog, then add the other details.</p>
+    <h2>Finding the Elevation</h2>
 
-<img class="screenshot" src="kocontour_screenshot_add_lahaina3.png" alt="Lahaina details filled in">
+    <img class="screenshot" src="kocontour_screenshot_elevationtool.png" alt="KOContour elevation marker on map">
 
-<p>Lahaina will appear on the map and be highlighted as shown.</p>
+    <p>To find the elevation of a point, click on the map at the desired location. A marker will appear showing the elevation along with the latitude and longitude. To remove it, click again in the centre of the crosshair.</p>
 
-<img class="screenshot" src="kocontour_screenshot_add_lahaina4.png" alt="Lahaina shown on map">
+    <hr>
 
-<p>Try adding another place such as Waikapu. Leave the elevation unset and save the new place, then continue to the next section.</p>
+    <h2>Distances and Compass Bearing</h2>
 
-<hr>
+    <img class="screenshot" src="kocontour_screenshot_distancetoolpng.png" alt="KOContour distance and bearing tool">
 
-<h2>Showing the Places List</h2>
+    <p>To find the distance between two points, hold the <b>Ctrl</b> key and click on the map at the first location. A marker will appear. Keep holding <b>Ctrl</b> and click the second point. A line will be drawn between the points showing the distance and compass bearing. To remove the measurement tool, click again in the centre of either crosshair.</p>
 
-<img class="screenshot" src="kocontour_screenshot_top_toolbar_showplaces.png" alt="KOContour show places toolbar button">
+    <hr>
 
-<p>Click the highlighted button to show the <b>Show Places list</b> dialog. Places are maintained in alphabetical order. Double-clicking an entry launches the <b>Add or Edit a Place</b> dialog. If a place does not have elevation data and it is within the currently loaded map data, the elevation field will be highlighted in purple with a suggested value.</p>
+    <h2>Showing the Favourites List</h2>
 
-<img class="screenshot" src="kocontour_screenshot_placeslist.png" alt="KOContour places list dialog">
+    <img class="screenshot" src="kocontour_screenshot_top_toolbar_showfavourites.png" alt="KOContour show favourites toolbar button" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 25%;">
+    <p>Click the highlighted button to show the <b>Show Favourites list</b> dialog. The list is maintained in last-access order, most recent first. Double-click an entry to load that data file. If the file no longer exists you will be asked if you would like to remove it from the list.</p>
+    <div style="clear:both;"></div>
 
-<p>Try looking for Waikapu — you can jump to the <em>W</em> section by pressing the <b>W</b> key. Double-click on Waikapu; if the elevation was left as the default (&minus;1000000 means undefined), it will suggest an elevation based on the nearest contour line and highlight as shown below.</p>
+    <hr>
 
-<img class="screenshot" src="kocontour_screenshot_waikapuelevationsuggestion.png" alt="Waikapu elevation suggestion highlighted in purple">
+    <h2>Toolbar Option Checkboxes</h2>
 
-<p>Click <b>Update Place</b> to save the suggested elevation, which will then appear on the map under the place name.</p>
+    <img class="screenshot" src="kocontour_screenshot_top_toolbar_checkboxes.png" alt="KOContour toolbar checkboxes">
 
-<img class="screenshot" src="kocontour_screenshot_waikapuelevationadded.png" alt="Waikapu shown on map with elevation">
+    <p>The <b>Light Theme</b> checkbox switches to a light background, which is sometimes better for printing. The <b>Load at startup</b> checkbox causes the app to automatically load the last successfully loaded data file at launch, if it still exists. Both of these settings are persisted across launches. The <b>Show places</b> option is not persisted.</p>
 
-<hr>
+    <p>Everything else is easy to figure out from the tooltips and prompts — have fun exploring!</p>
+    <hr>
 
-<h2>Finding the Elevation</h2>
+    <h2>Download and Install</h2>
 
-<img class="screenshot" src="kocontour_screenshot_elevationtool.png" alt="KOContour elevation marker on map">
+    <div class="download-box">
+        <h3>KOContour</h3>
+        <p>
+            The app can be installed from:
+            <ul>
+                <li>The <a href="https://apps.microsoft.com/store/detail/kocontour/9N0KL98F6TMH" target="_blank">KOContour Microsoft Store web page</a></li>
+                <li><a href="ms-windows-store://pdp/?productid=9N0KL98F6TMH"><img src="ms_store_badge.svg" alt="Get KOContour from the Microsoft Store app" style="height:40px;"></a></li>
+            </ul>
+        </p>
+        <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
+    </div>
 
-<p>To find the elevation of a point, click on the map at the desired location. A marker will appear showing the elevation along with the latitude and longitude. To remove it, click again in the centre of the crosshair.</p>
-
-<hr>
-
-<h2>Distances and Compass Bearing</h2>
-
-<img class="screenshot" src="kocontour_screenshot_distancetoolpng.png" alt="KOContour distance and bearing tool">
-
-<p>To find the distance between two points, hold the <b>Ctrl</b> key and click on the map at the first location. A marker will appear. Keep holding <b>Ctrl</b> and click the second point. A line will be drawn between the points showing the distance and compass bearing. To remove the measurement tool, click again in the centre of either crosshair.</p>
-
-<hr>
-
-<h2>Showing the Favourites List</h2>
-
-<img class="screenshot" src="kocontour_screenshot_top_toolbar_showfavourites.png" alt="KOContour show favourites toolbar button">
-
-<p>Click the highlighted button to show the <b>Show Favourites list</b> dialog. The list is maintained in last-access order, most recent first. Double-click an entry to load that data file. If the file no longer exists you will be asked if you would like to remove it from the list.</p>
-
-<hr>
-
-<h2>Toolbar Option Checkboxes</h2>
-
-<img class="screenshot" src="kocontour_screenshot_top_toolbar_checkboxes.png" alt="KOContour toolbar checkboxes">
-
-<p>The <b>Light Theme</b> checkbox switches to a light background, which is sometimes better for printing. The <b>Load at startup</b> checkbox causes the app to automatically load the last successfully loaded data file at launch, if it still exists. Both of these settings are persisted across launches. The <b>Show places</b> option is not persisted.</p>
-
-<p>Everything else is easy to figure out from the tooltips and prompts — have fun exploring!</p>
-
-<hr>
-
-<p style="font-size:9pt; color:#666;">KOContour is free software.
-<br><a href="index.htm">&#8592; Back to KLO Software</a></p>
+    <p style="font-size:9pt; color:#666;">
+        KOContour is free software.
+        <br><a href="index.htm">&#8592; Back to KLO Software</a>
+    </p>
 
 </body>
 </html>
