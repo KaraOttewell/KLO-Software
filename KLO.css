@@ -1,0 +1,210 @@
+/* ===== Global base styles (common across files) ===== */
+
+.big-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0F4761;
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+
+body {
+    font-family: "Trebuchet MS", sans-serif;
+    margin: 0.5in;
+    max-width: 100%;
+}
+
+body { font-size: 12pt; }
+
+/* ===== Headings ===== */
+
+h1 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 20pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-bottom: 0.1em;
+}
+
+h2 {
+    font-family: "Aptos Display", Calibri, sans-serif;
+    font-size: 16pt;
+    color: #0F4761;
+    font-weight: normal;
+    margin-top: 1.4em;
+    margin-bottom: 0.3em;
+}
+
+h3 {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10pt;
+    color: #0F4761;
+    margin-top: 1em;
+    margin-bottom: 0.2em;
+}
+
+/* ===== Text elements ===== */
+
+p {
+    margin-top: 0.4em;
+    line-height: 1.5;
+}
+
+a { color: #467886; }
+a:visited { color: #96607D; }
+
+.subtitle {
+    font-size: 11pt;
+    color: #467886;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+}
+
+.badge {
+    display: inline-block;
+    background: #0F4761;
+    color: white;
+    font-size: 8pt;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
+
+.back-link {
+    font-size: 9pt;
+    margin-bottom: 1.5em;
+    display: block;
+}
+
+/* ===== Preformatted blocks ===== */
+
+pre.data,
+pre.console,
+pre.bbc,
+pre.bbc7 {
+    overflow-x: auto;
+}
+
+/* KOContour data block */
+pre.data {
+    background: #f0f6f9;
+    border: 1px solid #ccc;
+    color: #1e1e1e;
+    font-family: "Cascadia Code", Consolas, Courier, monospace;
+    font-size: 9.5pt;
+    padding: 0.8em 1em;
+    line-height: 1.5;
+}
+
+/* BBC Micro Utilities console */
+pre.console {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: Courier, monospace;
+    font-size: 9.5pt;
+    padding: 0.8em 1em;
+    line-height: 1.5;
+}
+
+pre.console .prompt { color: #569cd6; }
+pre.console .cmd    { color: #9cdcfe; }
+pre.console .label  { color: #4ec9b0; }
+pre.console .value  { color: #ce9178; }
+pre.console .ok     { color: #6a9955; }
+pre.console .dg     { color: #808080; }
+pre.console .dr     { color: #f44747; }
+
+/* BBC BASIC syntax highlighting */
+pre.bbc, pre.bbc7 {
+    background: black;
+    color: limegreen;
+    font-family: Courier, monospace;
+    padding: 0.5em;
+    line-height: normal;
+}
+
+pre.bbc7 { font-size: 12pt; }
+pre.bbc  { font-size: 13.5pt; }
+
+.kw  { color: aqua; }
+.str { color: fuchsia; }
+.num { color: limegreen; }
+.wh  { color: white; }
+.yl  { color: yellow; }
+.dg  { color: #808080; }
+.dr  { color: darkred; }
+.blue { color: #0B76A0; }
+
+/* ===== Images and screenshots ===== */
+
+.screenshot {
+    margin: 1em 0;
+    border: 1px solid #ccc;
+    max-width: 100%;
+    display: block;
+}
+
+.screenshot-caption {
+    font-size: 9pt;
+    color: #666;
+    margin-top: 0.2em;
+    margin-bottom: 1em;
+}
+
+/* ===== Layout components ===== */
+
+.download-box {
+    border: 1px solid #0F4761;
+    padding: 0.8em 1em;
+    margin: 1.2em 0;
+    background: #f0f6f9;
+}
+
+.download-box h3 {
+    margin-top: 0;
+    color: #0F4761;
+    font-size: 11pt;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+    margin: 0.8em 0;
+}
+
+.feature-item {
+    border-left: 3px solid #0F4761;
+    padding-left: 0.7em;
+}
+
+.indent {
+    margin-left: 0.5in;
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 10pt;
+    line-height: 1.6;
+}
+
+.software-entry {
+    border-left: 3px solid #0F4761;
+    padding-left: 0.8em;
+    margin: 1em 0 1.5em 0;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2em 0;
+}
+
+/* ===== Responsive adjustments ===== */
+
+@media (max-width: 600px) {
+    body        { font-size: 13pt; margin: 0.4in; }
+    h1          { font-size: 18pt; }
+    h2          { font-size: 13pt; }
+    pre.bbc,
+    pre.bbc7,
+    pre.console { font-size: 10pt; }
+    .feature-grid { grid-template-columns: 1fr; }
+}
