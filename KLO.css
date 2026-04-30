@@ -194,9 +194,10 @@ pre.bbc7 { font-size: 12pt; }
     margin-bottom: 1em;
 }
 
-/* Index page used 100% width originally */
-body.index-page .screenshot {
-    max-width: 100%;
+/* Screenshot % widths */
+body.index-page .screenshot,
+body.beeb-page .screenshot {
+    max-width: 95%;
 }
 
 /* ============================================================
@@ -235,21 +236,234 @@ body.index-page .screenshot {
 }
 
 /* ============================================================
-   RESPONSIVE
+   Dynamically adjust to smaller resolution devices
    ============================================================ */
 
 @media (max-width: 600px) {
-    body        { font-size: 13pt; margin: 0.4in; }
-    h1          { font-size: 18pt; }
-    h2          { font-size: 13pt; }
+
+    body {
+        font-size: 13pt;
+        margin: 0.4in;
+    }
+
+    h1 { font-size: 18pt; }
+    h2 { font-size: 13pt; }
+
+    /* Code blocks */
     pre.bbc,
     pre.bbc7,
-    pre.console { font-size: 10pt; }
+    pre.console {
+        font-size: 10pt;
+        white-space: pre-wrap;
+    }
 
-    .feature-grid { grid-template-columns: 1fr; }
-
+    /* CLI blocks */
     .cli-block {
         white-space: pre-wrap;
-        font-size: 8.5pt;
+        font-size: 9pt;
+    }
+
+    /* Feature grid collapses to one column */
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Screenshots scale properly */
+    .screenshot {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Floated images behave better */
+    img[style*="float"] {
+        float: none !important;
+        display: block;
+        margin: 1em auto;
+        max-width: 90%;
+    }
+}
+
+/* ============================================================
+   MANUAL THEME TOGGLE BUTTON STYLES
+   ============================================================ */
+
+#theme-toggle {
+    margin-bottom: 1em;
+}
+
+#theme-toggle button {
+    font-size: 9pt;
+    padding: 4px 10px;
+    margin-right: 6px;
+    border: 1px solid #0F4761;
+    background: #f0f6f9;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+@media (prefers-color-scheme: dark) {
+    #theme-toggle button {
+        background: #161b22;
+        border-color: #30363d;
+        color: #e6edf3;
+    }
+}
+
+/* ============================================================
+   EXPLICIT THEME-LIGHT OVERRIDES
+   Beats OS dark mode when Light button is clicked.
+   ============================================================ */
+
+body.theme-light {
+    color-scheme: light;
+    background: #ffffff;
+    color: #1e1e1e;
+}
+
+body.theme-light h1,
+body.theme-light h2,
+body.theme-light h3,
+body.theme-light .big-title         { color: #0F4761; }
+
+body.theme-light a                  { color: #467886; }
+body.theme-light a:visited          { color: #96607D; }
+body.theme-light hr                 { border-top: 1px solid #ccc; }
+body.theme-light .badge             { background: #0F4761; color: white; }
+body.theme-light .subtitle          { color: #467886; }
+
+body.theme-light .download-box,
+body.theme-light .note              { background: #f0f6f9; border-color: #0F4761; color: #1e1e1e; }
+body.theme-light .note              { background: #f8f4e8; border-color: #c8a84b; }
+
+body.theme-light .feature-item      { border-left-color: #0F4761; }
+body.theme-light .software-entry    { border-left-color: #0F4761; }
+body.theme-light .screenshot        { border-color: #ccc; }
+
+body.theme-light pre.data           { background: #f0f6f9; border-color: #ccc; color: #1e1e1e; }
+body.theme-light pre.console        { background: #1e1e1e; color: #d4d4d4; }
+body.theme-light pre.bbc,
+body.theme-light pre.bbc7           { background: #000; color: limegreen; }
+
+body.theme-light .cli-block         { background: #f4f4f4; border-left-color: #467886; color: #1e1e1e; }
+body.theme-light .indent            { color: #1e1e1e; }
+
+body.theme-light .kw                { color: aqua; }
+body.theme-light .str               { color: fuchsia; }
+body.theme-light .num               { color: limegreen; }
+body.theme-light .wh                { color: white; }
+body.theme-light .yl                { color: yellow; }
+body.theme-light .dg                { color: #808080; }
+body.theme-light .dr                { color: darkred; }
+body.theme-light .blue              { color: #0B76A0; }
+
+body.theme-light #theme-toggle button {
+    background: #f0f6f9;
+    border-color: #0F4761;
+    color: #1e1e1e;
+}
+
+/* ============================================================
+   EXPLICIT THEME-DARK OVERRIDES
+   Beats OS light mode when Dark button is clicked.
+   ============================================================ */
+
+body.theme-dark {
+    color-scheme: dark;
+    background: #0d1117;
+    color: #e6edf3;
+}
+
+body.theme-dark h1,
+body.theme-dark h2,
+body.theme-dark h3,
+body.theme-dark .big-title          { color: #9cc9ff; }
+
+body.theme-dark a                   { color: #79c0ff; }
+body.theme-dark a:visited           { color: #c58cff; }
+body.theme-dark hr                  { border-top: 1px solid #30363d; }
+body.theme-dark .badge              { background: #1f6feb; color: white; }
+body.theme-dark .subtitle           { color: #9cc9ff; }
+
+body.theme-dark .download-box,
+body.theme-dark .note               { background: #161b22; border-color: #30363d; color: #e6edf3; }
+
+body.theme-dark .feature-item       { border-left-color: #1f6feb; }
+body.theme-dark .software-entry     { border-left-color: #1f6feb; }
+body.theme-dark .screenshot         { border-color: #30363d; }
+
+body.theme-dark pre.data            { background: #161b22; border-color: #30363d; color: #e6edf3; }
+body.theme-dark pre.console         { background: #161b22; color: #e6edf3; }
+body.theme-dark pre.bbc,
+body.theme-dark pre.bbc7            { background: #000; color: #00ff66; }
+
+body.theme-dark .cli-block          { background: #161b22; border-left-color: #1f6feb; color: #e6edf3; }
+body.theme-dark .indent             { color: #e6edf3; }
+
+body.theme-dark .kw                 { color: #00eaff; }
+body.theme-dark .str                { color: #ff79c6; }
+body.theme-dark .num                { color: #7ee787; }
+body.theme-dark .wh                 { color: #ffffff; }
+body.theme-dark .yl                 { color: #f1fa8c; }
+body.theme-dark .dg                 { color: #8b949e; }
+body.theme-dark .dr                 { color: #ff6e6e; }
+body.theme-dark .blue               { color: #79c0ff; }
+
+body.theme-dark #theme-toggle button {
+    background: #161b22;
+    border-color: #30363d;
+    color: #e6edf3;
+}
+
+/* ============================================================
+   DARK MODE (automatic via OS/browser preference)
+   Only applies when no manual theme class is set on body.
+   ============================================================ */
+
+@media (prefers-color-scheme: dark) {
+
+    body:not(.theme-light):not(.theme-dark) {
+        background: #0d1117;
+        color: #e6edf3;
+    }
+
+    body:not(.theme-light):not(.theme-dark) h1,
+    body:not(.theme-light):not(.theme-dark) h2,
+    body:not(.theme-light):not(.theme-dark) h3,
+    body:not(.theme-light):not(.theme-dark) .big-title { color: #9cc9ff; }
+
+    body:not(.theme-light):not(.theme-dark) a          { color: #79c0ff; }
+    body:not(.theme-light):not(.theme-dark) a:visited  { color: #c58cff; }
+    body:not(.theme-light):not(.theme-dark) hr         { border-top: 1px solid #30363d; }
+    body:not(.theme-light):not(.theme-dark) .badge     { background: #1f6feb; color: white; }
+    body:not(.theme-light):not(.theme-dark) .subtitle  { color: #9cc9ff; }
+
+    body:not(.theme-light):not(.theme-dark) .download-box,
+    body:not(.theme-light):not(.theme-dark) .note      { background: #161b22; border-color: #30363d; color: #e6edf3; }
+
+    body:not(.theme-light):not(.theme-dark) .feature-item   { border-left-color: #1f6feb; }
+    body:not(.theme-light):not(.theme-dark) .software-entry { border-left-color: #1f6feb; }
+    body:not(.theme-light):not(.theme-dark) .screenshot     { border-color: #30363d; }
+
+    body:not(.theme-light):not(.theme-dark) pre.data   { background: #161b22; border-color: #30363d; color: #e6edf3; }
+    body:not(.theme-light):not(.theme-dark) pre.console { background: #161b22; color: #e6edf3; }
+    body:not(.theme-light):not(.theme-dark) pre.bbc,
+    body:not(.theme-light):not(.theme-dark) pre.bbc7   { background: #000; color: #00ff66; }
+
+    body:not(.theme-light):not(.theme-dark) .cli-block { background: #161b22; border-left-color: #1f6feb; color: #e6edf3; }
+    body:not(.theme-light):not(.theme-dark) .indent    { color: #e6edf3; }
+
+    body:not(.theme-light):not(.theme-dark) .kw   { color: #00eaff; }
+    body:not(.theme-light):not(.theme-dark) .str  { color: #ff79c6; }
+    body:not(.theme-light):not(.theme-dark) .num  { color: #7ee787; }
+    body:not(.theme-light):not(.theme-dark) .wh   { color: #ffffff; }
+    body:not(.theme-light):not(.theme-dark) .yl   { color: #f1fa8c; }
+    body:not(.theme-light):not(.theme-dark) .dg   { color: #8b949e; }
+    body:not(.theme-light):not(.theme-dark) .dr   { color: #ff6e6e; }
+    body:not(.theme-light):not(.theme-dark) .blue { color: #79c0ff; }
+
+    body:not(.theme-light):not(.theme-dark) #theme-toggle button {
+        background: #161b22;
+        border-color: #30363d;
+        color: #e6edf3;
     }
 }
