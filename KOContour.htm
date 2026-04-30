@@ -8,27 +8,25 @@
 <link rel="stylesheet" href="KLO.css">
 </head>
 <body>
+<a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-    <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+<h1>KOContour</h1>
+<p class="subtitle">
+    Contour map display for elevation data files, or elevation servers such as the
+    <a href="https://www.opentopodata.org/datasets/mapzen/">Open Topo Data server</a>.
+</p>
 
-    <h1>KOContour</h1>
-    <p class="subtitle">
-        Contour map display for elevation data files, or elevation servers such as the
-        <a href="https://www.opentopodata.org/datasets/mapzen/">Open Topo Data server</a>.
-    </p>
+<span class="badge">Windows</span>
+<span class="badge">UWP</span>
+<span class="badge">Microsoft Store</span>
+<span class="badge">Free</span>
 
-    <span class="badge">Windows</span>
-    <span class="badge">UWP</span>
-    <span class="badge">Microsoft Store</span>
-    <span class="badge">Free</span>
+<img class="screenshot" src="KOContour_Screenshot7.png" alt="KOContour main screen">
+<hr>
 
-    <img class="screenshot" src="KOContour_Screenshot7.png" alt="KOContour main screen">
+<h2>Overview</h2>
 
-    <hr>
-
-    <h2>Overview</h2>
-
-    <p>KOContour reads in elevation data files from your computer and displays them as contour maps. A typical data file would look like this:</p>
+<p>KOContour reads in elevation data files from your computer and displays them as contour maps. A typical data file would look like this:</p>
 
 <pre class="data">type  latitude        longitude       altitude (ft)  name         desc
 T     53.231479474    -6.299506408    1672.9         Stillorgan   Ireland
@@ -179,6 +177,50 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <p>The <b>Light Theme</b> checkbox switches to a light background, which is sometimes better for printing. The <b>Load at startup</b> checkbox causes the app to automatically load the last successfully loaded data file at launch, if it still exists. Both of these settings are persisted across launches. The <b>Show places</b> option is not persisted.</p>
 
     <p>Everything else is easy to figure out from the tooltips and prompts — have fun exploring!</p>
+    <hr>
+    
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>DEM Server Integration</h3>
+            <p>Download elevation data directly from Open Topo Data or Azure Maps, with automatic rate‑limit handling and progress reporting.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>GPX Grid Generation</h3>
+            <p>Create GPX files for any region using a lat/lon center point, then convert them to elevation TSV files via GPSVisualizer.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Contour Map Rendering</h3>
+            <p>Load TSV elevation files and generate detailed contour maps with zoom, pan, height scale, and distance scale overlays.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Places Management</h3>
+            <p>Add, edit, and store named places with coordinates and elevation, including automatic elevation suggestions from map data.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Elevation Lookup</h3>
+            <p>Click anywhere on the map to display the elevation and coordinates of that point.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Distance &amp; Bearing Tool</h3>
+            <p>Hold <b>Ctrl</b> and click two points to measure distance and compass bearing between them.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Favourites List</h3>
+            <p>Automatically tracks recently loaded data files for quick reloading, with missing‑file cleanup.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Toolbar Options</h3>
+            <p>Includes light theme mode, load‑at‑startup, and show‑places toggles, with persistent settings.</p>
+        </div>
+    </div>
     <hr>
 
     <h2>Download and Install</h2>
