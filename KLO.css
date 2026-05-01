@@ -157,6 +157,7 @@ pre.bbc7 { font-size: 12pt; }
     padding: 0.5em 0.8em;
     margin: 0.5em 0;
     white-space: pre;
+    overflow-x: auto;
 }
 
 /* Indented code (BBC Micro Utilities) */
