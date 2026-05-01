@@ -252,15 +252,18 @@ body.beeb-page .screenshot {
     /* Code blocks */
     pre.bbc,
     pre.bbc7,
-    pre.console {
+    pre.console,
+    pre.data,
+    .cli-block {
         font-size: 10pt;
-        white-space: pre-wrap;
+        white-space: pre;
+        /* preserve formatting */
+        overflow-x: auto;
+        /* restore horizontal scroll */
     }
 
-    /* CLI blocks */
-    .cli-block {
-        white-space: pre-wrap;
-        font-size: 9pt;
+    pre {
+        -webkit-overflow-scrolling: touch;
     }
 
     /* Feature grid collapses to one column */
@@ -284,25 +287,25 @@ body.beeb-page .screenshot {
 }
 
 /* ============================================================
-   MANUAL THEME TOGGLE BUTTON STYLES
+   FLOATING THEME TOGGLE ICON
    ============================================================ */
 
-#theme-toggle {
-    margin-bottom: 1em;
-}
-
-#theme-toggle button {
-    font-size: 9pt;
-    padding: 4px 10px;
-    margin-right: 6px;
-    border: 1px solid #0F4761;
-    background: #f0f6f9;
+#theme-toggle-icon {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    font-size: 22px;
     cursor: pointer;
-    border-radius: 4px;
+    background: #f0f6f9;
+    border: 1px solid #0F4761;
+    border-radius: 6px;
+    padding: 6px 8px;
+    z-index: 9999;
+    user-select: none;
 }
 
 @media (prefers-color-scheme: dark) {
-    #theme-toggle button {
+    #theme-toggle-icon {
         background: #161b22;
         border-color: #30363d;
         color: #e6edf3;
@@ -355,12 +358,6 @@ body.theme-light .yl                { color: yellow; }
 body.theme-light .dg                { color: #808080; }
 body.theme-light .dr                { color: darkred; }
 body.theme-light .blue              { color: #0B76A0; }
-
-body.theme-light #theme-toggle button {
-    background: #f0f6f9;
-    border-color: #0F4761;
-    color: #1e1e1e;
-}
 
 /* ============================================================
    EXPLICIT THEME-DARK OVERRIDES
@@ -460,10 +457,4 @@ body.theme-dark #theme-toggle button {
     body:not(.theme-light):not(.theme-dark) .dg   { color: #8b949e; }
     body:not(.theme-light):not(.theme-dark) .dr   { color: #ff6e6e; }
     body:not(.theme-light):not(.theme-dark) .blue { color: #79c0ff; }
-
-    body:not(.theme-light):not(.theme-dark) #theme-toggle button {
-        background: #161b22;
-        border-color: #30363d;
-        color: #e6edf3;
-    }
 }

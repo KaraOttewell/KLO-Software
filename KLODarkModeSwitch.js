@@ -1,37 +1,45 @@
 (function () {
     const root = document.body;
+    const icon = document.getElementById("theme-toggle-icon");
+    if (!icon) return;
 
-    // localStorage is blocked on file:// in some browsers — guard it
-    function getSaved() {
-        try { return localStorage.getItem("klo-theme"); } catch { return null; }
-    }
-    function setSaved(val) {
-        try { localStorage.setItem("klo-theme", val); } catch {}
-    }
-    function removeSaved() {
-        try { localStorage.removeItem("klo-theme"); } catch {}
-    }
+    const saved = localStorage.getItem("klo-theme");
 
     // Apply saved theme on load
-    const saved = getSaved();
-    if (saved === "light") root.classList.add("theme-light");
-    if (saved === "dark")  root.classList.add("theme-dark");
+    if (saved === "light") {
+        root.classList.add("theme-light");
+        icon.textContent = "🌞";
+    }
+    else if (saved === "dark") {
+        root.classList.add("theme-dark");
+        icon.textContent = "🌙";
+    }
+    else {
+        icon.textContent = "🖥️"; // Auto
+    }
 
-    // Attach click handlers
-    document.querySelectorAll("#theme-toggle button").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const mode = btn.dataset.theme;
-            root.classList.remove("theme-light", "theme-dark");
+    // Cycle through modes on click
+    icon.addEventListener("click", () => {
+        const current = localStorage.getItem("klo-theme");
 
-            if (mode === "light") {
-                root.classList.add("theme-light");
-                setSaved("light");
-            } else if (mode === "dark") {
-                root.classList.add("theme-dark");
-                setSaved("dark");
-            } else {
-                removeSaved();
-            }
-        });
+        if (current === "light") {
+            // Switch to dark
+            root.classList.remove("theme-light");
+            root.classList.add("theme-dark");
+            localStorage.setItem("klo-theme", "dark");
+            icon.textContent = "🌙";
+        }
+        else if (current === "dark") {
+            // Switch to auto
+            root.classList.remove("theme-dark");
+            localStorage.removeItem("klo-theme");
+            icon.textContent = "🖥️";
+        }
+        else {
+            // Switch to light
+            root.classList.add("theme-light");
+            localStorage.setItem("klo-theme", "light");
+            icon.textContent = "🌞";
+        }
     });
 })();
