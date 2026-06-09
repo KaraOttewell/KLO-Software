@@ -20,16 +20,29 @@
 <span class="badge">BBC Micro</span>
 <span class="badge">Free</span>
 
-<p>BeebRFSMaker is a Windows application for packing files into a BBC Micro Compressed ROM Filing System (CompRFS) image, and extracting files back out again. It is compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and produces sideways ROM images that can be used directly with a <a href="https://bbcmicro.computer/">BBC Microcomputer</a> or <a href="https://codeberg.org/chrisn/beebem-windows/releases/">emulator</a>.</p>
+<p>BeebRFSMaker is a Windows application for packing files into a BBC Micro Compressed ROM Filing System (CompRFS) image,
+    and extracting files back out again. It is compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and produces
+    sideways ROM images that can be used directly with a <a href="https://bbcmicro.computer/" target="_blank">BBC Microcomputer</a> or
+    <a href="https://codeberg.org/chrisn/beebem-windows/releases/" target="_blank">emulator</a>.</p>
 
 <img src="BeebRFSMakerROMBoard.png" alt="BeebRFSMaker app icon" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
-<p>To use it, simply drag and drop files from your PC onto the area labeled "Drop PC files here". The files will be listed in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list, or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the combined total file size after compression will fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will be enabled, and you can choose where to save the ROM image with a <b><code>.rom</code></b> extension. If you attempt to add a file which will clash with the name of one already in the list, it will not be included and you will be informed and given advice on workarounds.
+<p>To use it, simply drag and drop files from your PC onto the area labeled "Drop PC files here". The files will be listed
+     in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed
+     into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list,
+     or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the
+     combined total file size after compression will fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will
+     be enabled, and you can choose where to save the ROM image with a <b><code>.rom</code></b> extension. If you attempt to
+     add a file which will clash with the name of one already in the list, it will not be included and you will be informed
+     and given advice on workarounds.
 </p>
 <div style="clear:both;"></div>
 
 <h2 id="inf_sidecar_file">The <code>.inf</code> sidecar file format</h2>
 
-<p>When packing, BeebRFSMaker reads the accompanying <code>.inf</code> sidecar file for each PC file if one exists. When extracting, it creates one alongside each extracted file. The <code>.inf</code> file is the <a href="https://beebwiki.mdfs.net/INF_file_format">de facto standard</a> for preserving BBC Micro file metadata on a modern PC filing system, and is recognised by BeebEm and most other emulators and tools in the BBC Micro ecosystem.</p>
+<p>When packing, BeebRFSMaker reads the accompanying <code>.inf</code> sidecar file for each PC file if one exists. When extracting, it creates one alongside each extracted file.
+The <code>.inf</code> file is the <a href="https://beebwiki.mdfs.net/INF_file_format" target="_blank">de facto standard</a>
+for preserving BBC Micro file metadata on a modern PC filing system, and is recognised by BeebEm and most other emulators 
+and tools in the BBC Micro ecosystem.</p>
 
 <p>Each <code>.inf</code> file is a single line of plain text with the following fields, separated by whitespace:</p>
 
@@ -43,7 +56,10 @@
     <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSS</span> &mdash; the file length in bytes, in hex</li>
 </ul>
 
-<p>The <b>load address</b> is the 6502 memory address at which the file should be loaded when transferred back to a BBC Micro. The <b>execution address</b> is the address to jump to if the file is run with <code>*RUN</code> or <code>CHAIN""</code>. For non-executable files such as data files these two addresses are often identical. Addresses are stored as 32-bit values to accommodate the Master 128's extended address space, though on a Model B only the lower 16&nbsp;bits are significant.</p>
+<p>The <b>load address</b> is the 6502 memory address at which the file should be loaded when transferred back to a BBC Micro.
+The <b>execution address</b> is the address to jump to if the file is run with <code>*RUN</code> or <code>CHAIN""</code>.
+For non-executable files such as data files these two addresses are often identical. Addresses are stored as 32-bit values to
+accommodate the Master 128's extended address space, though on a Model B only the lower 16&nbsp;bits are significant.</p>
 
 <p>Example &mdash; a BBC BASIC program called <code>GAME</code>:</p>
 
@@ -59,7 +75,14 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
 
 
 <h2>"Burning" an EEPROM</h2>
-Rather than using the old-style, UV-erasable EPROMs I bought 5 compatible <a href="https://www.amazon.com/dp/B0GG12YGGC">AT28C256-15PU EEPROMs</a> for around $11 on Amazon. The "256" in the part number refers to its 256Kbit capacity (which equals 32KB), and the "-15" indicates a 150ns access time. I use the upper 16K since the A14 address line is held high making that half of the capacity visible to the Beeb. The chips linked to are second-hand but all worked, though I did throw out one of the chips because it was missing a leg. I used the <a href="https://amzn.to/48XfnT7">Xgecu T48 TL866-3G EEPROM Programmer</a> with the downloadable <a href="http://xgecu.com/EN/Download.html?refreshed=1760331446093">Xgpro</a> software to "burn" the EEPROM content. The EEPROMs I have created so far all worked in my actual BBC Micro.
+Rather than using the old-style, UV-erasable EPROMs I bought 5 compatible
+<a href="https://www.amazon.com/dp/B0GG12YGGC" target="_blank">AT28C256-15PU EEPROMs</a> for around $11 on Amazon. The "256"
+in the part number refers to its 256Kbit capacity (which equals 32KB), and the "-15" indicates a 150ns access time. I use the
+upper 16K since the A14 address line is held high making that half of the capacity visible to the Beeb. The chips linked to
+are second-hand but all worked, though I did throw out one of the chips because it was missing a leg. I used the
+<a href="https://amzn.to/48XfnT7" target="_blank">Xgecu T48 TL866-3G EEPROM Programmer</a> with the downloadable
+<a href="http://xgecu.com/EN/Download.html?refreshed=1760331446093" target="_blank">Xgpro</a> software to "burn"
+the EEPROM content. The EEPROMs I have created so far all worked in my actual BBC Micro.
 <hr>
 
 <h2>Screenshots</h2>
@@ -89,7 +112,9 @@ Rather than using the old-style, UV-erasable EPROMs I bought 5 compatible <a hre
     </div>
     <div class="feature-item">
         <h3>comprom.pl compatible</h3>
-        <p>Produces byte-identical ROM images to the original comprom.pl v2.10 Perl script by Greg Cook, so ROMs built with BeebRFSMaker work with any <a href="https://bbcmicro.computer/">BBC Microcomputer</a> or emulator such as <a href="https://codeberg.org/chrisn/beebem-windows/releases/">BeebEm</a>.</p>
+        <p>Produces byte-identical ROM images to the original comprom.pl v2.10 Perl script by Greg Cook, so ROMs built with BeebRFSMaker work with any
+        <a href="https://bbcmicro.computer/" target="_blank">BBC Microcomputer</a> or emulator such as
+        <a href="https://codeberg.org/chrisn/beebem-windows/releases/" target="_blank">BeebEm</a>.</p>
     </div>
     <div class="feature-item">
         <h3>ROM header options</h3>
@@ -121,7 +146,8 @@ Rather than using the old-style, UV-erasable EPROMs I bought 5 compatible <a hre
     <li><b>Literal escape sequences</b> for bytes that cannot be represented by any of the above</li>
 </ol>
 
-<p>The compressor analyses all the files together to build a shared dictionary, so common patterns across multiple files all benefit from the same tokens.</p>
+<p>The compressor analyses all the files together to build a shared dictionary, so common patterns across multiple files 
+    all benefit from the same tokens.</p>
 
 <hr>
 
