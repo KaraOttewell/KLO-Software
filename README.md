@@ -13,7 +13,7 @@ A WinUI 3 GUI application for packing files into a BBC Micro **Compressed ROM Fi
 
 Available on the **Microsoft Store**.
 
-### [BeebRFSMakerCL](https://karaottewell.github.io/KLO-Software/BeebRFSMakerCL.htm)
+### [BeebRFSTool](https://karaottewell.github.io/KLO-Software/BeebRFSTool.htm)
 The command-line companion to BeebRFSMaker, sharing the same compression and extraction engine. Designed for use in batch files and build pipelines. Distributed as a Windows MSI installer.
 
 ### [BBC Micro Utilities](https://karaottewell.github.io/KLO-Software/BBC%20Micro%20Utilities.htm)

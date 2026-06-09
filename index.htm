@@ -35,7 +35,7 @@ These are explained in more detail below, and have links to their own help and d
 </div>
 <hr>
 <div class="software-entry">
-	<h2><a href="BeebRFSMakerCL.htm">BeebRFSMakerCL</a></h2>
+	<h2><a href="BeebRFSTool.htm">BeebRFSTool</a></h2>
 	<p>This is the corresponding command-line version, designed for use in batch files and build pipelines. Shares the same compression engine as BeebRFSMaker but runs standalone with no GUI required.</p>
 	<p>
 		<span class="badge">Windows</span>
@@ -46,27 +46,30 @@ These are explained in more detail below, and have links to their own help and d
 	</p>
 
 <pre class="console">
-<span class="prompt">C:\BBCFiles&gt;</span> <span class="cmd">BeebRFSMakerCL pack input\ BeebRFSText.rom --catalogtitle "Defender" --romtitle "Defende" --copyright "KLO 2026/G.Cook 2022"</span>
-BeebRFSMakerCL v2026-04-22_17:51 - Compressed RFS Pack and Extract Tool
-Compatible with compressed BBC RFS ROM format v2.10 by Greg Cook
-<span class="label"> Title          :</span> <span class="value">"Defende"</span>
-<span class="label"> Copyright      :</span> <span class="value">"KLO 2026/G.Cook 2022"</span>
-<span class="label"> Version string :</span> <span class="value">"v2.10 14-Oct-2022"</span>
-<span class="label"> Catalog title  :</span> <span class="value">"*Defender*"</span>
-<span class="label">    Name              Load      Exec    Raw Compr.</span>
-<span class="label">    ------------  --------  -------- ------ ------</span>
-<span class="value"> 1) DefenMC      &amp;00001900 &amp;00000E00   9121   8011 87.8%</span>  (.inf)
-<span class="value"> 2) Defende      &amp;00005000 &amp;00008023   4785   3014 63.0%</span>  (.inf)
-<span class="value"> 3) Zeddy_txt    &amp;00000000 &amp;00000000    167    155 92.8%</span>
-<span class="value"> 4) aaa_txt      &amp;00000000 &amp;00000000     44     33 75.0%</span>
-<span class="value"> 5) test_nocom   &amp;00000000 &amp;00000000     44     38 86.4%</span>
-
-<span class="label">ROM Uncompressed:</span>  13789 bytes
-<span class="label">ROM Compressed  :</span>  11275 bytes
-<span class="label">ROM Overhead    :</span>   1403 bytes (header + stub + dictionary + digraphs)
-<span class="label">ROM Total       :</span>  16384 bytes (padded to full &amp;4000 size)
-<span class="label">ROM Space Used  :</span>  12678 bytes  (77% utilised)
-<span class="ok">ROM Image Saved: .\CompressedRFSOutput\BeebRFSText.rom</span>
+<span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool pack .\BeebFiles NewRFSCompr.rom</span>
+BeebRFSTool v2026-06-08_16:11 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
+Compatible with both standard RFS and Greg Cook's compressed RFS "comprom" format v2.10
+Packing with compression enabled (compressed RFS) to NewRFSCompr.rom.
+<span class="label"> Title          :</span> <span class="value">"CompressedRFS"</span>
+<span class="label"> Copyright      :</span> <span class="value">"KLO 2026"</span>
+<span class="label"> Version string :</span> <span class="value">"(2026-06-08 17:28)"</span>
+<span class="label"> Catalog title  :</span> <span class="value">"*CompRFS*"</span>
+<span class="label">+---+------------+----------+----------+-------+-------+------+------+</span>
+<span class="label">| # |Name        |Load      |Exec      |Raw    |Compr. |% Orig| Inf? |</span>
+<span class="label">+---+------------+----------+----------+-------+-------+------+------+</span>
+<span class="value">| 1)|aaa_txt     |&amp;00000000 |&amp;00000000 |    44 |    30 |68.2% |      |</span>
+<span class="value">| 2)|bcdefghijk  |&amp;00000000 |&amp;00000000 |   442 |   263 |59.5% |      |</span>
+<span class="value">| 3)|Defende     |&amp;00005000 |&amp;00008023 |  4785 |  2754 |57.6% |(.inf)|</span>
+<span class="value">| 4)|DefenMC     |&amp;00001900 |&amp;00000E00 |  9121 |  7598 |83.3% |(.inf)|</span>
+<span class="value">| 5)|test_nocom  |&amp;00000000 |&amp;00000000 |    44 |    38 |86.4% |      |</span>
+<span class="value">| 6)|Zeddy_txt   |&amp;00000000 |&amp;00000000 |   167 |   145 |86.8% |      |</span>
+<span class="label">+---+------------+----------+----------+-------+-------+------+------+</span>
+<span class="label">ROM Uncompressed:</span>  14163 bytes
+<span class="label">ROM Compressed  :</span>  10858 bytes
+<span class="label">ROM Overhead    :</span>   1958 bytes (header + stub + dictionary + digraphs)
+<span class="label">ROM Total       :</span>  16384 bytes (12816 padded to full &amp;4000 size)
+<span class="label">ROM Space Used  :</span>  12816 bytes  (78% utilised)
+<span class="ok">ROM Image Saved: NewRFSCompr.rom</span>
 </pre>
 
 </div>
