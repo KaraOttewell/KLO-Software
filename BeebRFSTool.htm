@@ -28,7 +28,7 @@ by Greg Cook. It can also create and read standard, uncompressed RFS images.
  
 <p>
 BeebRFSTool uses the same compression and extraction engine that powers the <a href="BeebRFSMaker.htm">BeebRFSMaker</a>
-Windows WinUI3 application, but it is designed to be used completely standalone in a cmd terminal &#8212; no GUI app
+Windows WinUI 3 application, but it is designed to be used completely standalone in a cmd terminal &#8212; no GUI app
 installation is required.
 </p>
 
@@ -60,11 +60,11 @@ Usage:
 <h2>Example: packing files</h2>
 
 <p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with a matching <code>.inf</code>
- <a href="BeebRFSMaker.htm#inf_sidecar_file">sidecar</a> file (file in the same folder with exactly the same name and type but with
- ".inf" at the end) will have their BBC Micro filename, load address, and execution address set according to the metadata in that file.
- Any file without a matching sidecar defaults to a sanitized, legal Beeb filename, with a load and exec address set to &amp;0000
- and the length taken from the PC file length, unless we spot that it is a binary, tokenized BBC Basic file, then we set the load
- address to &amp;1900 and the exec address to &amp;8023.</p>
+ <a href="BeebRFSMaker.htm#inf_sidecar_file">sidecar</a> file (a file in the same folder with the same name plus a .inf extension)
+ will have their BBC Micro filename, load address, and execution address set according to the metadata in that file.
+ Any file without a matching sidecar defaults to a sanitised, legal Beeb filename, with a load and exec address set to &amp;0000
+ and the length taken from the PC file length, unless it is detected as a tokenised BBC BASIC binary, in which case the load
+ address is set to &amp;1900 and the exec address to &amp;8023.</p>
 
 <pre class="console">
 <span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool pack .\BeebFiles NewRFSCompr.rom</span>
@@ -131,7 +131,7 @@ End of ROM marker '+' seen at byte 0x0036C3 [014019]
 </pre>
 <p>Each extracted file is written to the output folder with its BBC Micro filename. With <code>-i</code>, a corresponding <code>.inf</code> file is written alongside it, for example:</p>
 
-<div class="cli-block"><b>$.DefenMC FF1900 FF0E00 8960</b></div>
+<div class="cli-block"><b>$.DefenMC FFFF1900 FFFF0E00 00002300</b></div>
 
 in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
 
@@ -158,7 +158,7 @@ in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
     </div>
     <div class="feature-item">
         <h3>Scripting and automation</h3>
-        <p>Designed for use in batch files and build pipelines. Exit codes and error messages are written to standard error, output to standard out.</p>
+        <p>Designed for use in batch files and build pipelines. Error messages are written to standard error and normal output to standard output, and meaningful exit codes are returned.</p>
     </div>
     <div class="feature-item">
         <h3>.inf sidecar support</h3>
@@ -168,7 +168,7 @@ in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
 
 <hr>
 
-<h2>Download and source code</h2>
+<h2>Download and Install</h2>
 
 <div class="download-box">
     <h3>BeebRFSTool</h3>

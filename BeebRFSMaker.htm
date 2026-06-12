@@ -26,11 +26,11 @@
     <a href="https://codeberg.org/chrisn/beebem-windows/releases/" target="_blank">emulator</a>.</p>
 
 <img src="BeebRFSMakerROMBoard.png" alt="BeebRFSMaker app icon" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
-<p>To use it, simply drag and drop files from your PC onto the area labeled "Drop PC files here". The files will be listed
+<p>To use it, simply drag and drop files from your PC onto the area labelled "Drop PC files here". The files will be listed
      in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed
      into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list,
-     or the ROM image, or the Event Log, in the preview window which takes up most of the left hand side of the app. If the
-     combined total file size after compression will fit within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will
+     or the ROM image, or the Event Log, in the preview window which takes up most of the left-hand side of the app. If the
+     total file size after compression fits within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will
      be enabled, and you can choose where to save the ROM image with a <b><code>.rom</code></b> extension. If you attempt to
      add a file which will clash with the name of one already in the list, it will not be included and you will be informed
      and given advice on workarounds.
@@ -46,14 +46,14 @@ and tools in the BBC Micro ecosystem.</p>
 
 <p>Each <code>.inf</code> file is a single line of plain text with the following fields, separated by whitespace:</p>
 
-<pre class="bbc">$.FILENAME  <span class="yl">LLLLLL</span>  <span class="wh">EEEEEE</span>  <span class="num">SSSSSS</span></pre>
+<pre class="bbc">$.FILENAME  <span class="yl">LLLLLLLL</span>  <span class="wh">EEEEEEEE</span>  <span class="num">SSSSSSSS</span></pre>
 
 <p>Where:</p>
 <ul style="line-height:1.8">
     <li><code>$.FILENAME</code> &mdash; the BBC Micro filename, including the DFS directory prefix (usually <code>$</code> for the default directory, not used in the cassette or ROM filing systems)</li>
-    <li><span class="yl" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">LLLLLL</span> &mdash; the load address as an 8-digit hex value (e.g. <code>FF1900</code>)</li>
-    <li><span class="wh" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">EEEEEE</span> &mdash; the execution address as an 8-digit hex value (e.g. <code>FF1900</code>)</li>
-    <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSS</span> &mdash; the file length in bytes, in hex</li>
+    <li><span class="yl" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">LLLLLLLL</span> &mdash; the load address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
+    <li><span class="wh" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">EEEEEEEE</span> &mdash; the execution address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
+    <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSSSS</span> &mdash; the file length in bytes, in hex</li>
 </ul>
 
 <p>The <b>load address</b> is the 6502 memory address at which the file should be loaded when transferred back to a BBC Micro.
@@ -63,26 +63,25 @@ accommodate the Master 128's extended address space, though on a Model B only th
 
 <p>Example &mdash; a BBC BASIC program called <code>GAME</code>:</p>
 
-<pre class="bbc">$.GAME  <span class="yl">001900</span>  <span class="wh">008023</span>  <span class="num">003A4F</span></pre>
+<pre class="bbc">$.GAME  <span class="yl">00001900</span>  <span class="wh">00008023</span>  <span class="num">00003A4F</span></pre>
 
-<img src="BeebRFSMaker Screenshot 07.png" alt="BeebRFSMaker file drop area" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
-<img src="BeebRFSMaker Screenshot 08.png" alt="BeebRFSMaker file drop area" style="float: right; margin-left: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 35%;">
+<img src="BeebRFSMaker Screenshot 07.png" alt="BeebRFSMaker file drop area and file details" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
+<img src="BeebRFSMaker Screenshot 08.png" alt="BeebRFSMaker ROM Image Detected dialog offering to extract files" style="float: right; margin-left: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 35%;">
 <p>
 If you drop a <code>.rom</code> file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. You can also <b>use this feature just to extract files from a compatible ROM image</b>. The corresponding <code>.inf</code> file will be created during extraction.
 </p>
 <div style="clear:both;"></div>
 <hr>
 
-
 <h2>"Burning" an EEPROM</h2>
-Rather than using the old-style, UV-erasable EPROMs I bought 5 compatible
+<p>Rather than using old-style, UV-erasable EPROMs, I bought five compatible
 <a href="https://www.amazon.com/dp/B0GG12YGGC" target="_blank">AT28C256-15PU EEPROMs</a> for around $11 on Amazon. The "256"
-in the part number refers to its 256Kbit capacity (which equals 32KB), and the "-15" indicates a 150ns access time. I use the
-upper 16K since the A14 address line is held high making that half of the capacity visible to the Beeb. The chips linked to
-are second-hand but all worked, though I did throw out one of the chips because it was missing a leg. I used the
+in the part number refers to its 256&nbsp;Kbit capacity (32&nbsp;KB), and the "-15" indicates a 150ns access time. I use the
+upper 16&nbsp;KB since the A14 address line is held high, making that half of the capacity visible to the Beeb. The chips linked to
+are second-hand; one arrived missing a leg and was discarded, but the rest all worked. I used the
 <a href="https://amzn.to/48XfnT7" target="_blank">Xgecu T48 TL866-3G EEPROM Programmer</a> with the downloadable
 <a href="http://xgecu.com/EN/Download.html?refreshed=1760331446093" target="_blank">Xgpro</a> software to "burn"
-the EEPROM content. The EEPROMs I have created so far all worked in my actual BBC Micro.
+the EEPROM content. The EEPROMs I have created so far all worked in my actual BBC Micro.</p>
 <hr>
 
 <h2>Screenshots</h2>
@@ -122,7 +121,7 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
     </div>
     <div class="feature-item">
         <h3>Command-line interface</h3>
-        <p>A corresponding command-line tool, <a href="BeebRFSTool.htm">BeebRFSTool</a>, which uses the same pack and extract classes as the UX app, provides a full command-line interface for scripting and automation, compatible with batch files and build pipelines.</p>
+        <p>A corresponding command-line tool, <a href="BeebRFSTool.htm">BeebRFSTool</a>, which uses the same pack and extract classes as the GUI app, provides a full command-line interface for scripting and automation, compatible with batch files and build pipelines.</p>
     </div>
 </div>
 

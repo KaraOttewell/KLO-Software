@@ -13,8 +13,8 @@
 
 <h1>KOContour</h1>
 <p class="subtitle">
-    Contour map display for elevation data files, or elevation servers such as the
-    <a href="https://www.opentopodata.org/datasets/mapzen/">Open Topo Data server</a>.
+    Contour map display for elevation data files or elevation servers such as the
+    <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>.
 </p>
 
 <span class="badge">Windows</span>
@@ -46,7 +46,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <img src="KOContour_Screenshot_Top_Toolbar_GPX_and_DEM.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 15%;">
     <h3>Use a DEM Server (recommended for most people)</h3>
     <img class="screenshot" src="KOContour_DEM_Data_Download_Dialog_Screenshot.png" alt="KOContour DEM data download dialog" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
-    <p>There are a number of Digital Elevation Model (DEM) servers on the internet. KOContour can get data from the <a href="https://www.opentopodata.org/datasets/mapzen/">Open Topo Data server</a>. This is the easiest way, but because the site limits you to 100 locations per call, at one-second intervals, and no more than 100,000 points per day, it can be a little slow depending on the grid resolution you choose from the dropdown below the dataset name. You can use a different server so long as the API format matches Open Topo. You can also follow the instructions for hosting the server yourself, but that is not necessary if you use the default of <code>https://api.opentopodata.org/</code>. When you click on the <b>Create TSV from DEM server</b> button you will see a file picker which lets you specify where to save the data — I recommend making a <em>ContourMaps</em> folder under your <em>Pictures</em> folder.</p>
+    <p>There are a number of Digital Elevation Model (DEM) servers on the internet. KOContour can get data from the <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>. This is the easiest way, but because the site limits you to 100 locations per call, at one-second intervals, and no more than 100,000 points per day, it can be a little slow depending on the grid resolution you choose from the dropdown below the dataset name. You can use a different server so long as the API format matches Open Topo. You can also follow the instructions for hosting the server yourself, but that is not necessary if you use the default of <code>https://api.opentopodata.org/</code>. When you click on the <b>Create TSV from DEM server</b> button you will see a file picker which lets you specify where to save the data — I recommend making a <em>ContourMaps</em> folder under your <em>Pictures</em> folder.</p>
     <div style="clear:both;"></div>
 
     <img class="screenshot" src="KOContour_DEM_Data_Download_Progress.png" alt="KOContour DEM data download progress dialog" style="float:right; margin-left:16px; max-width:30%;">
@@ -55,38 +55,38 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <h3>Use Azure Maps</h3>
 
-    <img class="screenshot" src="KOContour_Bing_Data_Download_Dialog_Screenshot.png" alt="KOContour Maps data download dialog" style="float: right; margin-left: 16px; margin-top: 2px; max-width: 40%;">
+    <img class="screenshot" src="KOContour_Bing_Data_Download_Dialog_Screenshot.png" alt="KOContour Azure Maps data download dialog" style="float: right; margin-left: 16px; margin-top: 2px; max-width: 40%;">
 
     <p>
-        For an individual the free/low cost option is likely more than adequate in the number of transactions available.
-        See <a href="https://portal.azure.com/#browse/Microsoft.Maps%2Faccounts">getting an Azure Maps subscription</a>.
+        For individual use, the free/low-cost tier likely provides more than enough transactions.
+        See <a href="https://portal.azure.com/#browse/Microsoft.Maps%2Faccounts" target="_blank">getting an Azure Maps subscription</a>.
     </p>
 
     <div style="clear:both;"></div>
 
     <img class="screenshot" src="KOContour_DEM_Data_Secret_Key.png" alt="KOContour secret key dialog" style="float:right; margin-left:16px; max-width:40%;">
 
-    <p>Once you have your key, click on the padlock button and paste your key into the dialog that pops up. Click <b>Save</b> to securely save the key in the local storage for your app. You are now ready to download data from the Microsoft Maps service. Click on <b>Generate TSV from Bing Maps</b> to create the data file and, as with the DEM server, the progress dialog will be displayed.</p>
+    <p>Once you have your key, click on the padlock button and paste your key into the dialog that pops up. Click <b>Save</b> to securely save the key in the local storage for your app. You are now ready to download data from the Azure Maps service. Click on <b>Generate TSV from Azure Maps</b> to create the data file and, as with the DEM server, the progress dialog will be displayed.</p>
 
     <div style="clear:both;"></div>
 
     <h3>Create a GPX file</h3>
 
-    <p>This is a bit trickier, but you can get more points if you need a high-resolution grid. If you have access to a data source and the technical wherewithal to do so, you can create your own file. I give mine the extension <em>.tsv</em> to distinguish them from ordinary text files, but that is up to you. The way to make data files with this method is to select the <b>Create GPX file</b> radio button and use the <b>Generate GPX file</b> button to create a GPX track file. The output is stored wherever you specify on your computer, then you feed it into <a href="https://www.gpsvisualizer.com/convert_input">gpsvisualizer.com/convert_input</a>. Download the result file, rename it as <em>&lt;Placename&gt;.txt</em> or <em>.tsv</em>, then copy the file from <em>Downloads</em> to your data folder. This process looks a little complex at first, but you only need to do it once per new map area, and it is pretty simple once you have done it a few times.</p>
+    <p>This is a bit trickier, but you can get more points if you need a high-resolution grid. (If you have access to a data source and the technical wherewithal, you can also create a data file yourself.) To use this method, select the <b>Create GPX file</b> radio button and use the <b>Generate GPX file</b> button to create a GPX track file. Save it wherever you like, then feed it into <a href="https://www.gpsvisualizer.com/convert_input" target="_blank">gpsvisualizer.com/convert_input</a>. Download the result file and rename it as <em>&lt;Placename&gt;.txt</em> or <em>.tsv</em> &mdash; I use <em>.tsv</em> to distinguish data files from ordinary text files, but that is up to you &mdash; then copy the file from <em>Downloads</em> to your data folder. This process looks a little complex at first, but you only need to do it once per new map area, and it is pretty simple once you have done it a few times.</p>
 
-    <p>Alternatively, here is a link to <a href="https://drive.google.com/file/d/1ctRFKvqf59-r3CVI-bwBHndlTzCWMeWb/view?usp=sharing">download Maui.tsv</a> — a tab-separated data file for Maui, ready to use. As always, do a virus scan just as you would for any file you download.</p>
+    <p>Alternatively, here is a link to <a href="https://drive.google.com/file/d/1ctRFKvqf59-r3CVI-bwBHndlTzCWMeWb/view?usp=sharing" target="_blank">download Maui.tsv</a> — a tab-separated data file for Maui, ready to use. As always, do a virus scan just as you would for any file you download.</p>
 
     <h3>Example: Create data for Maui</h3>
 
-    <p>To generate a GPX grid for Maui, go to your favourite map source, e.g. <a href="http://maps.google.com/">Google Maps</a>, and enter <em>Maui</em> into the search box. Copy the coordinates of the centre of the area of interest — with Google Maps, right-click on the chosen spot and left-click on the coordinates that pop up, which will put them in the clipboard. In this example it will be something like <code>20.800841499225772, -156.32722033846065</code>. Then click on the GPX button and the following dialog will appear.</p>
+    <p>To generate a GPX grid for Maui, go to your favourite map source, e.g. <a href="https://maps.google.com/" target="_blank">Google Maps</a>, and enter <em>Maui</em> into the search box. Copy the coordinates of the centre of the area of interest — with Google Maps, right-click on the chosen spot and left-click on the coordinates that pop up, which copies them to the clipboard. In this example it will be something like <code>20.800841499225772, -156.32722033846065</code>. Then click on the GPX button and the following dialog will appear.</p>
 
     <img class="screenshot" src="KOContour_Create_GPX_Data_Dialog_Screenshot.png" alt="KOContour Create GPX Data dialog">
 
-    <p>Click on the field labelled <b>Paste lat,lon here</b> and paste the coordinates you just copied. This will fill the Latitude and Longitude fields — you can also fill in those fields individually if you prefer, and they will stay in sync. Fill in the other fields until they all show a green border indicating they are valid. The grid generated will be a 500&times;300 (lon&times;lat) grid, regardless of the extent you choose. When the <b>Generate GPX File</b> button becomes enabled, click on it and save the file as <em>Maui.gpx</em>.</p>
+    <p>Click on the field labelled <b>Paste lat,lon here</b> and paste the coordinates you just copied. This will fill the Latitude and Longitude fields — you can also fill in those fields individually if you prefer, and they will stay in sync. Fill in the other fields until they all show a green border, indicating they are valid. The grid generated will be a 500&times;300 (lon&times;lat) grid, regardless of the extent you choose. When the <b>Generate GPX File</b> button becomes enabled, click on it and save the file as <em>Maui.gpx</em>.</p>
 
     <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerControls.png" alt="GPS Visualizer conversion controls">
 
-    <p>Then go to <a href="https://www.gpsvisualizer.com/convert_input">gpsvisualizer.com/convert_input</a> and add the file you created using the control marked <b>1</b> in the screenshot above. Set <em>Add DEM elevation data</em> to <em>best available source</em> using control <b>2</b>, then click the green <b>Convert</b> button marked <b>3</b> and wait for the file to finish processing.</p>
+    <p>Then go to <a href="https://www.gpsvisualizer.com/convert_input" target="_blank">gpsvisualizer.com/convert_input</a> and add the file you created using the control marked <b>1</b> in the screenshot above. Set <em>Add DEM elevation data</em> to <em>best available source</em> using control <b>2</b>, then click the green <b>Convert</b> button marked <b>3</b> and wait for the file to finish processing.</p>
 
     <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerOutput.png" alt="GPS Visualizer output download link">
 
@@ -103,7 +103,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <img class="screenshot" src="KOContour_Screenshot_Maui.png" alt="KOContour contour map of Maui">
     <p class="screenshot-caption">Contour map of Maui generated from the downloaded elevation data</p>
 
-    <p>When you load a data file it is added to the <b>Show Favourites list</b> dialog, and you can double-click on entries there to load the data again. Entries are sorted with the most recently loaded at the top. Superimposed on the map you can see the zoom and pan controls, along with the height scale to the left and the distance scale in the lower right.</p>
+    <p>When you load a data file it is added to the <b>Show Favourites list</b> dialog, and you can double-click on entries there to load the data again. Entries are sorted with the most recently loaded at the top. Superimposed on the map you can see the zoom and pan controls, along with the height scale on the left and the distance scale in the lower right.</p>
 
     <hr>
 
@@ -189,7 +189,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
         <div class="feature-item">
             <h3>GPX Grid Generation</h3>
-            <p>Create GPX files for any region using a lat/lon center point, then convert them to elevation TSV files via GPSVisualizer.</p>
+            <p>Create GPX files for any region using a lat/lon centre point, then convert them to elevation TSV files via GPSVisualizer.</p>
         </div>
 
         <div class="feature-item">
@@ -232,7 +232,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
             The app can be installed from:
             <ul>
                 <li>The <a href="https://apps.microsoft.com/store/detail/kocontour/9N0KL98F6TMH" target="_blank">KOContour Microsoft Store web page</a></li>
-                <li><a href="ms-windows-store://pdp/?productid=9N0KL98F6TMH"><img src="ms_store_badge.svg" alt="Get KOContour from the Microsoft Store app" style="height:40px;"></a></li>
+                <li><a href="ms-windows-store://pdp/?productid=9N0KL98F6TMH" target="_blank"><img src="ms_store_badge.svg" alt="Get KOContour from the Microsoft Store app" style="height:40px;"></a></li>
             </ul>
         </p>
         <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>

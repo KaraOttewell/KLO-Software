@@ -24,26 +24,26 @@
 years ago. Of course I started grabbing various programs and data from it, transferring to my Windows PC as .dsd files,
 then using those with <b>BeebEm</b>, and I bought a copy of <b>BBC BASIC for Windows</b> so that I could play with
 that too. I wanted some command-line utilities to display the content of .dsd files, and decode <b>BBC BASIC</b>
-files along with "<b>PRINT#</b>"-type BBC data files, so I wrote them as console applications using the .NET framework.
+files along with "<b>PRINT#</b>"-type BBC data files, so I wrote them as console applications using .NET.
 The utilities are:</p>
 
 <ul>
-    <li><b>BBCBasicToText</b> — display a tokenized, binary BBC Micro BASIC file as text, HTML, or bbcode.</li>
+    <li><b>BBCBasicToText</b> — display a tokenised, binary BBC Micro BASIC file as text, HTML, or bbcode.</li>
     <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as text, HTML, or bbcode.</li>
     <li><b>BBCReadDiskImage</b> — display <code>*DIR</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</li>
 </ul>
 
 <p>All three tools can produce colour output — strings, keywords, and so forth are coloured differently — and can
 output plain text (in colour when writing to a command prompt window), bbcode, or HTML, optionally launching the
-browser for the latter. They take wildcards as input and can traverse down through folders.</p>
+browser for the latter. They take wildcards as input and can recurse into subfolders.</p>
 
 <hr>
 
 <h2>Example: BBCBasicToText</h2>
 
 <p>Here's an example of HTML output using the Sketch program from
-<a href="https://www.bbcbasic.co.uk/bbcwin/tutorial/appendixe.html">bbcbasic.co.uk</a> as input,
-saved on the PC in BBC BASIC tokenized binary as <b>Sketch.bbc</b>:</p>
+<a href="https://www.bbcbasic.co.uk/bbcwin/tutorial/appendixe.html" target="_blank">bbcbasic.co.uk</a> as input,
+saved on the PC in BBC BASIC tokenised binary as <b>Sketch.bbc</b>:</p>
 
 <pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcbasictotext Sketch.bbc Sketch.html</span>
 <span class="dg">BBCBasicToText found 1 file matching Sketch.bbc
@@ -98,7 +98,7 @@ BBCBasicToText: processing 1/1, C:\...\WelcomeDiskFiles\0_W.WELCOME
 BBCBasicToText Success: 1/1, C:\...\WelcomeDiskFiles\0_W.WELCOME
 Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 
-<p>Which produced:</p>
+<p>This produced:</p>
 
 <pre class="bbc">
 <span class="num">  10</span> <span class="kw">REM</span><span class="yl"> New version of 'INTRO' from</span>
@@ -150,7 +150,7 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 <div class="feature-grid">
     <div class="feature-item">
         <h3>BBCBasicToText</h3>
-        <p>Display a tokenized, binary BBC Micro BASIC file as text, HTML, or bbcode.</p>
+        <p>Display a tokenised, binary BBC Micro BASIC file as text, HTML, or bbcode.</p>
     </div>
     <div class="feature-item">
         <h3>BBCDataFileToText</h3>
@@ -158,11 +158,11 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
     </div>
     <div class="feature-item">
         <h3>BBCReadDiskImage</h3>
-        <p>isplay <code>*DIR</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</p>
+        <p>Display <code>*DIR</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</p>
     </div>
     <div class="feature-item">
         <h3>DOSKEY shortcuts</h3>
-        <p>Can be automatically added to the set of command window commands</p>
+        <p>Macros can be added automatically to every new command window.</p>
     </div>
 </div>
 <hr>
@@ -171,7 +171,7 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 
 <div class="download-box">
     <h3>BBC Micro Utilities</h3>
-    <p>Distributed as a Windows MSI installer inside a .zip file. Download from the GitHub releases page:<br>
+    <p>Distributed as a Windows MSI installer inside a .zip file. Download:<br>
     <a href="BBC Micro Utilities v1.0.60.zip"><b>BBC Micro Utilities v1.0.60.zip</b></a></p>
     <p>Requires Windows 10 or later and .NET 8 or later.</p>
 </div>

@@ -18,14 +18,14 @@ The command-line companion to BeebRFSMaker, sharing the same compression and ext
 
 ### [BBC Micro Utilities](https://karaottewell.github.io/KLO-Software/BBC%20Micro%20Utilities.htm)
 Three command-line tools for inspecting BBC Micro files:
-- **BBCBasicToText** — decode tokenized BBC BASIC binaries to text, HTML, or bbcode, with syntax colouring and automatic indentation
+- **BBCBasicToText** — decode tokenised BBC BASIC binaries to text, HTML, or bbcode, with syntax colouring and automatic indentation
 - **BBCDataFileToText** — display `PRINT#`-style BBC data files as text, HTML, or bbcode
 - **BBCReadDiskImage** — list and export files from `.SSD` and `.DSD` disk images
 
 Distributed as a Windows MSI installer. Requires .NET 8 or later.
 
 ### [KOContour](https://karaottewell.github.io/KLO-Software/KOContour.htm)
-A UWP contour map viewer that reads elevation data from local files or from online DEM servers such as [Open Topo Data](https://www.opentopodata.org/datasets/mapzen/) and Microsoft Bing Maps. Supports GPX file generation, place management, elevation lookup, and distance/bearing measurement.
+A UWP contour map viewer that reads elevation data from local files or from online DEM servers such as [Open Topo Data](https://www.opentopodata.org/datasets/mapzen/) and Azure Maps. Supports GPX file generation, place management, elevation lookup, and distance/bearing measurement.
 
 Available on the **Microsoft Store**.
 
