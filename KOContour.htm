@@ -6,28 +6,51 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <title>KOContour — KLO Software</title>
 <link rel="stylesheet" href="KLO.css">
+<style>
+    /* Half-width, alternating screenshots with the body text flowing beside them */
+    .screenshot.shot-right { float: right; clear: both; max-width: 48%; margin: 6px 0 14px 18px; }
+    .screenshot.shot-left  { float: left;  clear: both; max-width: 48%; margin: 6px 18px 14px 0; }
+    .screenshot.shot-center { float: none; clear: both; display: block; max-width: 60%; margin: 14px auto; }
+    hr { clear: both; }
+    @media (max-width: 700px) {
+        /* Stack to full width on narrow screens */
+        .screenshot.shot-right, .screenshot.shot-left, .screenshot.shot-center { float: none; max-width: 100%; margin: 12px auto; }
+    }
+    /* DEM dataset comparison table */
+    table.datasets { clear: both; border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.95em; }
+    table.datasets th, table.datasets td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; vertical-align: top; }
+    /* Give the body cells explicit light backgrounds AND dark text so the table reads as a self-contained
+       light "card" in both the light and dark page themes (otherwise the dark-theme light text was invisible
+       on the fixed light even-row background). */
+    table.datasets td { background: #ffffff; color: #1a1a1a; }
+    table.datasets th { background: #0F4761; color: white; }
+    table.datasets tbody tr:nth-child(even) td { background: #f0f6f9; }
+</style>
 </head>
 <body>
-<div id="theme-toggle-icon" title="Change theme">🖥️</div>
-<a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+    <div id="theme-toggle-icon" title="Change theme">🖥️</div>
+    <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-<h1>KOContour</h1>
-<p class="subtitle">
-    Contour map display for elevation data files or elevation servers such as the
-    <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>.
-</p>
+    <h1>KOContour</h1>
+    <p class="subtitle">
+        Contour map display for elevation data files or elevation servers such as the
+        <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>.
+    </p>
 
-<span class="badge">Windows</span>
-<span class="badge">UWP</span>
-<span class="badge">Microsoft Store</span>
-<span class="badge">Free</span>
+    <span class="badge">Windows</span>
+    <span class="badge">UWP</span>
+    <span class="badge">Microsoft Store</span>
+    <span class="badge">Free</span>
 
-<img class="screenshot" src="KOContour_Screenshot7.png" alt="KOContour main screen">
-<hr>
+    <img class="screenshot" src="KOContour_Screenshot7_V2.png" alt="KOContour main screen">
+    <hr>
 
-<h2>Overview</h2>
+    <h1>Overview</h1>
 
-<p>KOContour reads in elevation data files from your computer and displays them as contour maps. A typical data file would look like this:</p>
+    <p>
+        KOContour reads in elevation data files from your computer and displays them as contour maps. A typical data file
+        would look like this:
+    </p>
 
 <pre class="data">type  latitude        longitude       altitude (ft)  name         desc
 T     53.231479474    -6.299506408    1672.9         Stillorgan   Ireland
@@ -38,168 +61,573 @@ T     53.231479474    -6.297956845    1704.0
 T     53.231479474    -6.297569454    1708.2
 T     53.231479474    -6.297182063    1709.2</pre>
 
-    <p>The example above assumes tab-separated columns, which is recommended so that your description field can then use commas. In the sections below there are screenshots showing how the main features work.</p>
+    <p>
+        The example above assumes tab-separated columns, which is recommended so that your description field can then use
+        commas. In the sections below there are screenshots showing how the main features work.
+    </p>
     <hr>
 
-    <h2>Creating the Input Data Files</h2>
+    <h1>Creating the Input Data Files</h1>
 
-    <img src="KOContour_Screenshot_Top_Toolbar_GPX_and_DEM.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 15%;">
-    <h3>Use a DEM Server (recommended for most people)</h3>
-    <img class="screenshot" src="KOContour_DEM_Data_Download_Dialog_Screenshot.png" alt="KOContour DEM data download dialog" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
-    <p>There are a number of Digital Elevation Model (DEM) servers on the internet. KOContour can get data from the <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>. This is the easiest way, but because the site limits you to 100 locations per call, at one-second intervals, and no more than 100,000 points per day, it can be a little slow depending on the grid resolution you choose from the dropdown below the dataset name. You can use a different server so long as the API format matches Open Topo. You can also follow the instructions for hosting the server yourself, but that is not necessary if you use the default of <code>https://api.opentopodata.org/</code>. When you click on the <b>Create TSV from DEM server</b> button you will see a file picker which lets you specify where to save the data — I recommend making a <em>ContourMaps</em> folder under your <em>Pictures</em> folder.</p>
-    <div style="clear:both;"></div>
-
-    <img class="screenshot" src="KOContour_DEM_Data_Download_Progress.png" alt="KOContour DEM data download progress dialog" style="float:right; margin-left:16px; max-width:30%;">
-    <p>You will then see a progress information popup, which you can hide by clicking the <b>Close and keep going</b> button (click on the main toolbar button to see it again), and you can cancel the operation if, for example, you are warned that the dataset you chose does not have elevations for the points you requested. A good choice for North America and the UK seems to be the <b>Mapzen</b> dataset, but your mileage may vary. Once the download is complete you can close the progress box and then use the <a href="#LoadData">Load Data</a> button to load the file you created.</p>
-    <div style="clear:both;"></div>
-
-    <h3>Use Azure Maps</h3>
-
-    <img class="screenshot" src="KOContour_Bing_Data_Download_Dialog_Screenshot.png" alt="KOContour Azure Maps data download dialog" style="float: right; margin-left: 16px; margin-top: 2px; max-width: 40%;">
-
+    <img src="KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_V2.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 15%;">
+    <h2>Use a DEM Server (recommended for most people)</h2>
+    <img class="screenshot" src="KOContour_DEM_Data_Download_Dialog_Screenshot_V2.png" alt="KOContour DEM data download dialog" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
     <p>
-        For individual use, the free/low-cost tier likely provides more than enough transactions.
-        See <a href="https://portal.azure.com/#browse/Microsoft.Maps%2Faccounts" target="_blank">getting an Azure Maps subscription</a>.
+        There are a number of Digital Elevation Model (DEM) servers on the internet. KOContour can get data from the <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>. This is the easiest
+        way, but because the site limits you to 100 locations per call, at one-second intervals, and no more than 100,000
+        points per day, it can be a little slow depending on the grid resolution you choose from the dropdown below the
+        dataset name. You can use a different server so long as the API format matches Open Topo. You can also follow the
+        instructions for hosting the server yourself, but that is not necessary if you use the default of
+        <code>https://api.opentopodata.org/</code>. When you click on the <b>Create TSV from DEM server</b> button you will
+        see a file picker which lets you specify where to save the data — I recommend making a <em>ContourMaps</em> folder
+        under your <em>Pictures</em> folder.
+    </p>
+    <div style="clear:both;"></div>
+
+    <img class="screenshot" src="KOContour_DEM_Data_Download_Progress_V2.png" alt="KOContour DEM data download progress dialog" style="float:right; margin-left:16px; max-width:30%;">
+    <p>
+        You will then see a progress information popup, which you can hide by clicking the <b>Close and keep going</b>
+        button (click on the main toolbar button to see it again), and you can cancel the operation if, for example, you are
+        warned that the dataset you chose does not have elevations for the points you requested. A good choice for North
+        America and the UK seems to be the <b>Mapzen</b> dataset, but your mileage may vary. Once the download is complete
+        you can close the progress box and then use the <a href="#LoadData">Load Data</a> button to load the file you
+        created.
+    </p>
+    <div style="clear:both;"></div>
+
+    <h2 id="UsernameOrSecretKeyEntry">Saving Map Service Keys or Usernames</h2>
+    <img style="float: left; margin: 10px 15px 15px 10px;" src="KOContour_DEM_Data_Secret_Key_V2.png" width="360" />
+    <p>
+        You can register for various free map services with DEM servers, or <a href="#GeoNames">GeoNames</a> which,
+        for individual, low-use, are likely more than adequate in the speed and number of daily transactions.
+    </p>
+    <p>
+        Once you have your account and username or key, click on the padlock button, and paste the appropriate one into the
+        popup dialog.
+        Click <i>Save</i> to securely save the key in the local storage for your app. You are now ready to download data
+        from the map service
+        or elevation data for individual places from GeoNames.
+        <br clear="left" /> <br clear="right" />
     </p>
 
-    <div style="clear:both;"></div>
+    <!-- DEM dataset comparison (relevant both to GPSVisualizer's "best available source" and to the dataset
+         dropdown in KOContour's own DEM-server route). -->
+    <p style="clear:both;">How the main OpenTopoData public datasets compare for resolution/quality:</p>
 
-    <img class="screenshot" src="KOContour_DEM_Data_Secret_Key.png" alt="KOContour secret key dialog" style="float:right; margin-left:16px; max-width:40%;">
+    <table class="datasets">
+        <thead>
+            <tr><th>Dataset</th><th>Res</th><th>Coverage</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>mapzen</code></td><td>~30&nbsp;m</td><td>Global (incl. high latitudes &amp; bathymetry)</td><td>A <em>composite</em> &mdash; picks the best source per region (SRTM, ASTER, and national high-res like NED / EU-DEM where available). Best general-purpose default.</td></tr>
+            <tr><td><code>aster30m</code></td><td>30&nbsp;m</td><td>Global ~83&deg;N&ndash;83&deg;S</td><td>Real 30&nbsp;m everywhere, but ASTER GDEM is noisier / more artifact-prone than SRTM.</td></tr>
+            <tr><td><code>srtm30m</code></td><td>30&nbsp;m</td><td>60&deg;N&ndash;56&deg;S only</td><td>Cleaner than ASTER, but no high latitudes.</td></tr>
+            <tr><td><code>ned10m</code></td><td>10&nbsp;m</td><td>USA only</td><td>Higher res &mdash; best for US areas.</td></tr>
+            <tr><td><code>eudem25m</code></td><td>25&nbsp;m</td><td>Europe</td><td>Better than 30&nbsp;m for the UK / Europe.</td></tr>
+            <tr><td><code>nzdem8m</code></td><td>8&nbsp;m</td><td>New Zealand</td><td>Highest res where it applies.</td></tr>
+        </tbody>
+    </table>
 
-    <p>Once you have your key, click on the padlock button and paste your key into the dialog that pops up. Click <b>Save</b> to securely save the key in the local storage for your app. You are now ready to download data from the Azure Maps service. Click on <b>Generate TSV from Azure Maps</b> to create the data file and, as with the DEM server, the progress dialog will be displayed.</p>
+    <ul>
+        <li><b>General / global default:</b> <code>mapzen</code> (it effectively <em>is</em> ASTER / SRTM plus better data where it exists).</li>
+        <li><b>Region-specific, higher res:</b> <code>ned10m</code> (US), <code>eudem25m</code> (UK / Europe), <code>nzdem8m</code> (NZ).</li>
+        <li><b><code>aster30m</code></b> is a fine fallback for places mapzen / srtm don't cover well (e.g. far north), but I wouldn't pick it as the everyday choice.</li>
+    </ul>
 
-    <div style="clear:both;"></div>
+    <h2>Create a GPX file</h2>
 
-    <h3>Create a GPX file</h3>
+    <p>
+        KOContour draws its contours from a regular rectangular <em>grid</em> of elevation readings: the contouring
+        algorithm needs evenly-spaced points laid out in rows and columns, not a scattering of random measurements. The
+        <b>Create GPX file</b> option builds exactly such a grid for the area you specify &mdash; a centre
+        latitude/longitude and a horizontal extent &mdash; but writes it out as a <em>.gpx</em> file in which every grid
+        node is a waypoint that has a latitude and longitude but <em>no elevation yet</em>.
+    </p>
 
-    <p>This is a bit trickier, but you can get more points if you need a high-resolution grid. (If you have access to a data source and the technical wherewithal, you can also create a data file yourself.) To use this method, select the <b>Create GPX file</b> radio button and use the <b>Generate GPX file</b> button to create a GPX track file. Save it wherever you like, then feed it into <a href="https://www.gpsvisualizer.com/convert_input" target="_blank">gpsvisualizer.com/convert_input</a>. Download the result file and rename it as <em>&lt;Placename&gt;.txt</em> or <em>.tsv</em> &mdash; I use <em>.tsv</em> to distinguish data files from ordinary text files, but that is up to you &mdash; then copy the file from <em>Downloads</em> to your data folder. This process looks a little complex at first, but you only need to do it once per new map area, and it is pretty simple once you have done it a few times.</p>
+    <p>
+        You then hand that file to <a href="https://www.gpsvisualizer.com/convert_input"
+                                      target="_blank">gpsvisualizer.com</a>, whose free <em>Add DEM elevation data</em> tool looks up an elevation for
+        every waypoint from its digital elevation models (SRTM and others) and gives you back a file with the elevations
+        filled in. Because the points were laid out as an evenly-spaced lattice, that returned file is already a complete
+        elevation grid, ready for KOContour to plot. The appeal of this route is that it needs no DEM-server account or API
+        key of your own &mdash; GPSVisualizer does the elevation lookup for you &mdash; and it lets you request a
+        higher-resolution grid than the throttled DEM-server route comfortably allows.
+    </p>
 
-    <p>Alternatively, here is a link to <a href="https://drive.google.com/file/d/1ctRFKvqf59-r3CVI-bwBHndlTzCWMeWb/view?usp=sharing" target="_blank">download Maui.tsv</a> — a tab-separated data file for Maui, ready to use. As always, do a virus scan just as you would for any file you download.</p>
+    <p>
+        To use this method, select the <b>Create GPX file</b> radio button and use the <b>Generate GPX file</b> button to
+        create the GPX grid file. Save it wherever you like, then feed it into <a href="https://www.gpsvisualizer.com/convert_input" target="_blank">gpsvisualizer.com/convert_input</a>. Download the
+        result file and rename it as <em>&lt;Placename&gt;.txt</em> or <em>.tsv</em> &mdash; I use <em>.tsv</em> to
+        distinguish data files from ordinary text files, but that is up to you &mdash; then copy the file from
+        <em>Downloads</em> to your data folder. This process looks a little complex at first, but you only need to do it
+        once per new map area, and it is pretty simple once you have done it a few times. (If you have access to a data
+        source and the technical wherewithal, you can also create a grid data file yourself.)
+    </p>
 
-    <h3>Example: Create data for Maui</h3>
+    <p>
+        Alternatively, here is a link to <a href="https://drive.google.com/file/d/1ctRFKvqf59-r3CVI-bwBHndlTzCWMeWb/view?usp=sharing" target="_blank">
+            download
+            Maui.tsv
+        </a> — a tab-separated data file for Maui, ready to use. As always, do a virus scan just as you would for
+        any file you download.
+    </p>
 
-    <p>To generate a GPX grid for Maui, go to your favourite map source, e.g. <a href="https://maps.google.com/" target="_blank">Google Maps</a>, and enter <em>Maui</em> into the search box. Copy the coordinates of the centre of the area of interest — with Google Maps, right-click on the chosen spot and left-click on the coordinates that pop up, which copies them to the clipboard. In this example it will be something like <code>20.800841499225772, -156.32722033846065</code>. Then click on the GPX button and the following dialog will appear.</p>
+    <h2>Example: Create data for Maui</h2>
 
-    <img class="screenshot" src="KOContour_Create_GPX_Data_Dialog_Screenshot.png" alt="KOContour Create GPX Data dialog">
+    <p>
+        To generate a GPX grid for Maui, go to your favourite map source, e.g. <a href="https://maps.google.com/"
+                                                                                  target="_blank">Google Maps</a>, and enter <em>Maui</em> into the search box. Copy the coordinates of the centre of
+        the area of interest — with Google Maps, right-click on the chosen spot and left-click on the coordinates that pop
+        up, which copies them to the clipboard. In this example it will be something like <code>
+            20.800841499225772,
+            -156.32722033846065
+        </code>. Then click on the GPX button and the following dialog will appear.
+    </p>
 
-    <p>Click on the field labelled <b>Paste lat,lon here</b> and paste the coordinates you just copied. This will fill the Latitude and Longitude fields — you can also fill in those fields individually if you prefer, and they will stay in sync. Fill in the other fields until they all show a green border, indicating they are valid. The grid generated will be a 500&times;300 (lon&times;lat) grid, regardless of the extent you choose. When the <b>Generate GPX File</b> button becomes enabled, click on it and save the file as <em>Maui.gpx</em>.</p>
+    <img class="screenshot shot-right" src="KOContour_Create_GPX_Data_Dialog_Screenshot_V2.png" alt="KOContour Create GPX Data dialog" style="max-width: 35%;">
 
-    <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerControls.png" alt="GPS Visualizer conversion controls">
+    <p>
+        Click on the field labelled <b>Paste lat,lon here</b> and paste the coordinates you just copied. This will fill
+        the Latitude and Longitude fields — you can also fill in those fields individually if you prefer, and they will stay
+        in sync. As a quick alternative, you can type a place name into the <b>Title</b> field and choose an entry from the
+        drop-down list of suggestions that appears &mdash; selecting one fills in the coordinates for you; use the country
+        selector beside the Title to restrict the search to a particular country. Fill in the other fields until they all
+        show a green border, indicating they are valid. The grid generated will be a 500&times;300 (lon&times;lat) grid,
+        regardless of the extent you choose. When the <b>Generate GPX File</b> button becomes enabled, click on it and save
+        the file as <em>Maui.gpx</em>.
+    </p>
 
-    <p>Then go to <a href="https://www.gpsvisualizer.com/convert_input" target="_blank">gpsvisualizer.com/convert_input</a> and add the file you created using the control marked <b>1</b> in the screenshot above. Set <em>Add DEM elevation data</em> to <em>best available source</em> using control <b>2</b>, then click the green <b>Convert</b> button marked <b>3</b> and wait for the file to finish processing.</p>
+    <!-- The two GPS Visualizer screenshots side by side, vertically centred with each other. -->
+    <div style="display:flex; align-items:center; gap:18px; clear:both; margin:1em 0;">
+        <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerControls_V2.png" alt="GPS Visualizer conversion controls" style="margin:0; max-width:48%;">
+        <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerOutput_V2.png" alt="GPS Visualizer output download link" style="margin:0; max-width:48%;">
+    </div>
 
-    <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerOutput.png" alt="GPS Visualizer output download link">
+    <p>
+        Then go to <a href="https://www.gpsvisualizer.com/convert_input"
+                      target="_blank">gpsvisualizer.com/convert_input</a> and add the file you created using the control marked <b>1</b>
+        in the screenshot above. Set <em>Add DEM elevation data</em> to <em>best available source</em> using control
+        <b>2</b>, then click the green <b>Convert</b> button marked <b>3</b> and wait for the file to finish processing.
+    </p>
 
-    <p>When the download link appears, click it and open the <em>Downloads</em> folder. Rename the file to something like <em>Maui.tsv</em> and copy or move it to your preferred folder under <em>Pictures</em>. You are now ready to load the data into KOContour.</p>
+    <p>
+        When the download link appears, click it and open the <em>Downloads</em> folder. Rename the file to something
+        like <em>Maui.tsv</em> and copy or move it to your preferred folder under <em>Pictures</em>. You are now ready to
+        load the data into KOContour.
+    </p>
 
     <hr>
 
     <h2 id="LoadData">Loading the Input Data Files</h2>
 
-    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_LoadData.png" alt="KOContour load data toolbar button" style="float: left; margin-right: 16px; margin-top: 2px; margin-bottom: 8px; border-radius: 12px; max-width: 40%;">
-    <p>Click the highlighted button, which will show a standard file picker letting you select one of the input files you created above. A contour map will be generated from the data and should look similar to the picture below.</p>
+    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_LoadData_V2.png" alt="KOContour load data toolbar button" style="float: left; margin-right: 16px; margin-top: 2px; margin-bottom: 8px; border-radius: 12px; max-width: 10%;">
+    <p>
+        Click the highlighted button, which will show a standard file picker letting you select one of the input files
+        you created above. A contour map will be generated from the data and should look similar to the picture below.
+    </p>
     <div style="clear:both;"></div>
 
-    <img class="screenshot" src="KOContour_Screenshot_Maui.png" alt="KOContour contour map of Maui">
+    <img class="screenshot" src="KOContour_Screenshot_Maui_V2.png" alt="KOContour contour map of Maui">
     <p class="screenshot-caption">Contour map of Maui generated from the downloaded elevation data</p>
 
-    <p>When you load a data file it is added to the <b>Show Favourites list</b> dialog, and you can double-click on entries there to load the data again. Entries are sorted with the most recently loaded at the top. Superimposed on the map you can see the zoom and pan controls, along with the height scale on the left and the distance scale in the lower right.</p>
+    <p>
+        When you load a data file it is added to the <b>Show Favourites list</b> dialog, and you can double-click on
+        entries there to load the data again. Entries are sorted with the most recently loaded at the top. Superimposed on
+        the map you can see the zoom and pan controls, along with the height scale on the left and the distance scale in the
+        lower right.
+    </p>
+
+    <p>
+        To zoom into a particular area, click and drag a rectangle across the map. A white selection box &mdash; matching
+        the proportions of the map window &mdash; follows the pointer as you drag, and releasing the mouse button zooms to
+        the selected area. Press <b>Esc</b> while dragging to cancel without zooming. The zoom and pan buttons in the
+        lower-right corner give step-by-step control.
+    </p>
+
+    <p>
+        On a touchscreen you can also use <b>two-finger gestures</b> on the map: <b>pinch</b> two fingers together or
+        <b>spread</b> them apart to zoom out or in &mdash; the zoom is centred on the point midway between your fingers
+        &mdash; and <b>drag with two fingers</b> to pan the map, which follows your fingers and stops at the edges of the
+        loaded data so you cannot scroll off into empty space. Pinching and panning can be done together in one gesture.
+        A mouse wheel (or precision-touchpad pinch) also zooms.
+    </p>
 
     <hr>
 
+    <!-- ##########################################################################################
+         ##  NEW-IN-V2 FEATURE SECTIONS                                                          ##
+         ##  Each section below is self-contained between its own "START SECTION" / "END SECTION"##
+         ##  markers (and the following <hr>), so you can cut and paste a whole section to move  ##
+         ##  it elsewhere in the page. Placeholder image names describe the screenshot to grab.  ##
+         ########################################################################################## -->
+
+    <!-- ===== START SECTION: Contour Display Modes ===== -->
+    <h2 id="DisplayModes">Choosing How the Contours are Drawn</h2>
+
+    <img class="screenshot shot-right" src="KOContour_Screenshot_Drawing_Mode_Selector_V2.png" alt="Contour display-mode drop-down (Lines, Gradient Shade, Block shade, 3D)" style="max-width: 15%;" >
+
+    <p>
+        The drop-down near the top of the window selects how the loaded data is drawn. There are four modes:
+    </p>
+    <ul>
+        <li><b>Lines</b> &mdash; the classic contour map, each level drawn as a coloured line. This is the default.</li>
+        <li><b>Gradient Shade</b> &mdash; the map is filled with a smooth colour gradient that blends from one
+            contour level to the next.</li>
+        <li><b>Block shade</b> &mdash; each contour band is filled with a single solid colour, giving a stepped,
+            "layer-cake" look.</li>
+        <li><b>3D</b> &mdash; the terrain is drawn as a shaded three-dimensional relief surface that you can rotate
+            and zoom (see <a href="#ThreeDView">The 3D Relief View</a> below).</li>
+    </ul>
+    <p>
+        The colours used by every mode are set by the <a href="#ColourSchemes">colour scheme</a>, and the number of
+        bands by the <a href="#ContourLevels">contour-levels slider</a>, both described below.
+    </p>
+
+    <!-- The two shaded modes side by side. -->
+    <div style="display:flex; gap:18px; clear:both; margin:1em 0; flex-wrap:wrap;">
+        <img class="screenshot" src="KOContour_Screenshot_Gradient_Shaded_Map_V2.png" alt="Gradient-shaded contour map" style="margin:0; max-width:48%;">
+        <img class="screenshot" src="KOContour_Screenshot_Block_Shaded_Map_V2.png" alt="Block-shaded contour map" style="margin:0; max-width:48%;">
+    </div>
+    <!-- ===== END SECTION: Contour Display Modes ===== -->
+    <hr>
+
+    <!-- ===== START SECTION: Number of Contour Levels ===== -->
+    <h2 id="ContourLevels">Adjusting the Number of Contour Levels</h2>
+
+    <img class="screenshot shot-right" src="KOContour_Screenshot_Contour_Levels_Slider_V2.png" alt="Contour-levels slider with the 'N contour levels' label beneath it">
+
+    <p>
+        The slider near the top of the window sets how many contour levels are drawn; the
+        <b>"<i>N</i>&nbsp;contour&nbsp;levels"</b> label beneath it shows the current count. The levels snap to
+        "nice" round step sizes (for example 5, 10, 50, 100&nbsp;&hellip;) so the colour key stays easy to read.
+        With the slider focused, the <b>left</b> and <b>right</b> arrow keys step down or up to the next preferred
+        set of levels.
+    </p>
+    <!-- ===== END SECTION: Number of Contour Levels ===== -->
+    <hr>
+
+    <!-- ===== START SECTION: The 3D Relief View ===== -->
+    <h2 id="ThreeDView">The 3D Relief View</h2>
+
+    <img class="screenshot shot-right" src="KOContour_Screenshot_3D_Relief_View_V2.png" alt="3D shaded relief view of the terrain">
+
+    <p>
+        Choosing <b>3D</b> in the display-mode drop-down draws the data as a shaded relief surface, lit from the
+        north-west. Any places you have added appear as little <em>flagpoles</em> whose flags carry the place names,
+        and the red <b>N</b> compass arrow points to the projected north.
+    </p>
+
+    <p>
+        <b>Rotate</b> the view by dragging on it with the mouse (or one finger): dragging left/right spins the view
+        (its compass bearing) while dragging up/down tilts it between almost straight-down and nearly edge-on.
+    </p>
+
+    <img class="screenshot shot-left" src="KOContour_Screenshot_3D_View_Rotated_V2.png" alt="The same 3D terrain rotated to a different bearing and tilt">
+
+    <p>Two vertical sliders sit beside the view:</p>
+    <ul>
+        <li>The <b>Height</b> slider on the right exaggerates or flattens the vertical scale, making subtle terrain
+            easier to see; the flagpoles grow and shrink along with the relief.</li>
+        <li>The <b>Grid</b> slider on the upper-left sets the mesh granularity &mdash; higher gives a finer, more
+            detailed surface (slower to draw), lower a coarser, faster one.</li>
+    </ul>
+
+    <p>
+        <b>Zoom</b> the 3D view by pinching with two fingers, or with the mouse wheel / trackpad. The terrain and
+        its labels zoom together.
+    </p>
+
+    <p>
+        For smooth rotation the 3D surface is drawn on your <b>graphics card (GPU)</b> where a suitable one is
+        available, falling back to the processor otherwise. A small marker in the lower-left corner of the map shows
+        which is in use (for example <code>GPU&nbsp;3D:&nbsp;&hellip;</code>, or <code>CPU&nbsp;only</code>).
+    </p>
+    <!-- ===== END SECTION: The 3D Relief View ===== -->
+    <hr>
+
+    <!-- ===== START SECTION: Contour Colour Schemes ===== -->
+    <h2 id="ColourSchemes">Contour Colour Schemes</h2>
+
+    <img class="screenshot shot-right" src="KOContour_Screenshot_Colour_Scheme_Dialog_V2.png" alt="Contour colour-scheme chooser dialog with preview swatch strips">
+
+    <p>
+        <b>Tap (or click) the contour-levels key</b> in the lower-left of the map to open the
+        <b>Contour colour scheme</b> chooser. Each option shows a preview strip of the colours your current contour
+        heights would have under that scheme. The schemes are:
+    </p>
+    <ul>
+        <li><b>Hue Ramp</b> &mdash; HSL hue ramp, blue "sea level" then green through violet.</li>
+        <li><b>Greyscale</b> &mdash; dark for low ground through to near-white for the highest.</li>
+        <li><b>Hypsometric</b> &mdash; the classic atlas terrain tints: green lowlands through yellow and tan to
+            brown uplands and grey/white peaks.</li>
+        <li><b>Terrain + water</b> &mdash; like hypsometric, but sea level and below are shown in blue (deeper =
+            darker), which is handy for data that dips below zero.</li>
+        <li><b>Viridis</b> &mdash; a perceptually-uniform, colour-blind-friendly ramp (purple-blue through teal and
+            green to yellow), where equal colour steps mean equal elevation steps.</li>
+    </ul>
+    <p>
+        The chosen scheme applies to every display mode, including the 3D view, and is remembered between sessions.
+    </p>
+    <p>
+        The chooser also has a <b>3D block sides</b> section with two switches for the 3D relief view:
+    </p>
+    <ul>
+        <li><b>Fill the data-block side walls</b> &mdash; closes in the four vertical edges of the data so the relief
+            looks like a solid block sitting on its lowest-elevation plane, rather than a floating sheet. The faces
+            are shaded by the same light as the terrain.</li>
+        <li>
+            <details>
+                <summary><b>Mystery Bonus</b></summary>
+                <b>Sandy rock with dinosaur fossils</b> &mdash; just for fun: draws those walls as a dark sandy rock
+                face with the occasional dinosaur skeleton (a T-Rex, a long-necked sauropod, a plated stegosaurus, a
+                horned triceratops &mdash; plus the odd bone, ammonite, fish or footprint) embedded in the strata.
+                The fossils stay put in the rock as you rotate.
+            </details>
+            Both switches are remembered between sessions.</li>
+    </ul>
+
+    <img class="screenshot shot-center" src="KOContour_Screenshot_Hypsometric_Coloured_Map_V2.png" alt="Contour map drawn with the hypsometric colour scheme">
+    <!-- ===== END SECTION: Contour Colour Schemes ===== -->
+    <hr>
+
+    <!-- ##########################################################################################
+         ##  END OF NEW-IN-V2 FEATURE SECTIONS                                                   ##
+         ########################################################################################## -->
+
     <h2>Adding and Editing Places</h2>
 
-    <img src="KOContour_Screenshot_Top_Toolbar_AddEditPlaces.png" alt="KOContour add/edit places toolbar button" style="float: right; margin-left: 16px; margin-top: 2px; max-width: 40%;">
+    <img src="KOContour_Screenshot_Top_Toolbar_AddEditPlaces_V2.png" alt="KOContour add/edit places toolbar button" style="float: right; margin-left: 16px; margin-top: 2px; max-width: 40%;">
 
-    <p>Click the highlighted button to show the <b>Add or Edit a Place</b> dialog. This lets you enter a place name, description, coordinates, and elevation for a new place, and add it to the list in the <b>Show Places list</b> dialog. If you double-click on a place in that list it will also invoke the <b>Add or Edit a Place</b> dialog. If the place does not have elevation data (shown as empty or &minus;1000000) and it is within the currently loaded map data, the elevation field will be highlighted in purple with a suggested value filled in. Click <b>Update Place</b> / <b>Add Place</b> to save, or <b>Cancel</b> to exit without changes.</p>
+    <p>
+        Click the highlighted button to show the <b>Add or Edit a Place</b> dialog. This lets you enter a place name,
+        description, coordinates, and elevation for a new place, and add it to the list in the <b>Show Places list</b>
+        dialog. If you double-click on a place in that list it will also invoke the <b>Add or Edit a Place</b> dialog. If
+        the place does not have elevation data (shown as empty or &minus;1000000) and it is within the currently loaded map
+        data, the elevation field will be highlighted in purple with a suggested value filled in. Click <b>Update Place</b>
+        / <b>Add Place</b> to save, or <b>Cancel</b> to exit without changes.
+    </p>
+
+    <p>
+        The <b>Place Name</b> field is also a search box: start typing and a drop-down list of matching places appears.
+        Use the country selector beside it to narrow the search to a particular country. Choosing a place fills in its
+        coordinates, sets the description to <em>Place, County, Country</em>, and fills in the elevation automatically.
+        Place search is powered by <a href="https://www.geonames.org/" target="_blank">GeoNames</a>.
+    </p>
+
+    <p>
+        You can also <b>right-click</b> (or press and hold) anywhere on the map to see a list of the nearest places.
+        Choosing one opens the <b>Add or Edit a Place</b> dialog ready-filled with that place's name, description and
+        coordinates, together with its elevation where available. The most recently chosen place is remembered, so clicking
+        the <b>Add or Edit a Place</b> button afterwards re-opens the dialog pre-filled with it.
+    </p>
 
     <p>As an example, let's add Lahaina.</p>
 
-    <img class="screenshot" src="KOContour_Screenshot_Add_Lahaina2.png" alt="Add or Edit a Place dialog for Lahaina">
+    <img class="screenshot shot-left" src="KOContour_Screenshot_Add_Lahaina2_V2.png" alt="Add or Edit a Place dialog for Lahaina" style="max-width: 30%;">
 
-    <p>Use Google Maps as described above to get the coordinates for Lahaina and paste them into the dialog, then add the other details.</p>
+    <p>
+        If you have not yet set up a free <a href="#GeoNames">GeoNames account</a> (and I would strongly recommend that
+        you do)
+        you can use Google Maps as described above to get the coordinates for Lahaina and paste them into the dialog,
+        then add the other details
+        If you have set up your GeoNames account, and entered the <a href="#UsernameOrSecretKeyEntry">username</a> then
+        you can type the first few letters of the place name and a list of suggestions will pop up. Click on the one you
+        you want, and it will populate all the fields in the dialog for you. This is the easiest way of getting the data.
+    </p>
 
-    <img class="screenshot" src="KOContour_Screenshot_Add_Lahaina3.png" alt="Lahaina details filled in">
+    <div style="clear:both;"></div>
+    <img class="screenshot shot-right" src="KOContour_Screenshot_Add_Lahaina3_V2.png" alt="Lahaina details filled in" style="margin-top:0;">
+
+    <p style="margin-top:0;">
+        With the coordinates filled in, give the location a name and a short description, and add
+        an elevation if you know it &mdash; or leave the elevation blank and let KOContour suggest one from the loaded map
+        data. As a shortcut you can type the place name straight into the <b>Place Name</b> search box and pick it from the
+        drop-down list, which fills in the coordinates (and elevation) for you. When every field shows a valid (green)
+        value, click <b>Add Place</b> to save it.
+    </p>
 
     <p>Lahaina will appear on the map and be highlighted as shown.</p>
 
-    <img class="screenshot" src="KOContour_Screenshot_Add_Lahaina4.png" alt="Lahaina shown on map">
+    <img class="screenshot" src="KOContour_Screenshot_Add_Lahaina4_V2.png" alt="Lahaina shown on map" style="float: left; max-width: 22%; margin: 6px 18px 14px 0;">
 
-    <p>Try adding another place such as Waikapu. Leave the elevation unset and save the new place, then continue to the next section.</p>
+    <p>
+        Try adding another place such as Paia. Leave the elevation unset and save the new place, then continue to the
+        next section.
+    </p>
 
     <hr>
 
     <h2>Showing the Places List</h2>
 
-    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_ShowPlaces.png" alt="KOContour show places toolbar button" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 25%;">
-    <p>Click the highlighted button to show the <b>Show Places list</b> dialog. Places are maintained in alphabetical order. Double-clicking an entry launches the <b>Add or Edit a Place</b> dialog. If a place does not have elevation data and it is within the currently loaded map data, the elevation field will be highlighted in purple with a suggested value.</p>
+    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_ShowPlaces_V2.png" alt="KOContour show places toolbar button" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 10%;">
+    <p>
+        Click the highlighted button to show the <b>Show Places list</b> dialog. Places are maintained in alphabetical
+        order. Double-clicking an entry launches the <b>Add or Edit a Place</b> dialog. If a place does not have elevation
+        data and it is within the currently loaded map data, the elevation field will be highlighted in purple with a
+        suggested value.
+    </p>
     <div style="clear:both;"></div>
 
-    <img class="screenshot" src="KOContour_Screenshot_PlacesList.png" alt="KOContour places list dialog">
+    <img class="screenshot shot-right" src="KOContour_Screenshot_PlacesList_V2.png" alt="KOContour places list dialog" style="max-width: 30%;">
 
-    <p>Try looking for Waikapu — you can jump to the <em>W</em> section by pressing the <b>W</b> key. Double-click on Waikapu; if the elevation was left as the default (&minus;1000000 means undefined), it will suggest an elevation based on the nearest contour line and highlight as shown below.</p>
+    <p>
+        Try looking for Paia — you can jump to the <em>P</em> section by pressing the <b>W</b> key. Double-click on
+        Paia; if the elevation was left as the default (&minus;1000000 means undefined), it will suggest an elevation
+        based on the nearest contour line and highlight as shown highlighted - 200 feet in this case. Places visible on the currently loaded map are 
+        shown in cyan, otherwise they are shown in light gray. If you re-type in the place name it will suggest a more accurate
+        elevation from GeoNames - 232.9 feet - if you have set up your account on that as described below.
+    </p>
 
-    <img class="screenshot" src="KOContour_Screenshot_WaikapuElevationSuggestion.png" alt="Waikapu elevation suggestion highlighted in purple">
+    <div style="clear:both;"></div>
+    <img class="screenshot shot-left" src="KOContour_Screenshot_PaiaElevationSuggestion_V2.png" alt="Paia elevation suggestion highlighted in purple" style="margin-top:0; margin-right:32px; max-width:30%;">
 
-    <p>Click <b>Update Place</b> to save the suggested elevation, which will then appear on the map under the place name.</p>
-
-    <img class="screenshot" src="KOContour_Screenshot_WaikapuElevationAdded.png" alt="Waikapu shown on map with elevation">
-
+    <p id="GeoNames" style="margin-top:0;">
+        GeoNames requires creating an account for programmatic use, but it is totally free and does NOT require a
+        payment card, or credit-card-on-file. I would strongly recommend doing so since it lets
+        you do automated lookups of the latitudes and longitudes of named places, or places you click on the map, and
+        takes only a couple of minutes:
+    </p>
+    <ol>
+        <li>Register at <a href="https://www.geonames.org/login" target="_blank">https://www.geonames.org/login</a> — just a username, email, and password.</li>
+        <li>Confirm the email they send you.</li>
+        <li>
+            Enable web services — this is the easily-missed step. Log in, go to
+            <a href="https://www.geonames.org/manageaccount" target="_blank">https://www.geonames.org/manageaccount</a>,
+            and click the link at the bottom to "enable the account for use of the free web services."
+            Until you do this, every API call returns user account not enabled to use the free webservice, even though
+            the account exists.
+        </li>
+        <li>Set GeoHelpers.GeoNamesUserName to that username in the app.</li>
+    </ol>
+    <img class="screenshot shot-right" src="KOContour_Screenshot_PaiaElevationAdded_V2.png" alt="Paia shown on map with elevation" style="max-width: 25%;">
+    <p>
+        The username is the credential — there's no separate API key or secret. You just pass
+        <code>&amp;username=yourname</code> on each request (which is why it's plain http, and why you shouldn't hardcode a
+        username you care about into a widely-distributed app, since anyone can read it and spend your daily quota).
+    </p>
+    <p>
+        You can easily test your account by entering the follwing into the address field of your browser:<br><br>
+        <code>http://api.geonames.org/searchJSON?name_startsWith=<i><b>&lt;placename&gt;</b></i>&amp;featureClass=P&amp;maxRows=10&amp;username=<i><b>&lt;username&gt;</b></i></code><br><br>
+        Replace <i><b>&lt;placename&gt;</b></i> and <i><b>&lt;username&gt;</b></i> with the appropriate values for your chosen place, and your account.
+        This will return a list of place names and the data for each.
+    </p>
+    <p>Click <b>Update Place</b> to save the place data and elevation, which will then appear on the map under the place name.</p>
     <hr>
 
     <h2>Finding the Elevation</h2>
 
-    <img class="screenshot" src="KOContour_Screenshot_ElevationTool.png" alt="KOContour elevation marker on map">
+    <img class="screenshot shot-right" src="KOContour_Screenshot_ElevationTool_V2.png" alt="KOContour elevation marker on map" style="max-width: 30%;">
 
-    <p>To find the elevation of a point, click on the map at the desired location. A marker will appear showing the elevation along with the latitude and longitude. To remove it, click again in the centre of the crosshair.</p>
+    <p>
+        To find the elevation of a point, click on the map at the desired location. A marker will appear showing the
+        elevation along with the latitude and longitude. To remove it, click again in the centre of the crosshair.
+    </p>
 
     <hr>
 
     <h2>Distances and Compass Bearing</h2>
 
-    <img class="screenshot" src="KOContour_Screenshot_DistanceToolpng.png" alt="KOContour distance and bearing tool">
+    <img class="screenshot shot-left" src="KOContour_Screenshot_DistanceToolpng_V2.png" alt="KOContour distance and bearing tool" style="min-width: 70%;">
 
-    <p>To find the distance between two points, hold the <b>Ctrl</b> key and click on the map at the first location. A marker will appear. Keep holding <b>Ctrl</b> and click the second point. A line will be drawn between the points showing the distance and compass bearing. To remove the measurement tool, click again in the centre of either crosshair.</p>
+    <p>
+        To find the distance between two points, hold the <b>Ctrl</b> key and click on the map at the first location. A
+        marker will appear. Keep holding <b>Ctrl</b> and click the second point. A line will be drawn between the points
+        showing the distance and compass bearing. To remove the measurement tool, click again in the centre of either
+        crosshair.
+    </p>
 
     <hr>
 
     <h2>Showing the Favourites List</h2>
 
-    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_ShowFavourites.png" alt="KOContour show favourites toolbar button" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 25%;">
-    <p>Click the highlighted button to show the <b>Show Favourites list</b> dialog. The list is maintained in last-access order, most recent first. Double-click an entry to load that data file. If the file no longer exists you will be asked if you would like to remove it from the list.</p>
+    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_ShowFavourites_V2.png" alt="KOContour show favourites toolbar button" style="float: right; margin-right: 16px; border-radius: 12px; max-width: 15%;">
+    <p>
+        Click the highlighted button to show the <b>Show Favourites list</b> dialog. The list is maintained in
+        last-access order, most recent first. Double-click an entry to load that data file. If the file no longer exists you
+        will be asked if you would like to remove it from the list.
+    </p>
+    <img class="screenshot" src="KOContour_Screenshot_Favourite_DataFiles_Dialog.png" alt="KOContour favourite data files dialog" style="float: center; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 60%;">
     <div style="clear:both;"></div>
 
     <hr>
 
     <h2>Toolbar Option Checkboxes</h2>
 
-    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_Checkboxes.png" alt="KOContour toolbar checkboxes">
+    <img class="screenshot shot-right" src="KOContour_Screenshot_Top_Toolbar_Checkboxes_V2.png" alt="KOContour toolbar checkboxes">
 
-    <p>The <b>Light Theme</b> checkbox switches to a light background, which is sometimes better for printing. The <b>Load at startup</b> checkbox causes the app to automatically load the last successfully loaded data file at launch, if it still exists. Both of these settings are persisted across launches. The <b>Show places</b> option is not persisted.</p>
+    <p>
+        The <b>Light Theme</b> checkbox switches to a light background, which is sometimes better for printing. The
+        <b>Load at startup</b> checkbox causes the app to automatically load the last successfully loaded data file at
+        launch, if it still exists. Both of these settings are persisted across launches. The <b>Show places</b> option is
+        not persisted. The "Snapshot Resolution" controls the resolution of the map snapshot produced by the "camera"
+        button, which creates a PNG or JPG showing just the map portion of the sreen, including the key, places if selected,
+        and title. It can either be the same as the screen, or be UHD.
+    </p>
 
     <p>Everything else is easy to figure out from the tooltips and prompts — have fun exploring!</p>
     <hr>
-    
+
     <h2>Features</h2>
     <div class="feature-grid">
         <div class="feature-item">
+            <h3>Contour Display Modes</h3>
+            <p>Draw the data as contour lines, a smooth gradient shade, solid block shading, or a 3D relief surface.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>3D Relief View</h3>
+            <p>
+                GPU-accelerated 3D terrain you can rotate by dragging, with sliders for vertical exaggeration and
+                mesh granularity, and pinch / mouse-wheel zoom.
+            </p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Colour Schemes</h3>
+            <p>
+                Tap the contour key to choose a colour scheme: the original, greyscale, hypsometric terrain tints,
+                terrain-with-water, or perceptually-uniform Viridis.
+            </p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Adjustable Contour Levels</h3>
+            <p>
+                A slider sets the number of contour levels, snapping to round step sizes; arrow keys step through
+                the preferred level sets.
+            </p>
+        </div>
+
+        <div class="feature-item">
             <h3>DEM Server Integration</h3>
-            <p>Download elevation data directly from Open Topo Data or Azure Maps, with automatic rate‑limit handling and progress reporting.</p>
+            <p>
+                Download elevation data directly from Open Topo Data servers, with automatic rate‑limit handling and
+                progress reporting.
+            </p>
         </div>
 
         <div class="feature-item">
             <h3>GPX Grid Generation</h3>
-            <p>Create GPX files for any region using a lat/lon centre point, then convert them to elevation TSV files via GPSVisualizer.</p>
+            <p>
+                Create GPX files for any region using a lat/lon centre point, then convert them to elevation TSV files
+                via GPSVisualizer.
+            </p>
         </div>
 
         <div class="feature-item">
             <h3>Contour Map Rendering</h3>
-            <p>Load TSV elevation files and generate detailed contour maps with zoom, pan, height scale, and distance scale overlays.</p>
+            <p>
+                Load TSV elevation files and generate detailed contour maps with zoom, pan, height scale, and distance
+                scale overlays.
+            </p>
         </div>
 
         <div class="feature-item">
             <h3>Places Management</h3>
-            <p>Add, edit, and store named places with coordinates and elevation, including automatic elevation suggestions from map data.</p>
+            <p>
+                Add, edit, and store named places with coordinates and elevation, including automatic elevation
+                suggestions from map data.
+            </p>
         </div>
 
         <div class="feature-item">
@@ -221,6 +649,27 @@ T     53.231479474    -6.297182063    1709.2</pre>
             <h3>Toolbar Options</h3>
             <p>Includes light theme mode, load‑at‑startup, and show‑places toggles, with persistent settings.</p>
         </div>
+
+        <div class="feature-item">
+            <h3>Place Search</h3>
+            <p>
+                Type a place name in the Create-GPX or Add-Place dialogs and pick from a drop-down of suggestions,
+                optionally filtered by country, to fill in coordinates and elevation. Powered by GeoNames.
+            </p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Nearby Places</h3>
+            <p>
+                Right-click anywhere on the map to list the nearest places and add any of them to your places with a
+                single click.
+            </p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Drag-to-Zoom</h3>
+            <p>Click and drag a proportional selection box across the map to zoom into an area; press Esc to cancel.</p>
+        </div>
     </div>
     <hr>
 
@@ -231,8 +680,15 @@ T     53.231479474    -6.297182063    1709.2</pre>
         <p>
             The app can be installed from:
             <ul>
-                <li>The <a href="https://apps.microsoft.com/store/detail/kocontour/9N0KL98F6TMH" target="_blank">KOContour Microsoft Store web page</a></li>
-                <li><a href="ms-windows-store://pdp/?productid=9N0KL98F6TMH" target="_blank"><img src="ms_store_badge.svg" alt="Get KOContour from the Microsoft Store app" style="height:40px;"></a></li>
+                <li>
+                    The <a href="https://apps.microsoft.com/store/detail/kocontour/9N0KL98F6TMH"
+                           target="_blank">KOContour Microsoft Store web page</a>
+                </li>
+                <li>
+                    <a href="ms-windows-store://pdp/?productid=9N0KL98F6TMH" target="_blank">
+                        <img src="ms_store_badge.svg" alt="Get KOContour from the Microsoft Store app" style="height:40px;vertical-align:middle;">
+                    </a>
+                </li>
             </ul>
         </p>
         <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
@@ -242,6 +698,29 @@ T     53.231479474    -6.297182063    1709.2</pre>
         KOContour is free software.
         <br><a href="index.htm">&#8592; Back to KLO Software</a>
     </p>
-<script src="KLODarkModeSwitch.js" defer></script>
+    <script src="KLODarkModeSwitch.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Only run if opened locally
+            if (window.location.protocol === 'file:') {
+                const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+                // Grab every single link on the page
+                document.querySelectorAll('a').forEach(link => {
+                    const href = link.getAttribute('href');
+
+                    // If the link exists, doesn't start with http/https, and isn't an anchor jump link (#)
+                    if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('#')) {
+
+                        // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                        const cleanHref = href.replace(/^\.\//, '');
+
+                        // Rewrite the link to point to the live site
+                        link.href = baseWebUrl + cleanHref;
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
