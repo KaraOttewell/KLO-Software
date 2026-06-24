@@ -1,0 +1,89 @@
+Three command-line tools for Beeb enthusiasts to view BBC Micro files and disk images on their Windows PC. Supports plain text, BBCode, or HTML output, and file extraction from disk images. With one command you can [b][i]produce a master "catalog" of all your disk images in minutes[/i][/b].
+
+[list]
+[*] [b]BBCBasicToText[/b] — display a tokenized, binary BBC Micro BASIC file as [color=green][b]text[/b][/color], [color=darkred][b]HTML[/b][/color], or [color=darkcyan][b]BBCode[/b][/color].
+[*] [b]BBCDataFileToText[/b] — show BBC PRINT# type data files as text, HTML, or BBCode.
+[*] [b]BBCReadDiskImage[/b] — display *CAT-style output of .DSD or .SSD disk images, with the ability to export files individually and dump sectors.
+[/list]
+
+I wrote them as console applications and posted links to the initial versions on this board back in 2023. I've had a bit of free time, so I revisited them, fixing some bugs and making the utilities available from the [i]Microsoft Store[/i] so they've been scanned, tested and signed.
+
+[size=150][b]BBCBasicToText[/b][/size]
+
+This utility displays a tokenized, binary BBC Micro BASIC file as text, HTML, or BBCode for bulletin board posts. If there is "hidden data" after the BASIC program, that will be displayed in hex, as will control characters.
+
+[img]https://karaottewell.github.io/KLO-Software/Screenshot_BBCBasicToTextExample.png[/img]
+
+[size=150][b]BBCDataFileToText[/b][/size]
+
+Show BBC PRINT#-type data files as text, HTML, or BBCode, with hex and ASCII dump options.
+
+[img]https://karaottewell.github.io/KLO-Software/Screenshot_BBCDataFileToTextExample.png[/img]
+
+This can actually be used as a "hex dump" program for any PC file. I have
+
+[code]
+doskey hex=BBCDataFileToText --hex $*
+[/code]
+
+defined in my command terminals for that reason.
+
+[b][i]> hex  binaryfile.bin binaryfile.bbcode[/i][/b]
+[color=DarkGray]
+BBCDataFileToText: processing 1/1, C:\Users\...\binaryfile.bin
+[/color][color=LimeGreen]000000 [/color][color=Magenta]89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52 00 00 09 1F 00 00 07 3F 08 06 00 00 00 A6 E8 13
+[/color][color=LimeGreen]000020 [/color][color=Magenta]04 00 00 00 01 73 52 47 42 00 AE CE 1C E9 00 00 00 04 67 41 4D 41 00 00 B1 8F 0B FC 61 05 00 00
+[/color][color=LimeGreen]000040 [/color][color=Magenta]00 09 70 48 59 73 00 00 24 E8 00 00 24 E8 01 82 63 05 1C 00 00 FF A5 49 44 41 54 78 5E EC FD 0B
+[color=Green]...[/color]
+[/color][color=LimeGreen]052040 [/color][color=Magenta]48 E4 23 00 00 00 00 00 00 00 00 20 91 8F 00 00 00 00 00 00 00 00 80 60 3B 5C 38 F0 C2 B6 D2 6F
+[/color][color=LimeGreen]052060 [/color][color=Magenta]73 00 00 00 00 49 45 4E 44 AE 42 60 82
+[/color][color=Black]BBCDataFileToText Informational: 1/1, binaryfile.bin is not BBC BASIC PRINT# data file.
+[/color][color=DarkGray]Output: C:\Users\...\binaryfile.bbcode
+BBCDataFileToText found and processed 1 file, ignored 0, excluded 0, produced results for 1
+[/color]
+[size=150][b]BBCReadDiskImage[/b][/size]
+
+Display *CAT-style output of .SSD or .DSD disk images, with the ability to export files individually and dump raw sectors.
+
+[img]https://karaottewell.github.io/KLO-Software/Screenshot_BBCReadDiskImageExample.png[/img]
+
+All three can produce colour output — strings, keywords, and the like are each coloured differently — writing plain text (in colour when sent to a command-prompt window), BBCode, or HTML, and can optionally launch your browser for the HTML. They understand wildcards and dive recursively through your folders, so you can convert a whole shoebox of discs in one go. Four decades on, your Acorn archive has never looked this good!
+
+[size=150][b]Running the tools[/b][/size]
+
+All three utilities run from a Command Prompt or PowerShell. For example, from a Command Prompt:
+[color=#0000BF]
+BBCBasicToText    "%OneDrive%\Documents\BBCMicro\ARRAYLENSUM.bbc"
+BBCDataFileToText "%OneDrive%\Documents\BBCMicro\NAMES"
+BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
+[/color]
+In PowerShell, use $env:OneDrive in place of %OneDrive%.
+[color=#0000BF]
+BBCReadDiskImage "$env:OneDrive\Documents\BBCMicro\Games.dsd"
+[/color]
+
+[size=150][b]Optional - Add DOSKEY shortcuts[/b][/size]
+Because typing the full command names is tedious, you can create DOSKEY macros in a command file named [b]cmdsetup.cmd[/b]:
+[color=#0000BF]
+doskey brd=BBCReadDiskImage $*
+doskey btt=BBCBasicToText $*
+doskey bdt=BBCDataFileToText $*
+[/color]
+To run this automatically in every new command window, dd the following to the registry by saving it in a file of type .reg and double-clicking it. Always be careful adding .reg files unless you trust their source and know what you are doing - it can be a security risk.
+[color=#0000BF]
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Microsoft\Command Processor]
+"CompletionChar"=dword:00000009
+"DefaultColor"=dword:00000000
+"EnableExtensions"=dword:00000001
+"PathCompletionChar"=dword:00000009
+"AutoRun"="\"%OneDrive%\\<wherever>\\cmdsetup.cmd\""
+[/color]
+
+[size=150][b]Download[/b][/size]
+BeebFileUtilities is free on the Microsoft Store:
+
+[url=https://apps.microsoft.com/detail/9PJM5ZVL4C79]BeebFileUtilities on the Microsoft Store[/url]
+
+Requires Windows 10 (build 1809) or later, or Windows 11.

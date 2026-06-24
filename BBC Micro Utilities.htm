@@ -16,7 +16,7 @@
 
 <span class="badge">Windows</span>
 <span class="badge">Command Line</span>
-<span class="badge">MSI Installer</span>
+<span class="badge">Microsoft Store</span>
 <span class="badge">BBC Micro</span>
 <span class="badge">Free</span>
 
@@ -24,22 +24,23 @@
 years ago. Of course I started grabbing various programs and data from it, transferring to my Windows PC as .dsd files,
 then using those with <b>BeebEm</b>, and I bought a copy of <b>BBC BASIC for Windows</b> so that I could play with
 that too. I wanted some command-line utilities to display the content of .dsd files, and decode <b>BBC BASIC</b>
-files along with "<b>PRINT#</b>"-type BBC data files, so I wrote them as console applications using .NET.
+files along with "<b>PRINT#</b>"-type BBC data files, so I wrote them as console commands.
 The utilities are:</p>
 
 <ul>
-    <li><b>BBCBasicToText</b> — display a tokenised, binary BBC Micro BASIC file as text, HTML, or bbcode.</li>
-    <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as text, HTML, or bbcode.</li>
+    <li><b>BBCBasicToText</b> — display a tokenised, binary BBC Micro BASIC file as <b style="color:green">plaintext</b>, <b style="color:darkred">HTML</b>, or <b style="color:darkcyan">BBCode</b>.</li>
+    <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as plaintext, HTML, or BBCode.</li>
     <li><b>BBCReadDiskImage</b> — display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</li>
 </ul>
 
-<p>All three tools can produce colour output — strings, keywords, and so forth are coloured differently — and can
-output plain text (in colour when writing to a command prompt window), bbcode, or HTML, optionally launching the
-browser for the latter. They take wildcards as input and can recurse into subfolders.</p>
-
 <hr>
 
-<h2>Example: BBCBasicToText</h2>
+<h2>BBCBasicToText</h2>
+
+<p>This utility displays a tokenized, binary BBC Micro BASIC file as text, HTML, or BBCode for bulletin board posts.
+If there is "hidden data" after the BASIC program, that will be displayed in hex, as will control characters.</p>
+
+<img src="Screenshot_BBCBasicToTextExample.png" class="screenshot" alt="BBCBasicToText example output">
 
 <p>Here's an example of HTML output using the Sketch program from
 <a href="https://www.bbcbasic.co.uk/bbcwin/tutorial/appendixe.html" target="_blank">bbcbasic.co.uk</a> as input,
@@ -88,7 +89,7 @@ switches. Indentation is applied to <span class="blue">FOR</span>, <span class="
 
 <pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcreaddiskimage Welcome.ssd --export=*welcome*</span></pre>
 
-<p>then converted it to bbcode using:</p>
+<p>then converted it to BBCode using:</p>
 
 <pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcbasictotext 0_W.WELCOME *.bbcode /w</span>
 <span class="dg">BBCBasicToText found 1 file matching 0_W.WELCOME
@@ -122,19 +123,73 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 
 <hr>
 
-<h2>DOSKEY shortcuts</h2>
+<h2>BBCDataFileToText</h2>
+
+<p>Show BBC <code>PRINT#</code>-type data files as text, HTML, or BBCode, with hex and ASCII dump options.</p>
+
+<img src="Screenshot_BBCDataFileToTextExample.png" class="screenshot" alt="BBCDataFileToText example output">
+
+<p>This can actually be used as a "hex dump" program for any PC file. I have</p>
+
+<div class="indent">doskey hex=BBCDataFileToText --hex $*</div>
+
+<p>defined in my command terminals for that reason.</p>
+
+<pre class="console"><span class="prompt">&gt;</span> <span class="cmd">hex binaryfile.bin binaryfile.bbcode</span>
+<span class="dg">BBCDataFileToText: processing 1/1, C:\Users\...\binaryfile.bin</span>
+<span class="num">000000 </span><span class="str">89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52 00 00 09 1F 00 00 07 3F 08 06 00 00 00 A6 E8 13</span>
+<span class="num">000020 </span><span class="str">04 00 00 00 01 73 52 47 42 00 AE CE 1C E9 00 00 00 04 67 41 4D 41 00 00 B1 8F 0B FC 61 05 00 00</span>
+<span class="num">000040 </span><span class="str">00 09 70 48 59 73 00 00 24 E8 00 00 24 E8 01 82 63 05 1C 00 00 FF A5 49 44 41 54 78 5E EC FD 0B</span>
+<span class="ok">...</span>
+<span class="num">052040 </span><span class="str">48 E4 23 00 00 00 00 00 00 00 00 20 91 8F 00 00 00 00 00 00 00 00 80 60 3B 5C 38 F0 C2 B6 D2 6F</span>
+<span class="num">052060 </span><span class="str">73 00 00 00 00 49 45 4E 44 AE 42 60 82</span>
+BBCDataFileToText Informational: 1/1, binaryfile.bin is not BBC BASIC PRINT# data file.
+<span class="dg">Output: C:\Users\...\binaryfile.bbcode
+BBCDataFileToText found and processed 1 file, ignored 0, excluded 0, produced results for 1</span></pre>
+
+<hr>
+
+<h2>BBCReadDiskImage</h2>
+
+<p>Display <code>*CAT</code>-style output of <code>.SSD</code> or <code>.DSD</code> disk images, with the ability to export files individually and dump raw sectors.</p>
+
+<img src="Screenshot_BBCReadDiskImageExample.png" class="screenshot" alt="BBCReadDiskImage example output">
+
+<p>All three can produce colour output — strings, keywords, and the like are each coloured differently — writing
+plain text (in colour when sent to a command-prompt window), BBCode, or HTML, and can optionally launch your
+browser for the HTML. They understand wildcards and dive recursively through your folders, so you can convert a
+whole shoebox of discs in one go. Four decades on, your Acorn archive has never looked this good!</p>
+
+<hr>
+
+<h2>Running the tools</h2>
+
+<p>All three utilities run from a Command Prompt or PowerShell. For example, from a Command Prompt:</p>
+<pre class="console"><span class="cmd">
+BBCBasicToText    "%OneDrive%\Documents\BBCMicro\ARRAYLENSUM.bbc"
+BBCDataFileToText "%OneDrive%\Documents\BBCMicro\NAMES"
+BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
+</span></pre>
+
+<p>In PowerShell, use <code>$env:OneDrive</code> in place of <code>%OneDrive%</code>.</p>
+
+<pre class="console"><span class="cmd">BBCReadDiskImage "$env:OneDrive\Documents\BBCMicro\Games.dsd"</span></pre>
+
+<hr>
+
+<h2>Optional - Add DOSKEY shortcuts</h2>
 
 <p>Because typing the full command names is tedious, you can create DOSKEY macros in a command file named <code>cmdsetup.cmd</code>:</p>
 
-<div class="indent">
-    doskey brd="&lt;path to exe&gt;\BBCReadDiskImage.exe" $*<br>
-    doskey btt="&lt;path to exe&gt;\BBCBasicToText.exe" $*<br>
-    doskey bdt="&lt;path to exe&gt;\BBCDataFileToText.exe" $*
+<div class="indent" style="color:darkcyan">
+    doskey brd=BBCReadDiskImage $*<br>
+    doskey btt=BBCBasicToText $*<br>
+    doskey bdt=BBCDataFileToText $*
 </div>
 
-<p>To run this automatically in every new command window, add the following to the registry:</p>
+<p>To run this automatically in every new command window, add the following to the registry by saving it in a file of type .reg and double-clicking it. Always be careful adding .reg files unless you trust their source and know what you are doing - it can be a security risk.</p>
 
-<div class="indent">
+<div class="indent" style="color:darkcyan">
     Windows Registry Editor Version 5.00<br>
     <br>
     [HKEY_CURRENT_USER\Software\Microsoft\Command Processor]<br>
