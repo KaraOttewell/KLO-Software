@@ -33,8 +33,9 @@
 
     <h1>KOContour</h1>
     <p class="subtitle">
-        Contour map display for elevation data files or elevation servers such as the
-        <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>.
+        Contour map display for elevation data files or DEM elevation servers such as
+        <a href="https://www.opentopodata.org/" target="_blank">Open Topo Data</a> and
+        <a href="https://portal.opentopography.org/" target="_blank">OpenTopography</a>.
     </p>
 
     <span class="badge">Windows</span>
@@ -42,7 +43,7 @@
     <span class="badge">Microsoft Store</span>
     <span class="badge">Free</span>
 
-    <img class="screenshot" src="KOContour_Screenshot7_V2.png" alt="KOContour main screen">
+    <img class="screenshot" src="KOContour_Screenshot_Manzanita_V2.png" alt="KOContour main screen">
     <hr>
 
     <h1>Overview</h1>
@@ -69,18 +70,74 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <h1>Creating the Input Data Files</h1>
 
-    <img src="KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_V2.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 15%;">
+    <img src="KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_V2.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 10%;">
     <h2>Use a DEM Server (recommended for most people)</h2>
     <img class="screenshot" src="KOContour_DEM_Data_Download_Dialog_Screenshot_V2.png" alt="KOContour DEM data download dialog" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
     <p>
-        There are a number of Digital Elevation Model (DEM) servers on the internet. KOContour can get data from the <a href="https://www.opentopodata.org/datasets/mapzen/" target="_blank">Open Topo Data server</a>. This is the easiest
-        way, but because the site limits you to 100 locations per call, at one-second intervals, and no more than 100,000
-        points per day, it can be a little slow depending on the grid resolution you choose from the dropdown below the
-        dataset name. You can use a different server so long as the API format matches Open Topo. You can also follow the
-        instructions for hosting the server yourself, but that is not necessary if you use the default of
-        <code>https://api.opentopodata.org/</code>. When you click on the <b>Create TSV from DEM server</b> button you will
-        see a file picker which lets you specify where to save the data — I recommend making a <em>ContourMaps</em> folder
-        under your <em>Pictures</em> folder.
+        There are a number of Digital Elevation Model (DEM) servers on the internet, and KOContour can fetch your
+        elevation grid directly from two of them &mdash; no external website needed. These are built in, choose one from the
+        <b>DEM server</b> suggestions which will pop up if you type <b>open</b> into the DEM server URL field.
+    </p>
+    <ul>
+        <li><b>Open Topo Data <a href="https://www.opentopodata.org/" target="_blank">https://api.opentopodata.org/</a></b>
+            &mdash; needs no key. It limits you to 100 locations per call at one-second intervals and 100,000 points per day,
+            so a large grid can be a little slow. You can also host this server yourself to remove those limits.
+        </li>
+        <li><b>OpenTopography <a href="https://portal.opentopography.org/" target="_blank">https://portal.opentopography.org/</a></b>
+            &mdash; fetches the whole region in a single call, so it
+            is much faster for large or dense grids and offers more datasets (including 10&nbsp;m USGS&nbsp;3DEP for the
+            USA). It needs a free API key: register on its site, then click the padlock button which appears beside the server box
+            when the opentopography.org server is chosen, and paste in your key (tip: right-click that padlock to copy the &ldquo;get a key&rdquo;
+            web address). KOContour picks the best dataset for your selected country automatically &mdash; COP30 worldwide, USGS&nbsp;10&nbsp;m
+            for the US.
+        </li>
+    </ul>
+        <p>You should <b>type the URL of your chosen server in the DEM server box</b>. KOContour knows how to &ldquo;talk&rdquo; to these,
+        and any others which use the same protocol, such as if you run your own in a <i>Docker</i> environment.</p>
+        <p style="clear:both;">
+            <b>Open Topo Data</b> &mdash; <b><code>https://api.opentopodata.org/</code></b><br>
+            <b>OpenTopography</b> &mdash; <b><code>https://portal.opentopography.org/</code></b><br><br>
+            The trailing <code>/API</code> is optional &mdash; KOContour accepts either form. Both are also already in the
+            server dropdown, so you can just select one.
+        </p>
+
+
+    <p>
+        The <b>&ldquo;Open Topo Data API&rdquo;</b> &mdash; implements a custom REST API:
+        <code>GET/POST /v1/{dataset}?locations=lat,lon|lat,lon</code> &rarr; JSON
+        <code>{results:[{elevation, location}]}</code>. There is no formal standard name; it was deliberately modelled to
+        look similar to the <a href="https://developers.google.com/maps/documentation/elevation/overview" target="_blank">Google Maps Elevation API</a>.
+        It is one of a family of &ldquo;elevation point-query&rdquo; JSON APIs, but they are not drop-in compatible with one another.
+    </p>
+
+    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Server_Key_V2.png" alt="KOContour DEM API key entry" style="float: left; margin-top: 2px; margin-right: 16px; border-radius: 12px; max-width: 25%;">
+    <p>
+        This means KOContour can talk to the public Open Topo Data server (<code>api.opentopodata.org</code>) and to any
+        <b>self-hosted</b> Open Topo Data instance (it is open-source and meant to be run on your own server) &mdash; or indeed
+        any other server whose API matches Open Topo Data's format.
+    </p>
+
+    <p>
+        The <b>&ldquo;OpenTopography API&rdquo;</b> &mdash; implements custom REST endpoints
+        (<code>globaldem?demtype=&hellip;</code>, <code>usgsdem?datasetName=&hellip;</code>) that return a <em>raster
+        file</em> for a <i>bounding box</i>. You will need to <a href="https://portal.opentopography.org/requestService?service=api" target="_blank">request</a> an <b>API key</b> to use this, but it is <b>free</b>.
+    </p>
+    <p>
+        The real standard for &ldquo;give me a DEM raster for this bounding box&rdquo; is OGC <b>WCS</b> (Web Coverage
+        Service) &mdash; with its cousins <b>WMS</b> / <b>WMTS</b> for map images. Many DEM servers expose WCS (national
+        mapping agencies, GeoServer / MapServer / THREDDS instances, and so on). OpenTopography's API plays the same role as
+        WCS but is <b>not</b> WCS &mdash; it is its own thing.
+    </p>
+    <div style="clear:both;"></div>
+    <img class="screenshot" src="KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Dimensions_Suggestions_V2.png" alt="KOContour grid dimensions suggestions" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+    <p>
+        When you have chosen your server, make sure you enter the <b>API key</b> using the <b>padlock</b> button in the lower right of the
+        dialog. The grid resolution dropdown below the dataset name will be populated with suitable values (you may have to &ldquo;tab off&rdquo;
+        the server name field), so select the one you want. Similarly a dataset recommendation will be selected, but you can override
+        that if you wish. Once you are done setting up your selection parameters click <b>Generate TSV from DEM server</b>; a file picker lets you
+        choose where to save the data &mdash; I recommend making a <em>ContourMaps</em> folder under your <em>Pictures</em> folder
+        and use file type <b>.tsv</b> which is just tab-separated values. KOContour is registered as a handler for .tsv files so you can
+        just double-click on them to open a map if you use that. Click the <b>Save</b> button and the download will begin.
     </p>
     <div style="clear:both;"></div>
 
@@ -89,9 +146,10 @@ T     53.231479474    -6.297182063    1709.2</pre>
         You will then see a progress information popup, which you can hide by clicking the <b>Close and keep going</b>
         button (click on the main toolbar button to see it again), and you can cancel the operation if, for example, you are
         warned that the dataset you chose does not have elevations for the points you requested. A good choice for North
-        America and the UK seems to be the <b>Mapzen</b> dataset, but your mileage may vary. Once the download is complete
-        you can close the progress box and then use the <a href="#LoadData">Load Data</a> button to load the file you
-        created.
+        America and the UK seems to be the <b>Mapzen</b> dataset, and the app will try to default to the best choice, but
+        your mileage may vary. For the opentopodata.org server it is possible to display the actual progress percentage, but for
+        opentopography.org an &ldquo;indeterminate&rdquo; (busy) progress bar has to be used. Once the download is complete you can close the
+        progress box and then use the <a href="#LoadData">Load Data</a> button to load the file you created.
     </p>
     <div style="clear:both;"></div>
 
@@ -110,9 +168,8 @@ T     53.231479474    -6.297182063    1709.2</pre>
         <br clear="left" /> <br clear="right" />
     </p>
 
-    <!-- DEM dataset comparison (relevant both to GPSVisualizer's "best available source" and to the dataset
-         dropdown in KOContour's own DEM-server route). -->
-    <p style="clear:both;">How the main OpenTopoData public datasets compare for resolution/quality:</p>
+    <!-- DEM dataset comparison for the dataset dropdown in the DEM-server route. -->
+    <p style="clear:both;">How the main <b>Open Topo Data</b> public datasets compare for resolution/quality:</p>
 
     <table class="datasets">
         <thead>
@@ -134,34 +191,54 @@ T     53.231479474    -6.297182063    1709.2</pre>
         <li><b><code>aster30m</code></b> is a fine fallback for places mapzen / srtm don't cover well (e.g. far north), but I wouldn't pick it as the everyday choice.</li>
     </ul>
 
-    <h2>Create a GPX file</h2>
+    <p style="clear:both;">The main <b>OpenTopography</b> datasets (chosen from the same dataset dropdown) are:</p>
+
+    <table class="datasets">
+        <thead>
+            <tr><th>Dataset</th><th>Res</th><th>Coverage</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>COP30</code></td><td>~30&nbsp;m</td><td>Global (incl. &gt;60&deg;N)</td><td>Copernicus GLO-30. Modern and clean &mdash; the best worldwide default.</td></tr>
+            <tr><td><code>COP90</code></td><td>~90&nbsp;m</td><td>Global (incl. &gt;60&deg;N)</td><td>Copernicus GLO-90. Coarser, but allows a much larger area per call.</td></tr>
+            <tr><td><code>NASADEM</code></td><td>~30&nbsp;m</td><td>60&deg;N&ndash;56&deg;S</td><td>Reprocessed SRTM &mdash; cleaner than SRTMGL1, but no high latitudes.</td></tr>
+            <tr><td><code>SRTMGL1</code></td><td>~30&nbsp;m</td><td>60&deg;N&ndash;56&deg;S</td><td>NASA SRTM, 1 arc-second.</td></tr>
+            <tr><td><code>SRTMGL3</code></td><td>~90&nbsp;m</td><td>60&deg;N&ndash;56&deg;S</td><td>NASA SRTM, 3 arc-second. Good for large areas.</td></tr>
+            <tr><td><code>AW3D30</code></td><td>~30&nbsp;m</td><td>Global ~82&deg;N&ndash;82&deg;S</td><td>ALOS World 3D (JAXA).</td></tr>
+            <tr><td><code>EU_DTM</code></td><td>30&nbsp;m</td><td>Europe</td><td>Continental Europe DTM.</td></tr>
+            <tr><td><code>USGS10m</code></td><td>~10&nbsp;m</td><td>USA (+ AK/HI/terr.)</td><td>USGS 3DEP, 1/3 arc-second. Best US detail &mdash; auto-selected when your country is the US.</td></tr>
+            <tr><td><code>USGS30m</code></td><td>~30&nbsp;m</td><td>USA (+ AK/HI/terr.)</td><td>USGS 3DEP, 1 arc-second. Use for larger US areas.</td></tr>
+            <tr><td><code>USGS1m</code></td><td>1&nbsp;m</td><td>USA, where lidar exists</td><td>USGS 3DEP lidar. <em>Academic API keys only.</em></td></tr>
+            <tr><td><code>SRTM15Plus</code></td><td>~450&nbsp;m</td><td>Global</td><td>Includes sea-floor bathymetry.</td></tr>
+            <tr><td><code>GEBCOIceTopo</code></td><td>~500&nbsp;m</td><td>Global</td><td>GEBCO, ice-surface; includes bathymetry.</td></tr>
+            <tr><td><code>GEDI_L3</code></td><td>~1&nbsp;km</td><td>52&deg;N&ndash;52&deg;S</td><td>Very coarse; rarely needed for contour maps.</td></tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li><b>General / global default:</b> <code>COP30</code> (full coverage including the far north).</li>
+        <li><b>USA, higher res:</b> <code>USGS10m</code> (10&nbsp;m, auto-selected when your chosen country is the US).</li>
+        <li><b>Very large regions:</b> drop to a 90&nbsp;m set (<code>COP90</code> / <code>SRTMGL3</code>) or use a smaller area, to keep the single-call download manageable.</li>
+    </ul>
+    <p>
+        (The dropdown also offers ellipsoidal-height variants <code>SRTMGL1_E</code> / <code>AW3D30_E</code> and a
+        sub-ice <code>GEBCOSubIceTopo</code>, which are rarely needed for contour maps.)
+    </p>
+
+    <h2 id="CreateData">Create elevation data for an area</h2>
 
     <p>
         KOContour draws its contours from a regular rectangular <em>grid</em> of elevation readings: the contouring
         algorithm needs evenly-spaced points laid out in rows and columns, not a scattering of random measurements. The
-        <b>Create GPX file</b> option builds exactly such a grid for the area you specify &mdash; a centre
-        latitude/longitude and a horizontal extent &mdash; but writes it out as a <em>.gpx</em> file in which every grid
-        node is a waypoint that has a latitude and longitude but <em>no elevation yet</em>.
+        <b>Create data</b> dialog (the same button described above) builds exactly such a grid for the area you specify
+        &mdash; a centre latitude/longitude and a horizontal extent &mdash; and, with the <b>DEM service</b> option, looks
+        up the elevation of every grid point for you and saves a ready-to-load <em>.tsv</em> file in one step. No external
+        website is involved.
     </p>
 
     <p>
-        You then hand that file to <a href="https://www.gpsvisualizer.com/convert_input"
-                                      target="_blank">gpsvisualizer.com</a>, whose free <em>Add DEM elevation data</em> tool looks up an elevation for
-        every waypoint from its digital elevation models (SRTM and others) and gives you back a file with the elevations
-        filled in. Because the points were laid out as an evenly-spaced lattice, that returned file is already a complete
-        elevation grid, ready for KOContour to plot. The appeal of this route is that it needs no DEM-server account or API
-        key of your own &mdash; GPSVisualizer does the elevation lookup for you &mdash; and it lets you request a
-        higher-resolution grid than the throttled DEM-server route comfortably allows.
-    </p>
-
-    <p>
-        To use this method, select the <b>Create GPX file</b> radio button and use the <b>Generate GPX file</b> button to
-        create the GPX grid file. Save it wherever you like, then feed it into <a href="https://www.gpsvisualizer.com/convert_input" target="_blank">gpsvisualizer.com/convert_input</a>. Download the
-        result file and rename it as <em>&lt;Placename&gt;.txt</em> or <em>.tsv</em> &mdash; I use <em>.tsv</em> to
-        distinguish data files from ordinary text files, but that is up to you &mdash; then copy the file from
-        <em>Downloads</em> to your data folder. This process looks a little complex at first, but you only need to do it
-        once per new map area, and it is pretty simple once you have done it a few times. (If you have access to a data
-        source and the technical wherewithal, you can also create a grid data file yourself.)
+        (The dialog also has a <b>Create GPX file</b> option that writes just the grid of latitude/longitude points with
+        <em>no elevations</em>, in case you want to fill them in with a separate elevation tool of your own. Most people
+        will simply use the DEM-server route above, which does the elevation lookup directly.)
     </p>
 
     <p>
@@ -174,46 +251,29 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <h2>Example: Create data for Maui</h2>
 
-    <p>
-        To generate a GPX grid for Maui, go to your favourite map source, e.g. <a href="https://maps.google.com/"
-                                                                                  target="_blank">Google Maps</a>, and enter <em>Maui</em> into the search box. Copy the coordinates of the centre of
-        the area of interest — with Google Maps, right-click on the chosen spot and left-click on the coordinates that pop
-        up, which copies them to the clipboard. In this example it will be something like <code>
-            20.800841499225772,
-            -156.32722033846065
-        </code>. Then click on the GPX button and the following dialog will appear.
-    </p>
-
-    <img class="screenshot shot-right" src="KOContour_Create_GPX_Data_Dialog_Screenshot_V2.png" alt="KOContour Create GPX Data dialog" style="max-width: 35%;">
+    <img class="screenshot shot-right" src="KOContour_Create_GPX_Data_Dialog_Screenshot_V2.png" alt="KOContour Create Data dialog" style="max-width: 35%;">
 
     <p>
-        Click on the field labelled <b>Paste lat,lon here</b> and paste the coordinates you just copied. This will fill
-        the Latitude and Longitude fields — you can also fill in those fields individually if you prefer, and they will stay
-        in sync. As a quick alternative, you can type a place name into the <b>Title</b> field and choose an entry from the
-        drop-down list of suggestions that appears &mdash; selecting one fills in the coordinates for you; use the country
-        selector beside the Title to restrict the search to a particular country. Fill in the other fields until they all
-        show a green border, indicating they are valid. The grid generated will be a 500&times;300 (lon&times;lat) grid,
-        regardless of the extent you choose. When the <b>Generate GPX File</b> button becomes enabled, click on it and save
-        the file as <em>Maui.gpx</em>.
-    </p>
-
-    <!-- The two GPS Visualizer screenshots side by side, vertically centred with each other. -->
-    <div style="display:flex; align-items:center; gap:18px; clear:both; margin:1em 0;">
-        <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerControls_V2.png" alt="GPS Visualizer conversion controls" style="margin:0; max-width:48%;">
-        <img class="screenshot" src="KOContour_ScreenshotGPSVisualizerOutput_V2.png" alt="GPS Visualizer output download link" style="margin:0; max-width:48%;">
-    </div>
-
-    <p>
-        Then go to <a href="https://www.gpsvisualizer.com/convert_input"
-                      target="_blank">gpsvisualizer.com/convert_input</a> and add the file you created using the control marked <b>1</b>
-        in the screenshot above. Set <em>Add DEM elevation data</em> to <em>best available source</em> using control
-        <b>2</b>, then click the green <b>Convert</b> button marked <b>3</b> and wait for the file to finish processing.
+        Find the centre of your area in your favourite map source, e.g. <a href="https://maps.google.com/"
+        target="_blank">Google Maps</a>: search for <em>Maui</em>, right-click the chosen spot, and left-click the
+        coordinates that pop up to copy them to the clipboard &mdash; something like
+        <code>20.800841, -156.327220</code>. Then click the <b>Create data</b> button to open the dialog.
     </p>
 
     <p>
-        When the download link appears, click it and open the <em>Downloads</em> folder. Rename the file to something
-        like <em>Maui.tsv</em> and copy or move it to your preferred folder under <em>Pictures</em>. You are now ready to
-        load the data into KOContour.
+        Click the field labelled <b>Paste lat,lon here</b> and paste the coordinates; the Latitude and Longitude fields
+        fill in and stay in sync (you can also type them individually). As a quick alternative, type a place name into the
+        <b>Title</b> field and choose an entry from the drop-down of suggestions that appears &mdash; selecting one fills
+        in the coordinates for you; use the country selector beside the Title to restrict the search to a particular
+        country. Fill in the other fields until they all show a green border, indicating they are valid.
+    </p>
+
+    <p>
+        Select the <b>DEM service</b> option and choose a server &mdash; <b>Open Topo Data</b> (no key needed) or
+        <b>OpenTopography</b> (once you have pasted in its key). Pick a dataset and a grid resolution, then click
+        <b>Generate TSV from DEM server</b> and save the file as <em>Maui.tsv</em> in your data folder. A progress popup
+        shows while the elevations are fetched; when it finishes, close it and use <a href="#LoadData">Load Data</a> to
+        plot your new map.
     </p>
 
     <hr>
@@ -270,7 +330,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
         The drop-down near the top of the window selects how the loaded data is drawn. There are four modes:
     </p>
     <ul>
-        <li><b>Lines</b> &mdash; the classic contour map, each level drawn as a coloured line. This is the default.</li>
+        <li><b>Lines</b> &mdash; the classic contour map, each level drawn as a coloured line.</li>
         <li><b>Gradient Shade</b> &mdash; the map is filled with a smooth colour gradient that blends from one
             contour level to the next.</li>
         <li><b>Block shade</b> &mdash; each contour band is filled with a single solid colour, giving a stepped,
@@ -348,7 +408,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <!-- ===== START SECTION: Contour Colour Schemes ===== -->
     <h2 id="ColourSchemes">Contour Colour Schemes</h2>
 
-    <img class="screenshot shot-right" src="KOContour_Screenshot_Colour_Scheme_Dialog_V2.png" alt="Contour colour-scheme chooser dialog with preview swatch strips">
+    <img class="screenshot shot-right" src="KOContour_Screenshot_Colour_Scheme_Dialog_With_Sliders_V2.png" alt="Contour colour-scheme chooser dialog with hue and shade-mute sliders and preview swatch strips">
 
     <p>
         <b>Tap (or click) the contour-levels key</b> in the lower-left of the map to open the
@@ -366,7 +426,20 @@ T     53.231479474    -6.297182063    1709.2</pre>
             green to yellow), where equal colour steps mean equal elevation steps.</li>
     </ul>
     <p>
-        The chosen scheme applies to every display mode, including the 3D view, and is remembered between sessions.
+        At the top of the chooser are sliders that fine-tune the scheme they belong to &mdash; each one is enabled
+        only while its scheme is selected:
+    </p>
+    <ul>
+        <li><b>Hue start</b> and <b>Hue range</b> &mdash; shift and widen the band of colours used by the
+            <b>Hue Ramp</b> scheme.</li>
+        <li><b>Shade mute</b> &mdash; tones down (desaturates) the filled <b>Hypsometric</b> colours towards grey, so
+            large shaded areas look less garish. Its setting is remembered between sessions.</li>
+    </ul>
+    <p>
+        The map updates live as you change the scheme, the sliders, or the switches below, so you can see the effect
+        straight away. <b>Reset</b> puts everything back to how it was when you opened the chooser, <b>Cancel</b>
+        discards your changes, and <b>OK</b> keeps them. The chosen scheme applies to every display mode, including
+        the 3D view, and is remembered between sessions.
     </p>
     <p>
         The chooser also has a <b>3D block sides</b> section with two switches for the 3D relief view:
@@ -471,9 +544,9 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <img class="screenshot shot-right" src="KOContour_Screenshot_PlacesList_V2.png" alt="KOContour places list dialog" style="max-width: 30%;">
 
     <p>
-        Try looking for Paia — you can jump to the <em>P</em> section by pressing the <b>W</b> key. Double-click on
+        Try looking for Paia — you can jump to the <em>P</em> section by pressing the <b>P</b> key. Double-click on
         Paia; if the elevation was left as the default (&minus;1000000 means undefined), it will suggest an elevation
-        based on the nearest contour line and highlight as shown highlighted - 200 feet in this case. Places visible on the currently loaded map are 
+        based on the nearest contour line and highlight it as shown &mdash; 200 feet in this case. Places visible on the currently loaded map are
         shown in cyan, otherwise they are shown in light gray. If you re-type in the place name it will suggest a more accurate
         elevation from GeoNames - 232.9 feet - if you have set up your account on that as described below.
     </p>
@@ -506,7 +579,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
         username you care about into a widely-distributed app, since anyone can read it and spend your daily quota).
     </p>
     <p>
-        You can easily test your account by entering the follwing into the address field of your browser:<br><br>
+        You can easily test your account by entering the following into the address field of your browser:<br><br>
         <code>http://api.geonames.org/searchJSON?name_startsWith=<i><b>&lt;placename&gt;</b></i>&amp;featureClass=P&amp;maxRows=10&amp;username=<i><b>&lt;username&gt;</b></i></code><br><br>
         Replace <i><b>&lt;placename&gt;</b></i> and <i><b>&lt;username&gt;</b></i> with the appropriate values for your chosen place, and your account.
         This will return a list of place names and the data for each.
@@ -546,7 +619,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
         last-access order, most recent first. Double-click an entry to load that data file. If the file no longer exists you
         will be asked if you would like to remove it from the list.
     </p>
-    <img class="screenshot" src="KOContour_Screenshot_Favourite_DataFiles_Dialog.png" alt="KOContour favourite data files dialog" style="float: center; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 60%;">
+    <img class="screenshot" src="KOContour_Screenshot_Favourite_DataFiles_Dialog.png" alt="KOContour favourite data files dialog" style="display: block; margin: 8px auto; border-radius: 12px; max-width: 60%;">
     <div style="clear:both;"></div>
 
     <hr>
@@ -559,9 +632,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
         The <b>Light Theme</b> checkbox switches to a light background, which is sometimes better for printing. The
         <b>Load at startup</b> checkbox causes the app to automatically load the last successfully loaded data file at
         launch, if it still exists. Both of these settings are persisted across launches. The <b>Show places</b> option is
-        not persisted. The "Snapshot Resolution" controls the resolution of the map snapshot produced by the "camera"
-        button, which creates a PNG or JPG showing just the map portion of the sreen, including the key, places if selected,
-        and title. It can either be the same as the screen, or be UHD.
+        not persisted.
     </p>
 
     <p>Everything else is easy to figure out from the tooltips and prompts — have fun exploring!</p>
@@ -569,6 +640,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <h2>Features</h2>
     <div class="feature-grid">
+        <!-- ===== START NEW-IN-V2 FEATURE TILES (move/reorder these four together or individually) ===== -->
         <div class="feature-item">
             <h3>Contour Display Modes</h3>
             <p>Draw the data as contour lines, a smooth gradient shade, solid block shading, or a 3D relief surface.</p>
@@ -597,20 +669,21 @@ T     53.231479474    -6.297182063    1709.2</pre>
                 the preferred level sets.
             </p>
         </div>
+        <!-- ===== END NEW-IN-V2 FEATURE TILES ===== -->
 
         <div class="feature-item">
             <h3>DEM Server Integration</h3>
             <p>
-                Download elevation data directly from Open Topo Data servers, with automatic rate‑limit handling and
-                progress reporting.
+                Fetch elevation data directly from Open Topo Data or OpenTopography servers, with automatic rate‑limit
+                handling and progress reporting.
             </p>
         </div>
 
         <div class="feature-item">
-            <h3>GPX Grid Generation</h3>
+            <h3>Elevation Grid Generation</h3>
             <p>
-                Create GPX files for any region using a lat/lon centre point, then convert them to elevation TSV files
-                via GPSVisualizer.
+                Create a ready-to-use elevation TSV grid for any region from a lat/lon centre point, with the elevations
+                filled in directly from the chosen DEM server.
             </p>
         </div>
 
@@ -682,8 +755,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <div class="download-box">
         <h3>KOContour</h3>
-        <p>
-            The app can be installed from:
+        <p>The app can be installed from:</p>
             <ul>
                 <li>
                     The <a href="https://apps.microsoft.com/store/detail/kocontour/9N0KL98F6TMH"
@@ -695,7 +767,6 @@ T     53.231479474    -6.297182063    1709.2</pre>
                     </a>
                 </li>
             </ul>
-        </p>
         <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
     </div>
 
