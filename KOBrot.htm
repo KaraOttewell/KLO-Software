@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<title>KOBrot — KLO Software</title>
+<link rel="stylesheet" href="KLO.css">
+<style>
+    /* Half-width, alternating screenshots with the body text flowing beside them */
+    .screenshot.shot-right { float: right; clear: both; max-width: 48%; margin: 6px 0 14px 18px; }
+    .screenshot.shot-left  { float: left;  clear: both; max-width: 48%; margin: 6px 18px 14px 0; }
+    .screenshot.shot-center { float: none; clear: both; display: block; max-width: 60%; margin: 14px auto; }
+    hr { clear: both; }
+    @media (max-width: 700px) {
+        /* Stack to full width on narrow screens */
+        .screenshot.shot-right, .screenshot.shot-left, .screenshot.shot-center { float: none; max-width: 100%; margin: 12px auto; }
+    }
+    /* table.options (the colour-map / colouring-option tables) is styled in the shared KLO.css. */
+</style>
+</head>
+<body>
+    <div id="theme-toggle-icon" title="Change theme">🖥️</div>
+    <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+
+    <h1>KOBrot</h1>
+    <p class="subtitle">
+        An interactive explorer for the <b>Mandelbrot</b> and <b>Julia</b> sets &mdash; zoom endlessly into the fractal,
+        paint it with perceptually-uniform colour maps such as Viridis and Magma, watch the matching Julia set update live,
+        and save your favourite views.
+    </p>
+
+    <span class="badge">Windows</span>
+    <span class="badge">UWP</span>
+    <span class="badge">Microsoft Store</span>
+    <span class="badge">Free</span>
+
+    <img class="screenshot" src="KOBrot_Screenshot_AppWithJuiaSetAndMandelbrot.png" alt="KOBrot main screen showing the Mandelbrot set with its companion Julia set">
+    <hr>
+
+    <h2>Overview</h2>
+
+    <p>
+        KOBrot draws the famous <b>Mandelbrot set</b> &mdash; the intricate fractal you get by asking, for every point on the
+        complex plane, whether the sequence <code>z &rarr; z&sup2; + c</code> stays bounded or runs off to infinity. Points
+        that stay bounded form the black "body" of the set; points that escape are coloured according to <em>how quickly</em>
+        they escape, which is what produces the endlessly detailed bands and filaments around the edge.
+    </p>
+
+    <p>
+        You can zoom in almost without limit, recolour the picture on the fly, and &mdash; because every point of the
+        Mandelbrot set is itself the "seed" for a whole <b>Julia set</b> &mdash; explore the matching Julia set for whatever
+        point you are hovering over. The sections below walk through the main features; most other controls explain
+        themselves through their tooltips.
+    </p>
+    <hr>
+
+    <h2 id="Zooming">Zooming and Panning</h2>
+
+    <img class="screenshot shot-right" src="KOBrot_Screenshot_AppViridisMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Viridis colour map" style="max-width: 44%;">
+
+    <p>
+        To dive into the fractal, <b>click and drag a rectangle</b> across the area you want to magnify. A selection box
+        &mdash; matching the proportions of the drawing area &mdash; follows the pointer, and releasing the mouse button
+        zooms to the selected region. Each zoom is added to a <b>zoom history</b>, so you can step <b>back</b> and
+        <b>forward</b> through the places you have visited, much like the history in a web browser.
+    </p>
+
+    <p>
+        On a touchscreen you can <b>pinch</b> two fingers together or <b>spread</b> them apart to zoom out or in, centred on
+        the midpoint between your fingers, and <b>drag with two fingers</b> to pan. A mouse wheel (or precision-touchpad
+        pinch) zooms as well. As you zoom the coordinates and magnification update so you always know where you are on the
+        complex plane.
+    </p>
+
+    <p>
+        The picture above is the classic whole-set view drawn with the <b>Viridis</b> colour map. Because the colouring is
+        based on the escape count, the deeper you zoom the more the colour bands reveal the fine structure of the boundary.
+    </p>
+    <hr>
+
+    <h2 id="ColourMaps">Colour Maps</h2>
+
+    <img class="screenshot shot-left" src="KOBrot_Screenshot_AppMagmaMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Magma colour map" style="max-width: 44%;">
+
+   <img src="KOBrot_Screenshot_AppColourSchemeDropdown.png" alt="KOBrot Colour map dropdown"  style="max-width: 20%; float: right;">
+    <p>
+        The same fractal can look completely different depending on how the escape counts are mapped to colours. KOBrot
+        includes the well-known <b>perceptually-uniform</b> colour maps &mdash; such as <b>Viridis</b> (purple-blue through
+        teal and green to yellow) and <b>Magma</b> (black through deep purple and red to pale yellow), shown here. In a
+        perceptually-uniform map, equal steps in escape count look like equal steps in colour, so the bands read evenly to
+        the eye and the maps stay colour-blind friendly.
+    </p>
+    <p>
+        Use the <b>number-of-colours</b> slider to set how many colour bands the escape counts are spread across: fewer
+        bands give bold, poster-like steps, while more bands give a smooth, finely-graded blend. A <b>hue offset</b> control
+        rotates the colours through the map so you can shift where each band falls without changing the map itself.
+    </p>
+    <div style="clear:both;"></div>
+
+    <p>The colour maps to choose from are:</p>
+
+    <table class="options">
+        <thead>
+            <tr><th>Colour map</th><th>Look</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><b>Colour Wheel</b></td><td>Hue ramp, red &rarr; violet. A &ldquo;rainbow&rdquo; of colour.</td></tr>
+            <tr><td><b>Monochrome</b></td><td>Shades of a single colour, and grayscale images.</td></tr>
+            <tr><td><b>Random</b></td><td>A freshly generated palette per band &mdash; kaleidoscopic and unpredictable.</td></tr>
+            <tr><td><b>Magma</b></td><td>Black &rarr; deep purple &rarr; red &rarr; pale yellow. Perceptually uniform.</td></tr>
+            <tr><td><b>Inferno</b></td><td>Black &rarr; deep purple &rarr; fiery red &rarr; orange &rarr; bright yellow. Perceptually uniform; like Magma but brighter and more fiery towards the top.</td></tr>
+            <tr><td><b>Plasma</b></td><td>Dark blue-purple &rarr; magenta &rarr; orange &rarr; yellow. Perceptually uniform and colour-blind friendly.</td></tr>
+            <tr><td><b>Viridis</b></td><td>Purple-blue &rarr; teal &rarr; green &rarr; yellow. Perceptually uniform and colour-blind friendly.</td></tr>
+        </tbody>
+    </table>
+    <div style="clear:both;"></div>
+
+    <h3>A Random Colour Map</h3>
+
+    <img class="screenshot shot-right" src="KOBrot_Screenshot_RandomColourmapMandelbrot.png" alt="KOBrot Mandelbrot set drawn with a randomly generated colour map" style="max-width: 44%;">
+
+    <p>
+        The "Colour Wheel" is the default, and typical Mandelbrot choice, but for something more playful, try the <b>random colour map</b>: KOBrot generates a fresh palette so each band gets
+        an unexpected colour, giving the kaleidoscopic, stained-glass look above. It is a quick way to make the boundary
+        structure jump out &mdash; and to stumble on a striking palette you would never have picked deliberately. Generate
+        another whenever you want a different one.
+    </p>
+        <p>
+        You can also choose how the image is <b>drawn</b>: <b>left-to-right</b> fills the picture in tidy columns, while
+        <b>random</b> scatters the pixels so the whole image resolves at once like an old dial-up photo coming into focus.
+        It makes no difference to the finished picture &mdash; just to how it appears while it is being computed &mdash; and
+        your choice is remembered for next time.
+    </p>
+    <h3 id="ColourIndexing">Simple, Smooth and Histogram colouring</h3>
+
+    <p>
+        As well as <em>which</em> colours are used, you can choose <em>how the escape counts are turned into those
+        colours</em>. This changes the character of the picture quite a lot:
+    </p>
+
+    <table class="options">
+        <thead>
+            <tr><th>Option</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><b>Simple</b></td><td>Colours come straight from the raw (whole-number) escape count &mdash; the number of steps before each point runs off to infinity. Fast, and gives crisp concentric <em>bands</em>, since the colour jumps each time the count ticks up by one.</td></tr>
+            <tr><td><b>Smooth</b></td><td>Uses a continuous, fractional escape value instead of the whole number, so the bands blend smoothly into one another and the hard &ldquo;contour&rdquo; steps disappear, giving a soft, graded look.</td></tr>
+            <tr><td><b>Histogram</b></td><td>Spreads the colours according to how often each escape count actually occurs across the whole image, so every colour in the map gets used roughly equally. This keeps detail visible even where most points share similar counts &mdash; especially useful when zoomed deep in, where the escape counts bunch together.</td></tr>
+        </tbody>
+    </table>
+
+    <p>
+        Simple and Smooth are the everyday choices; reach for Histogram when a view looks washed-out or dominated by one or
+        two colours and you want to bring the structure back out.
+    </p>
+    <div style="clear:both;"></div>
+
+    <h3>Colour Scheme Controls</h3>
+
+    <img class="screenshot shot-left" src="KOBrot_Screenshot_AppColourSchemeControls.png" alt="KOBrot colour scheme control panel with colour-map chooser and sliders" style="max-width: 32%;">
+
+    <p>
+        All of the colouring options live together in the <b>colour scheme controls</b>. From here you pick the colour map,
+        set the number of colours, and adjust the hue offset, with the picture updating live as you make changes so you can
+        see the effect straight away.
+    </p>
+    <img src="KOBrot_Screenshot_AppColourSchemeControlsButton.png" alt="KOBrot Julia Set and colour scheme sidebar open button" style="max-width: 10%;">
+    <p>
+        To open the colour scheme controls or to see the <a href="#JuliaSets">Julia Set</a> just click on the button shown above, in the top ribbon.
+        The sidebar will slide open (the same button closes it again) and as you move the pointer around in the main Mandelbrot image to the right
+        the Julia Set will update in real time to reflect that point. If you want to snapshot the Julia Set using the "camera buttons"
+        you obviously don't want to change that point position else you'd change the picture. To prevent that just <b>hold down the <i>Shift</i> key</b>
+        as you move the pointer to the snapshot button. You can release the <i>Shift</i> key once you are away from the Mandelbrot canvas.
+    </p>
+    <img src="KOBrot_Screenshot_AppCameraSnapshotButton.png" alt="KOBrot Camera snapshot button" style="max-width: 10%;">
+    <div style="clear:both;"></div>
+
+    <hr>
+
+    <h2 id="JuliaSets">Julia Sets</h2>
+
+    <img class="screenshot shot-right" src="KOBrot_Screenshot_JustJuliaSet.png" alt="KOBrot showing a Julia set on its own" style="max-width: 44%;">
+
+    <p>
+        Every point <code>c</code> on the Mandelbrot plane defines its own <b>Julia set</b> &mdash; the picture you get by
+        fixing that <code>c</code> and asking which <em>starting</em> points stay bounded under <code>z &rarr; z&sup2; +
+        c</code>. Points inside the Mandelbrot set give connected, often beautifully symmetric Julia sets; points just
+        outside give delicate, dust-like ones.
+    </p>
+
+    <p>
+        As you move the pointer over the Mandelbrot set, KOBrot draws the matching Julia set live, so you can hunt for
+        appealing shapes simply by gliding around the boundary. The companion view (shown on the main screenshot at the top
+        of this page) lets you watch both at once; you can also view a chosen Julia set on its own, as above, and zoom into
+        it just like the Mandelbrot set.
+    </p>
+    <div style="clear:both;"></div>
+    <hr>
+
+    <h2 id="Favourites">Saving and Loading Favourites</h2>
+
+    <img class="screenshot shot-left" src="KOBrot_Screenshot_FavouritesCollectionsDialog.png" alt="KOBrot favourites collection dialog listing saved views" style="max-width: 42%;">
+
+    <p>
+        When you find a view worth keeping, save it to your <b>favourites</b>. Each favourite remembers the exact location,
+        magnification, colour map and colouring settings, together with a <b>title</b> and a <b>creator tag</b> so you can
+        tell your own discoveries apart from the samples that ship with the app. KOBrot comes with a starter collection of
+        favourites so there is something interesting to look at the very first time you run it.
+    </p>
+
+    <p>
+        Open the <b>favourites collection</b> dialog to browse your saved views; double-click an entry to jump straight back
+        to it. From here you can also manage the list &mdash; rename, remove, or step through your collection as a slideshow.
+        Because a favourite stores the full set of parameters, re-opening one reproduces the picture exactly as you saved it.
+    </p>
+    <div style="clear:both;"></div>
+    <hr>
+
+    <h2 id="Startup">Startup Behaviour</h2>
+
+    <p>
+        KOBrot can start up however suits you. Choose from:
+    </p>
+    <ul>
+        <li><b>Default view</b> &mdash; open on the classic whole Mandelbrot set every time.</li>
+        <li><b>Last session's zoom</b> &mdash; reopen exactly where you left off, at the same location and magnification.</li>
+        <li><b>Last session's history</b> &mdash; restore your whole zoom history from last time, so you can step back and
+            forward through everywhere you had been.</li>
+    </ul>
+    <p>Your choice is remembered between launches.</p>
+    <hr>
+
+    <h2 id="Snapshots">Saving Snapshots</h2>
+
+    <p>
+        You can save the picture you are looking at as an image. The first time it runs, KOBrot offers to create a
+        <b>KaraBrot Snapshots</b> folder inside your <em>Pictures</em> library as a convenient place to keep them, and adds a
+        clickable link to open that folder. Saving a snapshot captures the current fractal &mdash; colours and all &mdash; as
+        a high-resolution image you can share or print.
+    </p>
+        <img class="screenshot shot-center" src="KOBrot_HeroScreenshot.png" alt="KOBrot snapshot example" style="max-width: 75%;">
+    <hr>
+
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>Mandelbrot Explorer</h3>
+            <p>Render the Mandelbrot set at high detail and zoom almost without limit into its boundary.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Live Julia Sets</h3>
+            <p>See the Julia set for the point under the pointer update in real time, or view a chosen Julia set on its own.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Choice of Colour Maps</h3>
+            <p>Generate images using the standard "Colour Wheel", colour-blind-friendly maps such as Viridis and Magma, or a fresh random palette for a kaleidoscopic, stained-glass
+            look that makes the structure pop, amongst others.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Adjustable Colouring</h3>
+            <p>Set the number of colour bands and rotate the hue offset, with the picture updating live as you change them.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Drag-to-Zoom &amp; History</h3>
+            <p>Drag a proportional box to zoom in, and step back and forward through your zoom history like a web browser.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Touch Gestures</h3>
+            <p>Pinch to zoom and drag with two fingers to pan; the mouse wheel and trackpad zoom too.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Favourites</h3>
+            <p>Save views &mdash; location, zoom and colours &mdash; with a title and creator tag, and reload them in one click.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Drawing Modes</h3>
+            <p>Watch the image fill in left-to-right or resolve all at once with random pixel ordering.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Flexible Startup</h3>
+            <p>Open on the default view, your last zoom, or your whole previous zoom history.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Snapshots</h3>
+            <p>Save the current fractal as a high-resolution image, with a dedicated Pictures subfolder offered on first run.</p>
+        </div>
+    </div>
+    <hr>
+
+    <h2>Download and Install</h2>
+
+    <div class="download-box">
+        <h3>KOBrot</h3>
+        <p>The app can be installed from:</p>
+            <ul>
+                <li>
+                    The <a href="https://apps.microsoft.com/store/detail/kobrot/9ND748N4GVM9"
+                           target="_blank">KOBrot Microsoft Store web page</a>
+                </li>
+                <li>
+                    <a href="ms-windows-store://pdp/?productid=9ND748N4GVM9" target="_blank">
+                        <img src="ms_store_badge.svg" alt="Get KOBrot from the Microsoft Store app" style="height:40px;vertical-align:middle;">
+                    </a>
+                </li>
+            </ul>
+        <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
+    </div>
+
+    <p style="font-size:9pt; color:#666;">
+        KOBrot is free software.
+        <br><a href="index.htm">&#8592; Back to KLO Software</a>
+    </p>
+    <script src="KLODarkModeSwitch.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Only run if opened locally
+            if (window.location.protocol === 'file:') {
+                const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+                // Grab every single link on the page
+                document.querySelectorAll('a').forEach(link => {
+                    const href = link.getAttribute('href');
+
+                    // If the link exists, doesn't start with http/https, and isn't an anchor jump link (#)
+                    if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('#')) {
+
+                        // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                        const cleanHref = href.replace(/^\.\//, '');
+
+                        // Rewrite the link to point to the live site
+                        link.href = baseWebUrl + cleanHref;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

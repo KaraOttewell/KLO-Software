@@ -459,3 +459,32 @@ body.theme-dark #theme-toggle button {
     body:not(.theme-light):not(.theme-dark) .dr   { color: #ff6e6e; }
     body:not(.theme-light):not(.theme-dark) .blue { color: #79c0ff; }
 }
+
+/* ============================================================
+   COMPARISON TABLES (table.options)
+   Added for KOBrot's colour-map / colouring-option tables.
+   Uses explicit light backgrounds AND dark text so the table
+   reads as a self-contained light "card" in both the light and
+   dark page themes (otherwise the dark-theme light text was
+   invisible on the fixed light even-row background).
+   ============================================================ */
+
+table.options {
+    clear: both;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 14px 0;
+    font-size: 0.95em;
+}
+
+table.options th,
+table.options td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+table.options td { background: #ffffff; color: #1a1a1a; }
+table.options th { background: #0F4761; color: white; }
+table.options tbody tr:nth-child(even) td { background: #f0f6f9; }
