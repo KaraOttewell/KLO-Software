@@ -6,18 +6,6 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <title>KOBrot — KLO Software</title>
 <link rel="stylesheet" href="KLO.css">
-<style>
-    /* Half-width, alternating screenshots with the body text flowing beside them */
-    .screenshot.shot-right { float: right; clear: both; max-width: 48%; margin: 6px 0 14px 18px; }
-    .screenshot.shot-left  { float: left;  clear: both; max-width: 48%; margin: 6px 18px 14px 0; }
-    .screenshot.shot-center { float: none; clear: both; display: block; max-width: 60%; margin: 14px auto; }
-    hr { clear: both; }
-    @media (max-width: 700px) {
-        /* Stack to full width on narrow screens */
-        .screenshot.shot-right, .screenshot.shot-left, .screenshot.shot-center { float: none; max-width: 100%; margin: 12px auto; }
-    }
-    /* table.options (the colour-map / colouring-option tables) is styled in the shared KLO.css. */
-</style>
 </head>
 <body>
     <div id="theme-toggle-icon" title="Change theme">🖥️</div>
@@ -35,7 +23,7 @@
     <span class="badge">Microsoft Store</span>
     <span class="badge">Free</span>
 
-    <img class="screenshot" src="KOBrot_Screenshot_AppWithJuiaSetAndMandelbrot.png" alt="KOBrot main screen showing the Mandelbrot set with its companion Julia set">
+    <img class="screenshot" src="KOBrot_Screenshot_AppWithJuliaSetAndMandelbrot.png" alt="KOBrot main screen showing the Mandelbrot set with its companion Julia set">
     <hr>
 
     <h2>Overview</h2>
@@ -52,6 +40,10 @@
         Mandelbrot set is itself the "seed" for a whole <b>Julia set</b> &mdash; explore the matching Julia set for whatever
         point you are hovering over. The sections below walk through the main features; most other controls explain
         themselves through their tooltips.
+    </p>
+
+    <p class="local-copy-notice">
+        The most up to date version of this information will always be the <a href="KOBrot.htm">online version</a>.
     </p>
     <hr>
 
@@ -70,7 +62,9 @@
         On a touchscreen you can <b>pinch</b> two fingers together or <b>spread</b> them apart to zoom out or in, centred on
         the midpoint between your fingers, and <b>drag with two fingers</b> to pan. A mouse wheel (or precision-touchpad
         pinch) zooms as well. As you zoom the coordinates and magnification update so you always know where you are on the
-        complex plane.
+        complex plane. If you hold down the <b>Ctrl</b> key while zooming with the back/forward zoom buttons, the zoom will
+        be centred on the current centre of the view. Holding <b>Shift</b> while zooming will keep the colour scheme fixed,
+        so you can explore the structure without changing the colours.
     </p>
 
     <p>
@@ -83,7 +77,7 @@
 
     <img class="screenshot shot-left" src="KOBrot_Screenshot_AppMagmaMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Magma colour map" style="max-width: 44%;">
 
-   <img src="KOBrot_Screenshot_AppColourSchemeDropdown.png" alt="KOBrot Colour map dropdown"  style="max-width: 20%; float: right;">
+    <img src="KOBrot_Screenshot_AppColourSchemeDropdown.png" alt="KOBrot Colour map dropdown" style="max-width: 20%; float: right;">
     <p>
         The same fractal can look completely different depending on how the escape counts are mapped to colours. KOBrot
         includes the well-known <b>perceptually-uniform</b> colour maps &mdash; such as <b>Viridis</b> (purple-blue through
@@ -126,7 +120,7 @@
         structure jump out &mdash; and to stumble on a striking palette you would never have picked deliberately. Generate
         another whenever you want a different one.
     </p>
-        <p>
+    <p>
         You can also choose how the image is <b>drawn</b>: <b>left-to-right</b> fills the picture in tidy columns, while
         <b>random</b> scatters the pixels so the whole image resolves at once like an old dial-up photo coming into focus.
         It makes no difference to the finished picture &mdash; just to how it appears while it is being computed &mdash; and
@@ -135,8 +129,10 @@
     <h3 id="ColourIndexing">Simple, Smooth and Histogram colouring</h3>
 
     <p>
-        As well as <em>which</em> colours are used, you can choose <em>how the escape counts are turned into those
-        colours</em>. This changes the character of the picture quite a lot:
+        As well as <em>which</em> colours are used, you can choose <em>
+            how the escape counts are turned into those
+            colours
+        </em>. This changes the character of the picture quite a lot:
     </p>
 
     <table class="options">
@@ -184,8 +180,10 @@
 
     <p>
         Every point <code>c</code> on the Mandelbrot plane defines its own <b>Julia set</b> &mdash; the picture you get by
-        fixing that <code>c</code> and asking which <em>starting</em> points stay bounded under <code>z &rarr; z&sup2; +
-        c</code>. Points inside the Mandelbrot set give connected, often beautifully symmetric Julia sets; points just
+        fixing that <code>c</code> and asking which <em>starting</em> points stay bounded under <code>
+            z &rarr; z&sup2; +
+            c
+        </code>. Points inside the Mandelbrot set give connected, often beautifully symmetric Julia sets; points just
         outside give delicate, dust-like ones.
     </p>
 
@@ -225,8 +223,10 @@
     <ul>
         <li><b>Default view</b> &mdash; open on the classic whole Mandelbrot set every time.</li>
         <li><b>Last session's zoom</b> &mdash; reopen exactly where you left off, at the same location and magnification.</li>
-        <li><b>Last session's history</b> &mdash; restore your whole zoom history from last time, so you can step back and
-            forward through everywhere you had been.</li>
+        <li>
+            <b>Last session's history</b> &mdash; restore your whole zoom history from last time, so you can step back and
+            forward through everywhere you had been.
+        </li>
     </ul>
     <p>Your choice is remembered between launches.</p>
     <hr>
@@ -239,7 +239,7 @@
         clickable link to open that folder. Saving a snapshot captures the current fractal &mdash; colours and all &mdash; as
         a high-resolution image you can share or print.
     </p>
-        <img class="screenshot shot-center" src="KOBrot_HeroScreenshot.png" alt="KOBrot snapshot example" style="max-width: 75%;">
+    <img class="screenshot shot-center" src="KOBrot_HeroScreenshot.png" alt="KOBrot snapshot example" style="max-width: 75%;">
     <hr>
 
     <h2>Features</h2>
@@ -256,8 +256,10 @@
 
         <div class="feature-item">
             <h3>Choice of Colour Maps</h3>
-            <p>Generate images using the standard "Colour Wheel", colour-blind-friendly maps such as Viridis and Magma, or a fresh random palette for a kaleidoscopic, stained-glass
-            look that makes the structure pop, amongst others.</p>
+            <p>
+                Generate images using the standard "Colour Wheel", colour-blind-friendly maps such as Viridis and Magma, or a fresh random palette for a kaleidoscopic, stained-glass
+                look that makes the structure pop, amongst others.
+            </p>
         </div>
 
         <div class="feature-item">
@@ -302,17 +304,17 @@
     <div class="download-box">
         <h3>KOBrot</h3>
         <p>The app can be installed from:</p>
-            <ul>
-                <li>
-                    The <a href="https://apps.microsoft.com/store/detail/kobrot/9ND748N4GVM9"
-                           target="_blank">KOBrot Microsoft Store web page</a>
-                </li>
-                <li>
-                    <a href="ms-windows-store://pdp/?productid=9ND748N4GVM9" target="_blank">
-                        <img src="ms_store_badge.svg" alt="Get KOBrot from the Microsoft Store app" style="height:40px;vertical-align:middle;">
-                    </a>
-                </li>
-            </ul>
+        <ul>
+            <li>
+                The <a href="https://apps.microsoft.com/store/detail/kobrot/9ND748N4GVM9"
+                       target="_blank">KOBrot Microsoft Store web page</a>
+            </li>
+            <li>
+                <a href="ms-windows-store://pdp/?productid=9ND748N4GVM9" target="_blank">
+                    <img src="ms_store_badge.svg" alt="Get KOBrot from the Microsoft Store app" style="height:40px;vertical-align:middle;">
+                </a>
+            </li>
+        </ul>
         <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
     </div>
 
@@ -326,6 +328,13 @@
             // Only run if opened locally
             if (window.location.protocol === 'file:') {
                 const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+                // Show the "this is a local copy, see the online version" notice - it stays
+                // hidden (via CSS) when the page is served normally, since it would be
+                // redundant/confusing on the live site itself.
+                document.querySelectorAll('.local-copy-notice').forEach(el => {
+                    el.style.display = 'block';
+                });
 
                 // Grab every single link on the page
                 document.querySelectorAll('a').forEach(link => {

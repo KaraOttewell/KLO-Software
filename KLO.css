@@ -21,6 +21,7 @@ hr {
     border: none;
     border-top: 1px solid #ccc;
     margin: 2em 0;
+    clear: both;
 }
 
 /* ============================================================
@@ -193,6 +194,15 @@ pre.bbc7 { font-size: 12pt; }
     color: #666;
     margin-top: 0.2em;
     margin-bottom: 1em;
+}
+
+/* Half-width, alternating screenshots with the body text flowing beside them */
+.screenshot.shot-right { float: right; clear: both; max-width: 48%; margin: 6px 0 14px 18px; }
+.screenshot.shot-left  { float: left;  clear: both; max-width: 48%; margin: 6px 18px 14px 0; }
+.screenshot.shot-center { float: none; clear: both; display: block; max-width: 60%; margin: 14px auto; }
+@media (max-width: 700px) {
+    /* Stack to full width on narrow screens */
+    .screenshot.shot-right, .screenshot.shot-left, .screenshot.shot-center { float: none; max-width: 100%; margin: 12px auto; }
 }
 
 /* Screenshot % widths */
@@ -488,3 +498,13 @@ table.options td {
 table.options td { background: #ffffff; color: #1a1a1a; }
 table.options th { background: #0F4761; color: white; }
 table.options tbody tr:nth-child(even) td { background: #f0f6f9; }
+
+/* ============================================================
+   LOCAL-COPY NOTICE
+   Hidden by default; a page's own script reveals it only when
+   window.location.protocol === 'file:', so it appears solely on
+   local copies of the page (e.g. one shipped inside an app) and
+   never on the live, web-served version of the same page.
+   ============================================================ */
+
+.local-copy-notice { display: none; }
