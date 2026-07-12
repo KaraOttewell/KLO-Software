@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="KLO.gif" type="image/gif">
+<title>GenGIS — KLO Software</title>
+<link rel="stylesheet" href="KLO.css">
+</head>
+<body>
+    <div id="theme-toggle-icon" title="Change theme">🖥️</div>
+    <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+
+    <h1>GenGIS</h1>
+    <p class="subtitle">
+        Especially for the old YRL gang here is a "blast from the past" map viewer for <b>Great Britain</b> built on
+        <b>Ordnance Survey</b> open data &mdash; pan and zoom around the coastline, motorways, A, B and minor roads,
+        rivers, lakes, towns and counties; choose exactly which layers, colours, widths and labels are drawn; pick
+        out the places and features you care about; and print or save the result.
+    </p>
+
+    <span class="badge">Windows</span>
+    <span class="badge">Desktop MFC app</span>
+    <span class="badge">Ordnance Survey data</span>
+    <span class="badge">Free</span>
+
+    <!-- Help Image - a screenshot of the main map (e.g. central England with roads, rivers and place labels). -->
+    <img class="screenshot" src="GenGIS_Screenshot_MainMap.png" alt="GenGIS main window showing a map of Great Britain with roads, rivers and place labels">
+    <hr>
+
+    <h2>Overview</h2>
+    <p>
+        So for a fun project and an excuse to use Claude AI to figure out how to transform the free UK Ordnance Survey data
+        into a form I could use with the 1998 YRL "GenGIS" map viewer, I built a new version of GenGIS that runs on modern
+        Windows and uses the current OS open data products. It is still the MFC app, tweaked to run on Windows 10 onwards.
+        The mapping software may be from 1998 but the map data is <b>bang up to date as per the latest OS open data releases</b>.
+        The <a href="#Installation">installation instructions are below</a> and comprise basically just unpacking a .zip file. Have fun!
+    </p>
+    <p>
+        GenGIS draws a map of Great Britain from <b>Ordnance Survey open data</b>. The coastline, the road network
+        (motorways, trunk roads, A roads, B roads and minor/unclassified roads), rivers, lakes, towns and county boundaries
+        are each held as their own layer, and you decide which of them appear, in what colour, at what line width, and with
+        which labels. You move around the map by dragging out a zoom box or using touch and mouse gestures, and you can pick
+        individual places and features off the map to keep them permanently labelled.
+    </p>
+
+    <p>
+        The underlying geography comes from modern OS open products &mdash; OS Open Roads, OS Open Zoomstack, OS Open Rivers
+        and OS Open Names &mdash; so the network, water and place names are up to date, while the map stays fast even with the
+        whole country in view. The sections below walk through the main features; most other controls explain themselves
+        through their tooltips.
+    </p>
+
+    <p class="local-copy-notice">
+        The most up to date version of this information will always be the <a href="GenGIS.htm">online version</a>.
+    </p>
+    <hr>
+
+    <h2 id="Zooming">Zooming and Panning</h2>
+
+    <!-- Help Image - a screenshot of a zoom selection box being dragged over the map. -->
+    <img class="screenshot shot-right" src="GenGIS_Screenshot_ZoomBox.png" alt="GenGIS with a zoom selection rectangle dragged across the map" style="max-width: 44%;">
+
+    <p>
+        To zoom in, <b>click and drag a rectangle</b> across the area you want to magnify; releasing the mouse button zooms
+        to that region. Each zoom is added to a <b>zoom history</b>, so you can step <b>back</b> and <b>forward</b> through
+        the places you have visited, much like the history in a web browser, and a <b>whole-map</b> button returns you to the
+        full view of Britain at any time. Arrow buttons pan the view north, south, east and west.
+    </p>
+
+    <p>
+        On a touchscreen you can <b>drag with two fingers</b> to pan and <b>pinch</b> or <b>spread</b> to zoom out or in,
+        centred between your fingers. A <b>two-finger drag on a precision touchpad</b> pans as well, and the mouse wheel
+        zooms. As you move around, the status bar shows the National Grid coordinates of the view so you always know where
+        you are.
+    </p>
+
+    <p>
+        While you are dragging or pinching, GenGIS switches to a <b>quick-draw</b> mode &mdash; it draws just the coastline
+        and the major roads as thin lines so the map keeps up with your fingers, then fills in the full detail (minor roads,
+        rivers, lakes and all the labels) the moment you let go. Major town names stay on screen even during the drag, so you
+        can always see where you are heading.
+    </p>
+    <div style="clear:both;"></div>
+    <hr>
+
+    <h2 id="MapFeatures">Choosing What the Map Shows</h2>
+
+    <!-- Help Image - a screenshot of the "Set Map Features" dialog. -->
+    <img class="screenshot shot-left" src="GenGIS_Screenshot_SetMapFeatures.png" alt="GenGIS Set Map Features dialog with layer, colour, width and label controls" style="max-width: 42%;">
+
+    <p>
+        The <b>Set Map Features</b> dialog is where you tailor the map. Each layer &mdash; coastline, motorways, trunk roads,
+        A roads, B roads, minor roads, rivers, lakes and places &mdash; can be turned <b>on or off</b> independently, given
+        its own <b>colour</b>, and (when zoomed in close enough) drawn with a chosen <b>line width</b> so major routes stand
+        out from minor ones. A <b>scale bar</b> can be shown on the map, and the whole dialog is <b>modeless</b>, so the map
+        stays fully interactive while you experiment &mdash; changes appear straight away.
+    </p>
+
+    <p>
+        Labels are configurable too: <b>place labels</b> and <b>feature labels</b> each have their own <b>font</b> and
+        <b>colour</b> (place names default to black, feature names to dark green), so the map reads clearly whichever layers
+        you have chosen. To keep wide views fast, heavy line widths are only used once you are zoomed in past a sensible
+        limit; further out, everything is drawn with thin lines.
+    </p>
+    <div style="clear:both;"></div>
+    <hr>
+
+    <h2 id="PlacesFeatures">Displayed Places and Features</h2>
+
+    <p>
+        GenGIS distinguishes <b>major</b> and <b>minor</b> places and features. Major items (large towns and cities, the main
+        roads and rivers) are shown even when a lot of the country is in view, while minor items only appear once you have
+        zoomed in past a <b>cut-off</b> you can set &mdash; so the map never becomes an unreadable tangle of labels at low
+        magnification. Anything you <a href="#Picking">pick</a> in place picking or feature picking mode is temporarily shown
+        on the map to let you decide whether to keep it or not. If you add it to either your Minor or Major displayed
+        list it will stay on the map if Minor or Major places or features are switched on.
+    </p>
+
+    <p>
+        The place data includes not only tens of thousands of settlements but also a curated set of famous <b>landmarks</b>
+        &mdash; headlands, capes and peaks such as <b>Land's End</b>, <b>Ben Nevis</b> and <b>Yr Wyddfa (Snowdon)</b> &mdash;
+        that Ordnance Survey classes as landforms rather than towns, so the places you would expect to find on a map of
+        Britain are there.
+    </p>
+    <hr>
+
+    <h2 id="Picking">Picking Places and Features</h2>
+
+    <!-- Help Image - a screenshot of the Pick Places (finder) dialog listing nearby places. -->
+    <img class="screenshot shot-right" src="GenGIS_Screenshot_PickPlaces.png" alt="GenGIS Pick Places dialog listing the nearest places to a clicked point" style="max-width: 42%;">
+
+    <p>
+        To label a particular place or feature, switch to <b>Pick Places</b> or <b>Pick Features</b> mode and click near it
+        &mdash; or, from any mode, hold <b>Ctrl</b> (for places) or <b>Ctrl+Shift</b> (for features) as you click. GenGIS
+        lists the <b>nearest</b> places or features to where you clicked, with the closest first, and you choose which to add.
+        The picker windows are <b>modeless</b>, so the map stays live behind them: each further click just refreshes the list
+        in place.
+    </p>
+
+    <p>
+        For each item you can decide whether it joins your <b>Major list</b>, your <b>Minor list</b>, or <b>no list</b>, using
+        the drop-down at the bottom of the picker. An <b>Add</b> button applies your choice without closing the window, so you
+        can add several things in one session; picking an item that is already displayed offers to <b>remove</b> it again.
+        Rows that are already on the map are labelled &mdash; e.g. <em>(already in Major list)</em> &mdash; so you can see at
+        a glance what you have already added. A <b>Search Properties</b> box lets you find places and features <b>by name</b>
+        rather than by clicking, provided they appear in the list of nearby items. The maximum number of entries are set in the
+        <a href="#Properties">Map Properties</a> dialog.
+    </p>
+    <div style="clear:both;"></div>
+    <hr>
+
+    <h2 id="Properties">Map Properties</h2>
+
+    <!-- PLACEHOLDER IMAGE (landscape): the Map Properties dialog with its Places property page selected. -->
+    <img class="screenshot shot-center" src="GenGIS_Screenshot_MapProperties.png" alt="GenGIS Map Properties dialog, Places page, showing the displayed-places tree and the minor-places zoom cut-off" style="max-width: 62%;">
+
+    <p>
+        The <b>Map Properties</b> dialog is a set of tabbed pages &mdash; <b>Files</b>, <b>Places</b> and <b>Features</b>.
+        Between them they hold the <b>data directory</b> the OS map files are read from (which defaults to a <em>Data</em>
+        folder beside the program), where your <b>displayed places and features</b> are saved, and how many nearby items the
+        pickers list &mdash; both when picking directly on the map and when the finder list is shown. Your choices are
+        remembered between sessions, and there is a one-click way to return everything to sensible defaults. The <b>Places</b>
+        page is shown above.
+    </p>
+
+    <h3>Zoom cut-offs: what appears at each scale</h3>
+    <p>
+        Several fields control <b>at what scale each kind of detail appears</b>, and they are all expressed the same way: as a
+        <b>maximum view width in kilometres</b>. The rule is &ldquo;show this only when the map is at most this many km
+        across&rdquo; &mdash; so a <em>larger</em> number makes something appear even when you are zoomed well out, and a
+        <em>smaller</em> number keeps it hidden until you have zoomed right in. This is what stops the map turning into an
+        unreadable mass of labels and lines at low magnification.
+    </p>
+    <ul>
+        <li>
+            On the <b>Places</b> page, <b>&ldquo;Max. zoom (km) at which Minor Places displayed&rdquo;</b> sets how far in you
+            must be before minor place names join the major ones &mdash; set it to, say, 50 and minor places appear once the
+            view is about 50&nbsp;km wide or less.
+        </li>
+        <li>
+            On the <b>Features</b> page, <b>&ldquo;Minor features cutoff (km)&rdquo;</b> and <b>
+                &ldquo;Major features cutoff
+                (km)&rdquo;
+            </b> do the same for minor and major features (the smaller roads, rivers and so on).
+        </li>
+        <li>
+            The <b>line widths</b> &mdash; the <b>Use / Ignore</b> choice and the per-layer <b>Width (mm)</b> values on the
+            Features page &mdash; are tied to the minor-features cut-off: <b>
+                wide lines only take effect once you are zoomed
+                in past it
+            </b>. Further out everything is drawn as thin lines, because drawing wide pens across the whole country
+            would be needlessly slow and the width differences would not be visible at that scale anyway.
+        </li>
+    </ul>
+    <p>Anything you have deliberately <a href="#Picking">picked</a> is always drawn, whatever these cut-offs say.</p>
+
+    <h3>Re-organising displayed places and features</h3>
+    <p>
+        The <b>Places</b> and <b>Features</b> pages each show a <b>tree</b> of everything you are currently displaying, grouped
+        under three headings &mdash; <b>Major</b>, <b>Minor</b> and a <b>waste bin</b> &mdash; with a running count beside
+        each. You reshape your lists directly in this tree:
+    </p>
+    <ul>
+        <li>
+            <b>Move an item between the Major and Minor lists</b> by <b>dragging</b> its entry from one heading to the other.
+            (Major items stay on the map even when zoomed out; minor ones obey the cut-off above.)
+        </li>
+        <li>
+            <b>Delete an item</b> by dragging it onto the <b>waste bin</b>, or by selecting it and pressing the <b>Delete</b>
+            key &mdash; which moves it to the bin. Pressing <b>Delete</b> again on something already in the bin removes it for
+            good.
+        </li>
+    </ul>
+    <p>
+        Nothing is final until you click <b>Apply</b> or <b>OK</b>: at that point the entries under Major and Minor become your
+        displayed lists and anything left in the waste bin is removed from the map. <b>Cancel</b> leaves everything as it was.
+    </p>
+    <hr>
+
+    <h2 id="Printing">Printing</h2>
+
+    <p>
+        <b>Print</b> and <b>Print Preview</b> render the current view onto the page inside a titled <b>bounding box</b>, with
+        an optional scale bar. Everything &mdash; the map features and the place and feature labels alike &mdash; is kept
+        neatly within the box, so a printed map looks tidy right to its edges.
+    </p>
+    <hr>
+
+    <h2 id="Saving">Saving Images and Sessions</h2>
+
+    <p>
+        You can save the map you are looking at as an <b>image</b> &mdash; <b>JPEG</b>, <b>GIF</b>, <b>PNG</b> or <b>BMP</b>
+        &mdash; straight from <em>File &rarr; Save As</em>, choosing the format by the file extension you give it. Saving to a
+        <b>.gis</b> file instead stores the <b>session</b>: your current position and magnification together with which
+        layers, widths and scale are switched on, so re-opening it restores that view. Your displayed place and feature lists
+        are kept safely alongside, so they are there again next time you run the program.
+    </p>
+
+    <!-- Help Image - a saved-map example (e.g. an exported PNG of a region). -->
+    <img class="screenshot shot-center" src="GenGIS_HeroScreenshot.png" alt="GenGIS saved map example" style="max-width: 75%;">
+    <hr>
+
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>Ordnance Survey Data</h3>
+            <p>Coastline, roads, rivers, lakes, places and counties for the whole of Great Britain, from up-to-date OS open data.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Layered Map</h3>
+            <p>Turn each layer on or off independently and give it its own colour and, when zoomed in, its own line width.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Configurable Labels</h3>
+            <p>Separate fonts and colours for place and feature names, with major/minor cut-offs so the map never gets cluttered.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Drag-to-Zoom &amp; History</h3>
+            <p>Drag a box to zoom in, and step back and forward through your zoom history like a web browser.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Touch &amp; Trackpad Gestures</h3>
+            <p>Two-finger drag to pan and pinch to zoom, on touchscreen or precision touchpad; the mouse wheel zooms too.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Fast Quick-Draw</h3>
+            <p>While panning or zooming, only the coast and major roads are drawn, so the map keeps up; full detail returns on release.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Pick Places &amp; Features</h3>
+            <p>Click, or Ctrl-click, to list the nearest places or features and add them to your major or minor lists &mdash; or search by name.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Famous Landmarks</h3>
+            <p>Well-known landforms such as Land's End, Ben Nevis and Yr Wyddfa (Snowdon) appear alongside towns and cities.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Printing</h3>
+            <p>Print or preview the current view inside a titled bounding box, with an optional scale bar and tidy edges.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Save Images &amp; Sessions</h3>
+            <p>Export the map as JPEG, GIF, PNG or BMP, or save a .gis session that restores your view and settings.</p>
+        </div>
+    </div>
+    <hr>
+
+    <h2>Download and Install</h2>
+
+    <div class="download-box">
+        <h3>GenGIS</h3>
+        <p id="Installation">The app can be installed from:</p>
+        <ul>
+            <li>
+                <!-- PLACEHOLDER: replace with the real download web page link. -->
+                The <a href="https://karaottewell.github.io/KLO-Software/GenGIS.zip" target="_blank">GenGIS zip download.</a>
+                Even though I have already done so, I recommend you virus scan it to be extra-safe. It is a self-contained app
+                and does not require any installation or admin rights, so you can run it straight from the unpacked folder.
+                The detached PGO signatire file is here:
+                <a href="https://karaottewell.github.io/KLO-Software/GenGIS.zip.sig" target="_blank">GenGIS.zip.sig</a>.
+            </li>
+        </ul>
+        <p>
+            To install simply download the .zip file from the link above, and unpackk it. It unpacks into a sibfolder name "GenGIS"
+            which contains the GenGIS.exe file and a subfolder named "Data" which contains all the places, counties, road and feature
+            data. Uncompressed it is about 140 megabytes.
+        </p>
+        <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
+    </div>
+
+    <p style="font-size:9pt; color:#666;">
+        GenGIS is free software.
+        <br><a href="index.htm">&#8592; Back to KLO Software</a>
+    </p>
+    <script src="KLODarkModeSwitch.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Only run if opened locally
+            if (window.location.protocol === 'file:') {
+                const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+                // Show the "this is a local copy, see the online version" notice - it stays
+                // hidden (via CSS) when the page is served normally, since it would be
+                // redundant/confusing on the live site itself.
+                document.querySelectorAll('.local-copy-notice').forEach(el => {
+                    el.style.display = 'block';
+                });
+
+                // Grab every single link on the page
+                document.querySelectorAll('a').forEach(link => {
+                    const href = link.getAttribute('href');
+
+                    // If the link exists, doesn't start with http/https, and isn't an anchor jump link (#)
+                    if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('#')) {
+
+                        // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                        const cleanHref = href.replace(/^\.\//, '');
+
+                        // Rewrite the link to point to the live site
+                        link.href = baseWebUrl + cleanHref;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
