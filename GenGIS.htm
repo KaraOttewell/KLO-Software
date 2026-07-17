@@ -77,9 +77,10 @@
 
     <p>
         While you are dragging or pinching, GenGIS switches to a <b>quick-draw</b> mode &mdash; it draws just the coastline
-        and the major roads as thin lines so the map keeps up with your fingers, then fills in the full detail (minor roads,
-        rivers, lakes and all the labels) the moment you let go. Major town names stay on screen even during the drag, so you
-        can always see where you are heading.
+        and the main roads (motorways down to B roads) as thin lines so the map keeps up with your fingers, then fills in the
+        full detail (minor roads, rivers, lakes and all the labels) the moment you let go. Major town names stay on screen
+        even during the drag, so you can always see where you are heading. Drawing itself is heavily optimised &mdash; only
+        what is actually in view is processed &mdash; so even busy town views redraw in a fraction of a second.
     </p>
     <div style="clear:both;"></div>
     <hr>
@@ -143,7 +144,8 @@
         the drop-down at the bottom of the picker. An <b>Add</b> button applies your choice without closing the window, so you
         can add several things in one session; picking an item that is already displayed offers to <b>remove</b> it again.
         Rows that are already on the map are labelled &mdash; e.g. <em>(already in Major list)</em> &mdash; so you can see at
-        a glance what you have already added. A <b>Search Properties</b> box lets you find places and features <b>by name</b>
+        a glance what you have already added. A <b>Zoom to ...</b> button jumps the map straight to the selected item, and a
+        <b>Search Properties</b> box lets you find places and features <b>by name</b>
         rather than by clicking, provided they appear in the list of nearby items. The maximum number of entries is set in the
         <a href="#Properties">Map Properties</a> dialog.
     </p>
@@ -158,8 +160,10 @@
     <p>
         The <b>Map Properties</b> dialog is a set of tabbed pages &mdash; <b>Files</b>, <b>Places</b> and <b>Features</b>.
         Between them they hold the <b>data directory</b> the OS map files are read from (which defaults to a <em>Data</em>
-        folder beside the program), where your <b>displayed places and features</b> are saved, and how many nearby items the
-        pickers list &mdash; both when picking directly on the map and when the finder list is shown. Your choices are
+        folder beside the program), where your <b>displayed places and features</b> are saved, how many nearby items the
+        pickers list &mdash; both when picking directly on the map and when the finder list is shown &mdash; and whether
+        <b>.gis session files</b> are saved in the modern <b>JSON</b> format or the original 1998 format (see
+        <a href="#Saving">Saving Images and Sessions</a>). Your choices are
         remembered between sessions, and there is a one-click way to return everything to sensible defaults. The <b>Places</b>
         page is shown above.
     </p>
@@ -193,7 +197,6 @@
             would be needlessly slow and the width differences would not be visible at that scale anyway.
         </li>
     </ul>
-    <p>Anything you have deliberately <a href="#Picking">picked</a> is always drawn, whatever these cut-offs say.</p>
 
     <h3>Re-organising displayed places and features</h3>
     <p>
@@ -210,6 +213,10 @@
             <b>Delete an item</b> by dragging it onto the <b>waste bin</b>, or by selecting it and pressing the <b>Delete</b>
             key &mdash; which moves it to the bin. Pressing <b>Delete</b> again on something already in the bin removes it for
             good.
+        </li>
+        <li>
+            <b>Double-click an item</b> to <b>zoom the map straight to it</b> &mdash; a quick way to check exactly which
+            place or feature an entry refers to before you move or delete it.
         </li>
     </ul>
     <p>
@@ -231,10 +238,24 @@
 
     <p>
         You can save the map you are looking at as an <b>image</b> &mdash; <b>JPEG</b>, <b>PNG</b> or <b>BMP</b>
-        &mdash; straight from <em>File &rarr; Save As</em>, choosing the format by the file extension you give it. Saving to a
+        &mdash; straight from <em>File &rarr; Save As</em>, choosing the format from the <b>file-type drop-down</b> (the file
+        extension follows your choice automatically). Saving to a
         <b>.gis</b> file instead stores the <b>session</b>: your current position and magnification together with which
         layers, widths and scale are switched on, so re-opening it restores that view. Your displayed place and feature lists
         are kept safely alongside, so they are there again next time you run the program.
+    </p>
+
+    <p>
+        By default .gis sessions are written in a readable <b>JSON</b> text format; a checkbox on the
+        <a href="#Properties">Map Properties</a> <b>Files</b> page lets you save in the original 1998 format instead.
+        Opening a .gis file works either way &mdash; GenGIS detects the format automatically, so sessions saved by the
+        original program still load.
+    </p>
+
+    <p>
+        Two more quick ways to get at the map: <b>Edit &rarr; Copy</b> puts the current map image on the <b>clipboard</b>,
+        ready to paste into a document or image editor, and <b>File &rarr; New</b> clears the session and returns to the
+        <b>whole-of-Britain</b> starting view (it warns you first, since your zoom history is discarded).
     </p>
 
     <!-- Help Image - a saved-map example (e.g. an exported PNG of a region). -->
@@ -270,7 +291,7 @@
 
         <div class="feature-item">
             <h3>Fast Quick-Draw</h3>
-            <p>While panning or zooming, only the coast and major roads are drawn, so the map keeps up; full detail returns on release.</p>
+            <p>While panning or zooming, only the coast and main roads are drawn, so the map keeps up; full detail returns on release.</p>
         </div>
 
         <div class="feature-item">
@@ -290,7 +311,7 @@
 
         <div class="feature-item">
             <h3>Save Images &amp; Sessions</h3>
-            <p>Export the map as JPEG, PNG or BMP, or save a .gis session that restores your view and settings.</p>
+            <p>Export the map as JPEG, PNG or BMP, copy it to the clipboard, or save a .gis session that restores your view and settings.</p>
         </div>
     </div>
     <hr>
