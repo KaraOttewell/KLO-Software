@@ -147,10 +147,53 @@
         the drop-down at the bottom of the picker. An <b>Add</b> button applies your choice without closing the window, so you
         can add several things in one session; picking an item that is already displayed offers to <b>remove</b> it again.
         Rows that are already on the map are labelled &mdash; e.g. <em>(already in Major list)</em> &mdash; so you can see at
-        a glance what you have already added. A <b>Zoom to ...</b> button jumps the map straight to the selected item, and a
-        <b>Search Properties</b> box lets you find places and features <b>by name</b>
-        rather than by clicking, provided they appear in the list of nearby items. The maximum number of entries is set in the
+        a glance what you have already added. A <b>Zoom to ...</b> button jumps the map straight to the selected item.
+    </p>
+
+    <p>
+        You can also search <b>by name</b>: type into the <b>Find</b> box and, half a second after you stop typing, the
+        list fills with everything whose name <b>begins with</b> what you typed &mdash; searching the <b>whole map</b>,
+        not just the places near your last click, unless <b>Search only visible area</b> is ticked. Case does not matter,
+        and roads answer to their name or their number (&ldquo;high street&rdquo; or &ldquo;a917&rdquo;). The distances
+        shown are measured from the centre of the current view, so the <b>Distance</b> sort puts the nearest namesake
+        first: type, pick, <b>Zoom to ...</b>, done. The maximum number of entries listed is set in the
         <a href="#Properties">Map Properties</a> dialog.
+    </p>
+    <div style="clear:both;"></div>
+
+    <h3 id="Corrections">Renaming, moving and adding your own places</h3>
+
+    <!-- Help Image - the Edit Place dialog renaming a picked place. -->
+    <img class="screenshot shot-right" src="GenGIS_Screenshot_EditPlace.png" alt="GenGIS Edit Place dialog, changing the name, position and type of a picked place" style="max-width: 42%;">
+
+    <p>
+        The Ordnance Survey data is not always exactly how you would have it, so the pickers let you <b>correct it</b>.
+        Select an entry and press <b>Edit ...</b>: for a place you can change its <b>name</b>, its <b>position</b>
+        (National Grid metres) and its <b>type</b> (Town or Landmark); for a road, river or lake you can change its
+        name &mdash; including giving a name to one of the many that Ordnance Survey leaves unnamed. Road names are
+        stored as <em>number|name</em> (e.g. <em>A917|High Street</em>) &mdash; keep that form, and either part may be
+        empty.
+    </p>
+    <div style="clear:both;"></div>
+
+    <!-- Help Image - the New Place dialog creating a place at the clicked point. -->
+    <img class="screenshot shot-right" src="GenGIS_Screenshot_NewPlace.png" alt="GenGIS New Place dialog, creating a brand-new place at the clicked point" style="max-width: 42%;">
+
+    <p>
+        The <b>New ...</b> button (places picker) creates a place of your very own &mdash; a house, a business, a spot
+        Ordnance Survey does not list. Its position is pre-filled with the point you last clicked on the map and its
+        county is inherited from the nearest listed place; you give it a name and choose <b>Town</b> or
+        <b>Landmark</b>. From then on it behaves exactly like a real place: it can be picked, found by name, zoomed to,
+        labelled and added to your displayed lists.
+    </p>
+
+    <p>
+        Corrections never touch the OS data files themselves. Each one is saved <b>immediately</b> to a small file of
+        its own (<em>ukcorrections.json</em>, kept beside your displayed-places lists) and re-applied every time the
+        data is loaded &mdash; so your fixes survive restarts <b>and</b> Ordnance Survey data updates. Changing
+        something back to its original name, position and type simply removes the correction. And once you have
+        <b>Edit</b>ed, <b>New</b>ed or <b>Add</b>ed an item, closing the picker with OK leaves it in peace &mdash;
+        GenGIS takes those actions as a clear sign you want to keep it.
     </p>
     <div style="clear:both;"></div>
     <hr>
@@ -299,7 +342,12 @@
 
         <div class="feature-item">
             <h3>Pick Places &amp; Features</h3>
-            <p>Click, or Ctrl-click, to list the nearest places or features and add them to your major or minor lists &mdash; or search by name.</p>
+            <p>Click, or Ctrl-click, to list the nearest places or features and add them to your major or minor lists &mdash; or type a name and search the whole map.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Your Own Corrections</h3>
+            <p>Rename, move or retype places, name unnamed roads and rivers, and add places of your own &mdash; saved separately, safe across OS data updates.</p>
         </div>
 
         <div class="feature-item">
