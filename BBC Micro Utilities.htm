@@ -32,7 +32,9 @@ The utilities are:</p>
     <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as plaintext, HTML, or BBCode.</li>
     <li><b>BBCReadDiskImage</b> — display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</li>
 </ul>
-
+<p class="local-copy-notice">
+    The most up to date version of this information will always be the <a href="BBC Micro Utilities.htm">online version</a>.
+</p>
 <hr>
 
 <h2>BBCBasicToText</h2>
@@ -147,6 +149,13 @@ BBCDataFileToText Informational: 1/1, binaryfile.bin is not BBC BASIC PRINT# dat
 <span class="dg">Output: C:\Users\...\binaryfile.bbcode
 BBCDataFileToText found and processed 1 file, ignored 0, excluded 0, produced results for 1</span></pre>
 
+
+<p>The <i>BBCDataFileToText</i> utility makes a handy, general-purpose "hex dump" program. For example, if you enter</p>
+<pre class="console">
+    BBCDataFileToText --hex Test.pdf*
+</pre>
+<p>you will see output similar to that shown below</p>
+<img src="Screenshot_BBCDataFileToTextAsHexDumper.png" class="screenshot" alt="BBCDataFileToText dumping in hex" style="max-width: 66%;">
 <hr>
 
 <h2>BBCReadDiskImage</h2>
@@ -250,5 +259,35 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
 <p style="font-size:9pt; color:#666;">BBC Micro Utilities is free software.
 <br><a href="index.htm">&#8592; Back to KLO Software</a></p>
 <script src="KLODarkModeSwitch.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Only run if opened locally
+        if (window.location.protocol === 'file:') {
+            const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+            // Show the "this is a local copy, see the online version" notice - it stays
+            // hidden (via CSS) when the page is served normally, since it would be
+            // redundant/confusing on the live site itself.
+            document.querySelectorAll('.local-copy-notice').forEach(el => {
+                el.style.display = 'block';
+            });
+
+            // Grab every single link on the page
+            document.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href');
+
+                // If the link exists, doesn't start with http/https, and isn't an anchor jump link (#)
+                if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('#')) {
+
+                    // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                    const cleanHref = href.replace(/^\.\//, '');
+
+                    // Rewrite the link to point to the live site
+                    link.href = baseWebUrl + cleanHref;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
