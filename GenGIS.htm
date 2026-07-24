@@ -412,8 +412,9 @@
                 document.querySelectorAll('a').forEach(link => {
                     const href = link.getAttribute('href');
 
-                    // If the link exists, doesn't start with http/https, and isn't an anchor jump link (#)
-                    if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('#')) {
+                    // Rewrite only genuine relative links: skip anything with its own scheme (http://,
+                // https://, ms-windows-store:// and so on) and in-page anchor links (#)
+                    if (href && !href.includes('://') && !href.startsWith('#')) {
 
                         // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
                         const cleanHref = href.replace(/^\.\//, '');

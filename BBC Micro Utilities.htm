@@ -171,6 +171,57 @@ whole shoebox of discs in one go. Four decades on, your Acorn archive has never 
 
 <hr>
 
+<h2>Viewing long output: <code>--more</code>, <code>--head</code> and <code>--tail</code></h2>
+
+<p>A long BASIC listing or a hex dump of a 16&nbsp;KB ROM will scroll off the top of the window before you can read
+any of it. All three utilities understand three options for taking the output a piece at a time. They apply to
+whatever the tool would normally print &mdash; a de-tokenised BASIC listing, a <code>PRINT#</code> data file, a disk
+catalogue, or a hex or ASCII dump.</p>
+
+<h3><code>--more</code> &mdash; a screenful at a time</h3>
+
+<p>This pauses after each screenful and waits for a keypress. <b>Space</b> shows the next page, <b>Enter</b> moves on
+by a single line, <b>A</b> shows all the rest without pausing again, and <b>Q</b> or <b>Escape</b> stops there. The
+prompt is written so that it disappears again once you have pressed a key, leaving the output clean when you scroll
+back through it. You can also use the short form <code>/m</code> or <code>-m</code>.</p>
+
+<img src="Screenshot_BBCBasicToText_more_Example.png" class="screenshot" alt="BBCBasicToText paused at the -- More -- prompt part way through a BASIC listing">
+<p class="screenshot-caption">A BASIC listing paused at the end of the first screenful, with the <code>-- More --</code> prompt</p>
+
+<p>It counts the lines the screen actually shows rather than the lines in the file, so a long
+<span class="blue">DATA</span> statement that wraps onto three rows is counted as three. That matters most for a hex
+dump, where every line is the same width and a wrapped line would otherwise push a row off the top unnoticed:</p>
+
+<img src="Screenshot_BBCDataFileToTextAsHexDumper_more.png" class="screenshot" alt="BBCDataFileToText hex dump paused at the -- More -- prompt">
+<p class="screenshot-caption"><i>BBCDataFileToText</i> dumping a ROM image in hex, paused at the end of the first screenful</p>
+
+<p>If the output is redirected to a file or piped into another command there is nothing to page, so the option
+quietly does nothing. That makes it safe to leave in a DOSKEY macro permanently:</p>
+
+<div class="indent">doskey hex=BBCDataFileToText --hex --more $*</div>
+
+<h3><code>--head[=n]</code> &mdash; just the beginning</h3>
+
+<p>Shows only the first <i>n</i> lines and stops, which is the quickest way to see what a file actually is. Without a
+number it shows 20 lines.</p>
+
+<img src="Screenshot_BBCBasicToText_head_Example.png" class="screenshot" alt="BBCBasicToText showing only the first twenty lines of a BASIC program">
+<p class="screenshot-caption"><code>--head</code> showing the first 20 lines of a teletext editor written in 1983</p>
+
+<h3><code>--tail[=n]</code> &mdash; just the end</h3>
+
+<p>Shows only the last <i>n</i> lines, again 20 by default, and says how many lines it passed over to get there. For a
+hex or ASCII dump it seeks straight to the end of the file rather than reading through the whole thing, so
+<code>--tail</code> on a large file is quick no matter how big the file is.</p>
+
+<img src="Screenshot_BBCBasicToText_tail_Example.png" class="screenshot" alt="BBCBasicToText showing only the last twenty lines of a BASIC program">
+<p class="screenshot-caption"><code>--tail</code> showing the last 20 lines of the same program, having skipped the 685 before them</p>
+
+<p>Both <code>--head</code> and <code>--tail</code> apply to what is shown on screen. If you give the tool an output
+file, that file still receives everything.</p>
+
+<hr>
+
 <h2>Running the tools</h2>
 
 <p>All three utilities run from a Command Prompt or PowerShell. For example, from a Command Prompt:</p>
@@ -225,6 +276,11 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
         <p>Display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</p>
     </div>
     <div class="feature-item">
+        <h3>Paging and line limits</h3>
+        <p>View long listings and dumps a screenful at a time with <code>--more</code>, or take just the start or
+        end with <code>--head</code> and <code>--tail</code>.</p>
+    </div>
+    <div class="feature-item">
         <h3>DOSKEY shortcuts</h3>
         <p>Macros can be added automatically to every new command window.</p>
     </div>
@@ -276,8 +332,9 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
             document.querySelectorAll('a').forEach(link => {
                 const href = link.getAttribute('href');
 
-                // If the link exists, doesn't start with http/https, and isn't an anchor jump link (#)
-                if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('#')) {
+                // Rewrite only genuine relative links: skip anything with its own scheme (http://,
+                // https://, ms-windows-store:// and so on) and in-page anchor links (#)
+                if (href && !href.includes('://') && !href.startsWith('#')) {
 
                     // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
                     const cleanHref = href.replace(/^\.\//, '');

@@ -12,7 +12,7 @@
 <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
 <h1>BeebRFSMaker</h1>
-<p class="subtitle">Compressed ROM Filing System packer and extractor to let your Windows PC make RFS ROM images for the BBC Micro</p>
+<p class="subtitle">ROM Filing System packer and extractor to let your Windows PC make RFS ROM images for the BBC Micro</p>
 
 <span class="badge">Windows</span>
 <span class="badge">WinUI 3</span>
@@ -20,63 +20,116 @@
 <span class="badge">BBC Micro</span>
 <span class="badge">Free</span>
 
-<p>BeebRFSMaker is a Windows application for packing files into a BBC Micro Compressed ROM Filing System (CompRFS) image,
-    and extracting files back out again. It is compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and produces
+<p>BeebRFSMaker is a Windows application for packing files into a BBC Micro ROM Filing System image,
+    and extracting files back out again. It handles both RFS formats: <b>compressed</b> (CompRFS), compatible with the
+    <b>comprom.pl v2.10</b> format by Greg Cook, and <b>standard, uncompressed</b> RFS. It produces
     sideways ROM images that can be used directly with a <a href="https://bbcmicro.computer/" target="_blank">BBC Microcomputer</a> or
     <a href="https://codeberg.org/chrisn/beebem-windows/releases/" target="_blank">emulator</a>.</p>
 
 <img src="BeebRFSMakerROMBoard.png" alt="BeebRFSMaker app icon" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
 <p>To use it, simply drag and drop files from your PC onto the area labelled "Drop PC files here". The files will be listed
-     in the area below with their name, load and exec addresses, and size in bytes. The files in the list are compressed
+     in the area below with their names, load and exec addresses, and sizes in bytes. The files in the list are compressed
      into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list,
-     or the ROM image, or the Event Log, in the preview window which takes up most of the left-hand side of the app. If the
-     total file size after compression fits within a 16&nbsp;KB ROM then the "Create RFS ROM Image" button will
-     be enabled, and you can choose where to save the ROM image with a <b><code>.rom</code></b> extension. If you attempt to
+     or the ROM image, or the Event Log, in the preview window, which takes up most of the left-hand side of the app. When
+     a file is shown, that preview window is also a hex editor &#8212; see <a href="#editing_file_content">Editing file content</a>. If the
+     total file size after compression fits within a 16&nbsp;KB ROM then the <b>Save RFS ROM</b> button, which shows how
+     many files are in the image, will be enabled, and you can choose where to save the ROM image with a
+     <b><code>.rom</code></b> extension. If you attempt to
      add a file which will clash with the name of one already in the list, it will not be included and you will be informed
      and given advice on workarounds.
 </p>
+<img class="screenshot" src="BeebRFSMaker Screenshot 01.png" alt="BeebRFSMaker opening screen" style="clear: both;">
+<p class="screenshot-caption">BeebRFSMaker launch screen</p>
+
+<p>The <b>Compressed / Uncompressed</b> toggle chooses which RFS format to build. Compressed is the usual choice, since it
+    fits far more into the same 16&nbsp;KB; uncompressed produces a plain RFS ROM with no decompressor stub.
+</p>
 <div style="clear:both;"></div>
+
+<p class="local-copy-notice">
+    The most up-to-date version of this information will always be the <a href="BeebRFSMaker.htm">online version</a>.
+</p>
+<hr>
 
 <h2 id="inf_sidecar_file">The <code>.inf</code> sidecar file format</h2>
 
 <p>When packing, BeebRFSMaker reads the accompanying <code>.inf</code> sidecar file for each PC file if one exists. When extracting, it creates one alongside each extracted file.
 The <code>.inf</code> file is the <a href="https://beebwiki.mdfs.net/INF_file_format" target="_blank">de facto standard</a>
-for preserving BBC Micro file metadata on a modern PC filing system, and is recognised by BeebEm and most other emulators 
+for preserving BBC Micro file metadata on a modern PC filing system, and is recognised by BeebEm and most other emulators
 and tools in the BBC Micro ecosystem.</p>
 
 <p>Each <code>.inf</code> file is a single line of plain text with the following fields, separated by whitespace:</p>
 
-<pre class="bbc">$.FILENAME  <span class="yl">LLLLLLLL</span>  <span class="wh">EEEEEEEE</span>  <span class="num">SSSSSSSS</span></pre>
+<pre class="bbc">$.FILENAME  <span class="yl">LLLLLLLL</span>  <span class="wh">EEEEEEEE</span>  <span class="num">SSSSSS</span></pre>
 
 <p>Where:</p>
 <ul style="line-height:1.8">
     <li><code>$.FILENAME</code> &mdash; the BBC Micro filename, including the DFS directory prefix (usually <code>$</code> for the default directory, not used in the cassette or ROM filing systems)</li>
     <li><span class="yl" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">LLLLLLLL</span> &mdash; the load address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
     <li><span class="wh" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">EEEEEEEE</span> &mdash; the execution address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
-    <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSSSS</span> &mdash; the file length in bytes, in hex</li>
+    <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSS</span> &mdash; the file length in bytes, in hex</li>
 </ul>
+
+<p>Both addresses are <b>written</b> as eight hex digits, so a full 32-bit address is stated outright. Sidecar files are
+<b>read</b> tolerantly, so the shorter four- and six-digit forms written by other tools, and by earlier versions of these
+tools, are still accepted, with truncated high bits restored as needed. Existing <code>.inf</code> files therefore keep
+working unchanged. Note that files extracted from a ROM image have no <code>$.</code> directory prefix, since the ROM
+filing system has no directories.</p>
 
 <p>The <b>load address</b> is the 6502 memory address at which the file should be loaded when transferred back to a BBC Micro.
 The <b>execution address</b> is the address to jump to if the file is run with <code>*RUN</code> or <code>CHAIN""</code>.
 For non-executable files such as data files these two addresses are often identical. Addresses are stored as 32-bit values to
-accommodate the Master 128's extended address space, though on a Model B only the lower 16&nbsp;bits are significant.</p>
+accommodate the Master 128&#8217;s extended address space, though on a Model B only the lower 16&nbsp;bits are significant.</p>
 
 <p>Example &mdash; a BBC BASIC program called <code>GAME</code>:</p>
 
-<pre class="bbc">$.GAME  <span class="yl">00001900</span>  <span class="wh">00008023</span>  <span class="num">00003A4F</span></pre>
+<pre class="bbc">$.GAME  <span class="yl">00001900</span>  <span class="wh">00008023</span>  <span class="num">003A4F</span></pre>
 
 <img src="BeebRFSMaker Screenshot 07.png" alt="BeebRFSMaker file drop area and file details" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
 <img src="BeebRFSMaker Screenshot 08.png" alt="BeebRFSMaker ROM Image Detected dialog offering to extract files" style="float: right; margin-left: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 35%;">
 <p>
-If you drop a <code>.rom</code> file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. You can also <b>use this feature just to extract files from a compatible ROM image</b>. The corresponding <code>.inf</code> file will be created during extraction.
+If you drop a <code>.rom</code> file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. Both compressed and uncompressed RFS ROMs are recognised, and the Event Log records which kind was detected and which files came out of it. You can also <b>use this feature just to extract files from a compatible ROM image</b>. The corresponding <code>.inf</code> file will be created during extraction.
 </p>
 <div style="clear:both;"></div>
+<hr>
+
+<h2 id="editing_file_content">Editing file content</h2>
+
+<p>With the <b>File</b> radio button selected, the preview pane on the left is a hex editor as well as a viewer. Click
+    anywhere in the hex column or the ASCII column of the selected file and type to change a byte. The two columns stay
+    in step, so overstriking <code>41</code> in the hex column shows <code>A</code> in the ASCII column, and typing
+    <code>A</code> in the ASCII column shows <code>41</code> in the hex column. The ASCII column accepts any printable
+    character from <code>&amp;20</code> to <code>&amp;7E</code>; bytes outside that range are displayed as
+    <code>&#191;</code> and have to be entered in the hex column.</p>
+<img class="screenshot" src="BeebRFSMaker Screenshot 09.png" alt="BeebRFSMaker editing a file in memory">
+<p class="screenshot-caption">Editing the in-memory copy of a file before it is saved to a sideways ROM image</p>
+
+<p>Editing is strictly <b>overstrike</b>: the byte under the cursor is replaced by the one you type and the file keeps
+    exactly the length it had. There is no way to insert or delete bytes, which keeps each file&#8217;s load address,
+    execution address and length valid without your having to adjust them by hand.</p>
+
+<p>Files you have edited are marked with <code>(*)</code> in the file list, meaning that file now differs from the ROM
+    image last built from it. Press <b>Apply</b> to rebuild the image around your edits, at which point the markers
+    clear. The rebuild is deliberately not automatic: in a compressed ROM the whole file set shares a single dictionary,
+    so one changed byte can alter the compression of every file, and repacking on each keystroke would be both slow and
+    confusing to watch. Saving the ROM image applies any outstanding edits first, so what you save always matches what
+    you see.</p>
+
+<p><b>Nothing is written back to the files on your PC.</b> Edits apply only to the app&#8217;s in-memory copy of the
+    file that goes into the ROM image, so the original on disk is untouched. To abandon an edit, remove the file from
+    the list and add it again.</p>
+
+<p>The <b>ROM</b> and <b>Event Log</b> views are read-only. A ROM image is regenerated from the file list every time it
+    is built, so editing its bytes directly would only be undone by the next rebuild. The parts of the image that are
+    yours to set &#8212; the ROM title and the catalogue title, the latter labelled <b>Catalog</b> in the app &#8212; have
+    their own text boxes above the preview pane.</p>
+
 <hr>
 
 <h2>"Burning" an EEPROM</h2>
 <p>Rather than using old-style, UV-erasable EPROMs, I bought five compatible
 <a href="https://www.amazon.com/dp/B0GG12YGGC" target="_blank">AT28C256-15PU EEPROMs</a> for around $11 on Amazon. The "256"
-in the part number refers to its 256&nbsp;Kbit capacity (32&nbsp;KB), and the "-15" indicates a 150ns access time. I use the
+in the part number refers to its 256&nbsp;Kbit capacity (32&nbsp;KB), and the "-15" indicates a 150&nbsp;ns access time. I use the
 upper 16&nbsp;KB since the A14 address line is held high, making that half of the capacity visible to the Beeb. The chips linked to
 are second-hand; one arrived missing a leg and was discarded, but the rest all worked. I used the
 <a href="https://amzn.to/48XfnT7" target="_blank">Xgecu T48 TL866-3G EEPROM Programmer</a> with the downloadable
@@ -99,11 +152,19 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 <div class="feature-grid">
     <div class="feature-item">
         <h3>Pack files into ROM images</h3>
-        <p>Select a folder of files and pack them into a standard 16&nbsp;KB sideways ROM image. BBC Micro filenames, load addresses, and execution addresses are read from <code>.inf</code> sidecar files if present.</p>
+        <p>Drag and drop a set of files onto the app, or pick them with the <b>Add files</b> button, and pack them into a standard 16&nbsp;KB sideways ROM image. BBC Micro filenames, load addresses, and execution addresses are read from <code>.inf</code> sidecar files if present.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Both RFS formats</h3>
+        <p>Build either a compressed (CompRFS) ROM or a standard, uncompressed RFS ROM from the same file list, using the Compressed / Uncompressed toggle.</p>
     </div>
     <div class="feature-item">
         <h3>Extract from ROM images</h3>
-        <p>Open any compatible CompRFS ROM image and extract its files back to a folder, generating <code>.inf</code> sidecar files that have become the de facto standard for preserving BBC Micro metadata &#8212; filename, load and execution addresses, and file length.</p>
+        <p>Open any compatible RFS ROM image, compressed or uncompressed &#8212; the format is detected from the ROM header &#8212; and extract its files back to a folder, generating <code>.inf</code> sidecar files in the format that has become the de facto standard for preserving BBC Micro metadata &#8212; filename, load and execution addresses, and file length.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Edit file content in place</h3>
+        <p>The preview pane doubles as a hex editor for the selected file. Overstrike bytes in either the hex or the ASCII column, then press Apply to rebuild the ROM image around your changes. Edits are made to the copy held for packing, so the files on your PC are never modified. See <a href="#editing_file_content">Editing file content</a>.</p>
     </div>
     <div class="feature-item">
         <h3>Compression feedback</h3>
@@ -117,7 +178,7 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
     </div>
     <div class="feature-item">
         <h3>ROM header options</h3>
-        <p>Customise the ROM title (shown by <code>*ROMS</code>), catalogue title (shown by <code>*CAT</code>), copyright string, and version string.</p>
+        <p>Customise the ROM title (shown by <code>*ROMS</code>) and the catalogue title (shown by <code>*CAT</code>), each in its own field above the preview pane. The catalogue title applies to compressed ROMs.</p>
     </div>
     <div class="feature-item">
         <h3>Command-line interface</h3>
@@ -145,8 +206,13 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
     <li><b>Literal escape sequences</b> for bytes that cannot be represented by any of the above</li>
 </ol>
 
-<p>The compressor analyses all the files together to build a shared dictionary, so common patterns across multiple files 
+<p>The compressor analyses all the files together to build a shared dictionary, so common patterns across multiple files
     all benefit from the same tokens.</p>
+
+<p>A <b>standard, uncompressed RFS</b> ROM is simpler: after the Acorn ROM header comes a short service handler, and then
+    the file blocks are stored verbatim &#8212; no dictionary, no digraph table and no decompressor stub. It holds far less in
+    the same 16&nbsp;KB, but the layout is plain to read and nothing has to be decoded at run time. Because such a ROM has no
+    language of its own, the language entry point at &amp;8000 is left unused.</p>
 
 <hr>
 
@@ -154,13 +220,11 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 
 <div class="download-box">
     <h3>BeebRFSMaker</h3>
-    <p>
-        The app can be installed from:
-        <ul>
-            <li>The <a href="https://apps.microsoft.com/detail/9N5B7WBFK2BZ" target="_blank">Microsoft Store web page</a></li>
-            <li>The <a href="ms-windows-store://pdp/?productid=9N5B7WBFK2BZ" target="_blank">Microsoft Store app</a></li>
-        </ul>
-    </p>
+    <p>The app can be installed from:</p>
+    <ul>
+        <li>The <a href="https://apps.microsoft.com/detail/9N5B7WBFK2BZ" target="_blank">Microsoft Store web page</a></li>
+        <li>The <a href="ms-windows-store://pdp/?productid=9N5B7WBFK2BZ" target="_blank">Microsoft Store app</a></li>
+    </ul>
     <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
 </div>
 
@@ -168,7 +232,7 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 
 <h2>Compatibility</h2>
 
-<p>BeebRFSMaker is compatible with the <b>Compressed ROM Filing System v2.10</b> format. ROM images produced by BeebRFSMaker can be used with:</p>
+<p>BeebRFSMaker handles both the <b>Compressed ROM Filing System v2.10</b> format and <b>standard, uncompressed RFS</b>. ROM images produced by BeebRFSMaker can be used with:</p>
 
 <ul style="line-height:1.8">
     <li>A real BBC Micro Model B, B+, or Master 128 with a suitable ROM board</li>
@@ -176,10 +240,44 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
     <li>Any other tool that reads the comprom.pl v2.10 format</li>
 </ul>
 
+<p>When reading an uncompressed ROM, the unused language entry point at &amp;8000 may be filled with either three
+ <code>NOP</code> instructions or three zero bytes; both conventions are recognised.</p>
+
 <hr>
 
 <p style="font-size:9pt; color:#666;">BeebRFSMaker is free software. The CompRFS format and original comprom.pl script are by Greg Cook.
 <br><a href="BeebRFSTool.htm">&#8592; BeebRFSTool</a> &nbsp;&nbsp; <a href="index.htm">&#8592; Back to KLO Software</a></p>
 <script src="KLODarkModeSwitch.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Only run if opened locally
+        if (window.location.protocol === 'file:') {
+            const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+            // Show the "this is a local copy, see the online version" notice - it stays
+            // hidden (via CSS) when the page is served normally, since it would be
+            // redundant/confusing on the live site itself.
+            document.querySelectorAll('.local-copy-notice').forEach(el => {
+                el.style.display = 'block';
+            });
+
+            // Grab every single link on the page
+            document.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href');
+
+                // Rewrite only genuine relative links: skip anything with its own scheme (http://,
+                // https://, ms-windows-store:// and so on) and in-page anchor links (#)
+                if (href && !href.includes('://') && !href.startsWith('#')) {
+
+                    // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                    const cleanHref = href.replace(/^\.\//, '');
+
+                    // Rewrite the link to point to the live site
+                    link.href = baseWebUrl + cleanHref;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

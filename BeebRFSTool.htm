@@ -12,18 +12,19 @@
 <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
 <h1>BeebRFSTool</h1>
-<p class="subtitle">Command-line tool for packing and extracting BBC Micro Compressed ROM Filing System images</p>
+<p class="subtitle">Command-line tool for packing and extracting BBC Micro ROM Filing System images</p>
 
 <span class="badge">Windows</span>
 <span class="badge">Command Line</span>
-<span class="badge">MSI Installer</span>
+<span class="badge">Microsoft Store</span>
 <span class="badge">BBC Micro</span>
 <span class="badge">Free</span>
 
 <p>
-BeebRFSTool is a Windows command-line tool for packing files into BBC Micro Compressed ROM Filing System (RFS) sideways
-ROM images, and extracting, or just listing, files from them. It is compatible with the <b>comprom.pl v2.10</b> format created
-by Greg Cook. It can also create and read standard, uncompressed RFS images.
+BeebRFSTool is a Windows command-line tool for packing files into BBC Micro ROM Filing System (RFS) sideways
+ROM images, and extracting, or just listing, files from them. It handles both RFS formats: <b>compressed</b>, compatible
+with the <b>comprom.pl v2.10</b> format created by Greg Cook, and <b>standard, uncompressed</b> RFS. When extracting, the
+format is worked out from the ROM header, so you never have to say which kind you have.
 </p>
  
 <p>
@@ -32,26 +33,33 @@ Windows WinUI 3 application, but it is designed to be used completely standalone
 installation is required.
 </p>
 
+<p class="local-copy-notice">
+    The most up to date version of this information will always be the <a href="BeebRFSTool.htm">online version</a>.
+</p>
 <hr>
 
 <h2>Usage</h2>
 
 <pre class="console">
 <span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool</span>
-BeebRFSTool v2026-06-08_16:11 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
+BeebRFSTool v2026-07-22_22:27 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
 Compatible with both standard RFS and Greg Cook's compressed RFS "comprom" format v2.10
+
 Usage:
   <span class="cmd">pack    &lt;input-dir&gt; &lt;rom.bin&gt; [options]</span>
   <span class="cmd">extract &lt;rom.bin&gt; &lt;output-dir&gt; [options]</span>
+  <span class="cmd">extract &lt;rom.bin&gt; --list                 (no output folder needed when only listing)</span>
+
 <span class="label">Pack Options:</span>
   <span class="value">--romtitle &lt;string&gt;</span>      ROM header title as shown by, say, *ROMS (e.g. "My Tools")
   <span class="value">--catalogtitle &lt;string&gt;</span>  Empty file acting as title, shown by *CAT (e.g. "MyTools" -&gt; "*MyTools*")
   <span class="value">--copyright &lt;string&gt;</span>     Copyright string (e.g. "1.00")
   <span class="value">--versionstring &lt;string&gt;</span> Version string (e.g. "2.10 (14 Oct 2022)")
   <span class="value">--uncompressed</span>           Standard RFS ROM without compression, else "comprom" v2.10
+
 <span class="label">Extract Options:</span>
   <span class="value">--inf or -i</span>              Generate .INF files
-  <span class="value">--list or -l</span>             List files only, do not extract
+  <span class="value">--list or -l</span>             List files only, do not extract (no &lt;output-dir&gt; needed)
 <span class="prompt">C:\LocalOnly\RFS&gt;</span>
 </pre>
 
@@ -67,14 +75,17 @@ Usage:
  address is set to &amp;1900 and the exec address to &amp;8023.</p>
 
 <pre class="console">
-<span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool pack .\BeebFiles NewRFSCompr.rom</span>
-BeebRFSTool v2026-06-08_16:11 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
+<span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool pack .\BeebFiles NewRFSCompr.rom --romtitle "CompressedRFS" --catalogtitle "CompRFS" --copyright "KLO 2026"</span>
+BeebRFSTool v2026-07-22_22:27 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
 Compatible with both standard RFS and Greg Cook's compressed RFS "comprom" format v2.10
+
 Packing with compression enabled (compressed RFS) to NewRFSCompr.rom.
+
 <span class="label"> Title          :</span> <span class="value">"CompressedRFS"</span>
 <span class="label"> Copyright      :</span> <span class="value">"KLO 2026"</span>
-<span class="label"> Version string :</span> <span class="value">"(2026-06-08 17:28)"</span>
+<span class="label"> Version string :</span> <span class="value">"(2026-07-22 22:30)"</span>
 <span class="label"> Catalog title  :</span> <span class="value">"*CompRFS*"</span>
+
 <span class="label">+---+------------+----------+----------+-------+-------+------+------+</span>
 <span class="label">| # |Name        |Load      |Exec      |Raw    |Compr. |% Orig| Inf? |</span>
 <span class="label">+---+------------+----------+----------+-------+-------+------+------+</span>
@@ -85,6 +96,7 @@ Packing with compression enabled (compressed RFS) to NewRFSCompr.rom.
 <span class="value">| 5)|test_nocom  |&amp;00000000 |&amp;00000000 |    44 |    38 |86.4% |      |</span>
 <span class="value">| 6)|Zeddy_txt   |&amp;00000000 |&amp;00000000 |   167 |   145 |86.8% |      |</span>
 <span class="label">+---+------------+----------+----------+-------+-------+------+------+</span>
+
 <span class="label">ROM Uncompressed:</span>  14163 bytes
 <span class="label">ROM Compressed  :</span>  10858 bytes
 <span class="label">ROM Overhead    :</span>   1958 bytes (header + stub + dictionary + digraphs)
@@ -97,43 +109,142 @@ Packing with compression enabled (compressed RFS) to NewRFSCompr.rom.
 
 <h2>Example: extracting files</h2>
 
-<p>Extract all files from an existing CompRFS ROM image. The <code>-i</code> flag generates <code>.inf</code> sidecar files alongside each extracted file, preserving the BBC Micro filename, load address, execution address, and file length.</p>
+<p>Extract all files from an existing RFS ROM image, giving the ROM to read and the folder to write into. The <code>-i</code> flag generates <code>.inf</code> sidecar files alongside each extracted file, preserving the BBC Micro filename, load address, execution address, and file length. Use <code>-l</code> instead to list a ROM's contents without writing anything to disk. Either way the run finishes with a <code>*INFO</code> style catalogue of the files and a one-line summary of the ROM's own header.</p>
 
 <pre class="console">
-<span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool extract RFSCompressed.rom -i</span>
-BeebRFSTool v2026-06-08_16:11 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
+<span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool extract NewRFSCompr.rom .\Extracted -i</span>
+BeebRFSTool v2026-07-22_22:27 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
 Compatible with both standard RFS and Greg Cook's compressed RFS "comprom" format v2.10
-<span class="label">ROM image:</span> <span class="value">%HOMEDRIVE%\LocalOnly\RFS\RFSCompressed.rom</span>
+
+<span class="label">ROM image:</span> <span class="value">C:\LocalOnly\RFS\NewRFSCompr.rom</span>
 <span class="ok">ROM header verified: standard BBC Micro ROM signature found.</span>
 <span class="ok">RFS ROM detected: Compressed format. Files will be decompressed and extracted.</span>
-Decoded compression and expanded contents to 21739 bytes.
-<span class="label">+---+-----------+--------+------------+------------+----------------------------------+</span>
-<span class="label">| # |Name       |Blocks  |Size (hex)  |Size (bytes)|Inf File Content                  |</span>
-<span class="label">+---+-----------+--------+------------+------------+----------------------------------+</span>
-<span class="value">| 1)|*CompRFS*  |     1  |0x000000    |         0  |*CompRFS*  FFFFFF FFFFFF 000000   |</span>
-<span class="label">+---+-----------+--------+------------+------------+----------------------------------+</span>
-<span class="value">| 2)|aaa_txt    |     1  |0x00000D    |        13  |aaa_txt    000000 000000 00000D   |</span>
-<span class="label">+---+-----------+--------+------------+------------+----------------------------------+</span>
-<span class="value">| 3)|Defende    |    19  |0x001240    |      4672  |Defende    001900 008023 001240   |</span>
-<span class="label">+---+-----------+--------+------------+------------+----------------------------------+</span>
-<span class="value">| 4)|DefenMC    |    35  |0x002300    |      8960  |DefenMC    001900 000E00 002300   |</span>
-<span class="label">+---+-----------+--------+------------+------------+----------------------------------+</span>
-<span class="value">| 5)|test_nocom |     1  |0x00000A    |        10  |test_nocom 000000 000000 00000A   |</span>
-<span class="label">+---+-----------+--------+------------+------------+----------------------------------+</span>
-End of ROM marker '+' seen at byte 0x0036C3 [014019]
-<span class="ok">Extracted  5 files totalling 13655 uncompressed bytes</span>
-<span class="label">Output folder:</span> <span class="value">%HOMEDRIVE%\LocalOnly\RFS\-i</span>
-<span class="value">        CompRFS</span>
-<span class="value">        aaa_txt</span>
-<span class="value">        Defende</span>
-<span class="value">        DefenMC</span>
-<span class="value">        test_nocom</span>
-</pre>
-<p>Each extracted file is written to the output folder with its BBC Micro filename. With <code>-i</code>, a corresponding <code>.inf</code> file is written alongside it, for example:</p>
+Decoded compression and expanded contents to 21761 bytes.
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="label">| # |Name       |Blocks  |Size (hex)  |Size (bytes)|Inf File Content                      |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 1)|*CompRFS*  |     1  |0x000000    |         0  |*CompRFS*  00FFFFFF 00FFFFFF 000000   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 2)|aaa_txt    |     1  |0x00000D    |        13  |aaa_txt    00000000 00000000 00000D   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 3)|bcdefghijk |     2  |0x000176    |       374  |bcdefghijk 00000000 00000000 000176   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 4)|Defende    |    19  |0x001240    |      4672  |Defende    00005000 00008023 001240   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 5)|DefenMC    |    35  |0x002300    |      8960  |DefenMC    00001900 00000E00 002300   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 6)|test_nocom |     1  |0x00000A    |        10  |test_nocom 00000000 00000000 00000A   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 7)|Zeddy_txt  |     1  |0x000086    |       134  |Zeddy_txt  00000000 00000000 000086   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+End of ROM marker '+' seen at byte 0x003921 [014625]
+<span class="ok">Extracted  7 files totalling 14163 uncompressed bytes</span>
+<span class="label">Output folder:</span> <span class="value">C:\LocalOnly\RFS\Extracted</span>
+<span class="value">        *CompRFS*  00FFFFFF 00FFFFFF 000000    (CompRFS)</span>
+<span class="value">        aaa_txt    00000000 00000000 00000D    (aaa_txt)</span>
+<span class="value">        bcdefghijk 00000000 00000000 000176    (bcdefghijk)</span>
+<span class="value">        Defende    00005000 00008023 001240    (Defende)</span>
+<span class="value">        DefenMC    00001900 00000E00 002300    (DefenMC)</span>
+<span class="value">        test_nocom 00000000 00000000 00000A    (test_nocom)</span>
+<span class="value">        Zeddy_txt  00000000 00000000 000086    (Zeddy_txt)</span>
 
-<div class="cli-block"><b>$.DefenMC FFFF1900 FFFF0E00 00002300</b></div>
+<span class="label">ROM:</span> <span class="value">"CompressedRFS" (2026-07-22 22:30) (C)KLO 2026 - compressed RFS,</span>
+<span class="value">     Type &amp;82 (service entry, no language, 6502 code), binary version &amp;13, language entry &amp;811C, service entry &amp;8040</span>
+</pre>
+
+<p>The closing list is a <code>*INFO</code> style catalogue, one line per file: the BBC Micro filename, its load
+ address, execution address and length, and then in parentheses the name the file is given on this PC. The two
+ differ whenever a BBC name contains characters Windows will not accept in a filename &#8212; here the catalogue
+ entry <code>*CompRFS*</code> becomes <code>CompRFS</code>, since Windows filenames cannot contain asterisks.</p>
+
+<p>The final line summarises the ROM's own header: its title, version string and copyright, whether it is
+ compressed or plain RFS, and the paged-ROM header fields &#8212; the type byte (spelled out in parentheses), the
+ binary version number, and the language and service entry addresses. A filing system ROM is type <code>&amp;82</code>:
+ it offers a service entry but has no language of its own. Note that the compressed ROM's language entry points at
+ <code>&amp;811C</code> whereas the plain one shows <code>&amp;0000</code>, the unused entry described
+ <a href="#uncompressed_language_entry">below</a>.</p>
+
+<p>Each extracted file is written to the output folder under the name shown in parentheses. With <code>-i</code>, a corresponding <code>.inf</code> file is written alongside it, for example:</p>
+
+<div class="cli-block"><b>DefenMC    00001900 00000E00 002300</b></div>
 
 in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
+
+<hr>
+
+<h2>Example: standard, uncompressed ROMs</h2>
+
+<p>Adding <code>--uncompressed</code> writes a plain RFS ROM instead of a compressed one. The files are stored
+ verbatim, so there is no dictionary, no digraph table and no decompressor stub &#8212; the ROM holds a good deal
+ less, but its layout is straightforward and nothing has to be decoded at run time.</p>
+
+<pre class="console">
+<span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool pack .\BeebFiles NewRFSPlain.rom --romtitle "StandardRFS" --catalogtitle "PlainRFS" --uncompressed</span>
+BeebRFSTool v2026-07-22_22:27 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
+Compatible with both standard RFS and Greg Cook's compressed RFS "comprom" format v2.10
+
+Packing with compression disabled (uncompressed RFS) to NewRFSPlain.rom.
+
+<span class="label"> Title          :</span> <span class="value">"StandardRFS"</span>
+<span class="label"> Copyright      :</span> <span class="value">"KLO 2026"</span>
+<span class="label"> Version string :</span> <span class="value">"(2026-07-22 22:30)"</span>
+<span class="label"> Catalog title  :</span> <span class="value">"*PlainRFS*"</span>
+
+<span class="label">+---+------------+----------+----------+-------+-------+</span>
+<span class="label">| # |Name        |Load      |Exec      |Bytes  | Inf?  |</span>
+<span class="label">+---+------------+----------+----------+-------+-------+</span>
+<span class="value">| 1)|aaa_txt     |&amp;00000000 |&amp;00000000 |    13 |       |</span>
+<span class="value">| 2)|bcdefghijk  |&amp;00000000 |&amp;00000000 |   374 |       |</span>
+<span class="value">| 3)|Defende     |&amp;00005000 |&amp;00008023 |  4672 |(.inf) |</span>
+<span class="value">| 4)|DefenMC     |&amp;00001900 |&amp;00000E00 |  8960 |(.inf) |</span>
+<span class="value">| 5)|test_nocom  |&amp;00000000 |&amp;00000000 |    10 |       |</span>
+<span class="value">| 6)|Zeddy_txt   |&amp;00000000 |&amp;00000000 |   134 |       |</span>
+<span class="label">+---+------------+----------+----------+-------+-------+</span>
+
+<span class="label">ROM Total       :</span>  16384 bytes (14708 padded to full &amp;4000 size)
+<span class="label">ROM Space Used  :</span>  14708 bytes  (89% utilised)
+<span class="ok">ROM Image Saved: NewRFSPlain.rom</span>
+</pre>
+
+<p>Extraction needs no extra option. The format is worked out from the ROM header, so the same
+ <code>extract</code> command reads either kind:</p>
+
+<pre class="console">
+<span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool extract NewRFSPlain.rom .\ExtractedPlain -i</span>
+BeebRFSTool v2026-07-22_22:27 - BBC Micro ROM Filing System (RFS) Pack, List, and Extract Tool by Kara Ottewell
+Compatible with both standard RFS and Greg Cook's compressed RFS "comprom" format v2.10
+
+<span class="label">ROM image:</span> <span class="value">C:\LocalOnly\RFS\NewRFSPlain.rom</span>
+<span class="ok">ROM header verified: standard BBC Micro ROM signature found.</span>
+<span class="ok">RFS ROM detected: Uncompressed format. Files will be decompressed and extracted.</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="label">| # |Name       |Blocks  |Size (hex)  |Size (bytes)|Inf File Content                      |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 1)|aaa_txt    |     1  |0x00000D    |        13  |aaa_txt    00000000 00000000 00000D   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 2)|bcdefghijk |     2  |0x000176    |       374  |bcdefghijk 00000000 00000000 000176   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 3)|Defende    |    19  |0x001240    |      4672  |Defende    00005000 00008023 001240   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 4)|DefenMC    |    35  |0x002300    |      8960  |DefenMC    00001900 00000E00 002300   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 5)|test_nocom |     1  |0x00000A    |        10  |test_nocom 00000000 00000000 00000A   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+<span class="value">| 6)|Zeddy_txt  |     1  |0x000086    |       134  |Zeddy_txt  00000000 00000000 000086   |</span>
+<span class="label">+---+-----------+--------+------------+------------+--------------------------------------+</span>
+End of ROM marker '+' seen at byte 0x003903 [014595]
+<span class="ok">Extracted  6 files totalling 14163 uncompressed bytes</span>
+<span class="label">Output folder:</span> <span class="value">C:\LocalOnly\RFS\ExtractedPlain</span>
+<span class="value">        aaa_txt    00000000 00000000 00000D    (aaa_txt)</span>
+<span class="value">        bcdefghijk 00000000 00000000 000176    (bcdefghijk)</span>
+<span class="value">        Defende    00005000 00008023 001240    (Defende)</span>
+<span class="value">        DefenMC    00001900 00000E00 002300    (DefenMC)</span>
+<span class="value">        test_nocom 00000000 00000000 00000A    (test_nocom)</span>
+<span class="value">        Zeddy_txt  00000000 00000000 000086    (Zeddy_txt)</span>
+
+<span class="label">ROM:</span> <span class="value">"StandardRFS" (2026-07-22 22:30) (C)KLO 2026 - uncompressed RFS,</span>
+<span class="value">     Type &amp;82 (service entry, no language, 6502 code), binary version &amp;01, language entry &amp;0000, service entry &amp;8035</span>
+</pre>
 
 <hr>
 
@@ -142,11 +253,21 @@ in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
 <div class="feature-grid">
     <div class="feature-item">
         <h3>Pack files into ROM images</h3>
-        <p>Pack a folder of files into a standard 16&nbsp;KB CompRFS sideways ROM image, with optional ROM title, catalogue title, copyright, and version string.</p>
+        <p>Pack a folder of files into a standard 16&nbsp;KB sideways ROM image, with optional ROM title, catalogue title, copyright, and version string.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Both RFS formats</h3>
+        <p>Produce either a compressed (CompRFS) ROM or, with <code>--uncompressed</code>, a standard plain RFS ROM &#8212; from the same folder of files.</p>
     </div>
     <div class="feature-item">
         <h3>Extract from ROM images</h3>
-        <p>Extract files from any compatible CompRFS ROM image, with optional <code>.inf</code> sidecar generation preserving BBC Micro metadata.</p>
+        <p>Extract files from any compatible RFS ROM image, compressed or uncompressed &#8212; the format is detected from the ROM header &#8212; with optional <code>.inf</code> sidecar generation preserving BBC Micro metadata.</p>
+    </div>
+    <div class="feature-item">
+        <h3>*INFO style catalogue</h3>
+        <p>Every extract or list run ends with a catalogue of the files &#8212; BBC filename, load and execution
+        addresses and length, with the name used on this PC alongside &#8212; and a one-line summary of the ROM
+        header, including the type byte spelled out in plain English.</p>
     </div>
     <div class="feature-item">
         <h3>Compression feedback</h3>
@@ -179,7 +300,7 @@ in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
             <li>The <a href="ms-windows-store://pdp/?productid=9PCCNCRL19GH" target="_blank">Microsoft Store app</a></li>
         </ul>
     </p>
-    <p>Requires Windows 10 or later and .NET 8 or later.</p>
+    <p>Requires Windows 10 or later and .NET 9 or later.</p>
 </div>
 
 <div class="note">
@@ -190,7 +311,7 @@ in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
 
 <h2>Compatibility</h2>
 
-<p>BeebRFSTool is compatible with the <b>Compressed ROM Filing System v2.10</b> format. ROM images it produces can be used with:</p>
+<p>BeebRFSTool handles both the <b>Compressed ROM Filing System v2.10</b> format and <b>standard, uncompressed RFS</b>. ROM images it produces can be used with:</p>
 
 <ul style="line-height:1.8">
     <li>A real BBC Micro Model B, B+, or Master 128 with a suitable ROM board</li>
@@ -198,10 +319,45 @@ in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
     <li>Any other tool that reads the comprom.pl v2.10 format</li>
 </ul>
 
+<p id="uncompressed_language_entry">When reading an uncompressed ROM, the unused language entry point at &amp;8000 may be filled with either three
+ <code>NOP</code> instructions or three zero bytes; both conventions are recognised. Either way there is no address
+ to report, which is why the ROM summary shows a language entry of <code>&amp;0000</code> for a plain RFS ROM.</p>
+
 <hr>
 
 <p style="font-size:9pt; color:#666;">BeebRFSTool is free software. The CompRFS format and original comprom.pl script are by Greg Cook.
 <br><a href="BeebRFSMaker.htm">&#8592; BeebRFSMaker</a> &nbsp;&nbsp; <a href="index.htm">&#8592; Back to KLO Software</a></p>
 <script src="KLODarkModeSwitch.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Only run if opened locally
+        if (window.location.protocol === 'file:') {
+            const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+            // Show the "this is a local copy, see the online version" notice - it stays
+            // hidden (via CSS) when the page is served normally, since it would be
+            // redundant/confusing on the live site itself.
+            document.querySelectorAll('.local-copy-notice').forEach(el => {
+                el.style.display = 'block';
+            });
+
+            // Grab every single link on the page
+            document.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href');
+
+                // Rewrite only genuine relative links: skip anything with its own scheme (http://,
+                // https://, ms-windows-store:// and so on) and in-page anchor links (#)
+                if (href && !href.includes('://') && !href.startsWith('#')) {
+
+                    // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                    const cleanHref = href.replace(/^\.\//, '');
+
+                    // Rewrite the link to point to the live site
+                    link.href = baseWebUrl + cleanHref;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
