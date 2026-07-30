@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="KLO.gif" type="image/gif">
+<title>SnapDragger — KLO Software</title>
+<link rel="stylesheet" href="KLO.css">
+</head>
+<body>
+    <div id="theme-toggle-icon" title="Change theme">🖥️</div>
+    <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+
+    <h1>SnapDragger</h1>
+    <p class="subtitle">
+        Tidy up a folder of photographs and video clips from the command line. SnapDragger reads the date each picture
+        was <b>actually taken</b> from inside the file, renames everything to sortable timestamped names, files them into
+        year and month folders, and builds an HTML contact sheet of the whole library. Nothing is renamed unless you ask
+        for it, every run can be previewed first, and every run can be undone.
+    </p>
+
+    <span class="badge">Windows</span>
+    <span class="badge">Command Line</span>
+    <span class="badge">JPEG &middot; HEIC &middot; AVIF &middot; PNG</span>
+    <span class="badge">MOV &middot; MP4 &middot; WMV &middot; AVI</span>
+
+    <!-- Help Image - snapdragger --list over a folder, showing the coloured summary lines. -->
+    <img class="screenshot" src="SnapDragger_Screenshot_List_Example.png"
+         alt="SnapDragger running --list over a folder of 490 JPEGs, showing each iOS file name, the timestamped name it would be given, its size, and the Exif date and camera it was read from">
+    <p class="screenshot-caption">
+        <b>--list</b> over a folder of 490 photographs. Each line shows the file as it is now, the name SnapDragger
+        would give it, its size, and &mdash; in green &mdash; the date it found inside the file and the camera that
+        took it. Nothing has been changed.
+    </p>
+    <hr>
+
+    <h2>Overview</h2>
+
+    <p>
+        SnapDragger turns a folder full of photo files with names like <em>DSC00123.JPG</em> or <em>IMG_4471.HEIC</em>
+        into something you can actually find things in. It reads the moment each photograph was taken from the file
+        itself rather than trusting the timestamp your computer shows, renames each one to a name that sorts into
+        chronological order, files it under the year and month it belongs to, and optionally writes an HTML page of
+        thumbnails for the whole collection.
+    </p>
+
+    <p>
+        It is a <b>command line tool</b>. There is no window &mdash; you point it at a folder and it tells you, line by
+        line, what it found and what it did with it. You can also do a safety <b>dry run</b> where SnapDragger shows you
+        exactly what it will do before anything is changed.
+    </p>
+
+    <p class="local-copy-notice">
+        The most up to date version of this information will always be the <a href="SnapDragger.htm">online version</a>.
+    </p>
+    <hr>
+
+    <h2 id="Dates">Where the Date Comes From</h2>
+
+    <p>
+        A photograph taken by a modern camera or phone &ldquo;knows&rdquo; when it was taken. The camera saves that
+        information inside the image file in a &ldquo;packet&rdquo; that SnapDragger examines:
+    </p>
+
+    <div class="indent">
+        <b>JPEG</b> &mdash; Exif <em>DateTimeOriginal</em>, and the real pixel size from the encoded frame rather than
+        whatever a copied Exif block claims<br>
+        <b>HEIC and AVIF</b> &mdash; the Exif block, reached through the ISO base media boxes<br>
+        <b>PNG</b> &mdash; no capture date exists in the format, so the file time is used<br>
+        <b>MOV, MP4, M4V</b> &mdash; Apple's creation date where the camera wrote one, otherwise the QuickTime movie header<br>
+        <b>WMV and AVI</b> &mdash; the container's own creation date, where it has one
+    </div>
+
+    <p>
+        Where a file carries no date of its own, its filesystem timestamp is used instead, and the summary line says
+        which, so you always know what you are looking at.
+    </p>
+
+    <h3 id="Timezones">Video, and the timezone problem</h3>
+
+    <p>
+        Video is a little trickier. A movie header often records <b>UTC</b> and says nothing about where the camera was,
+        so a clip filmed on holiday comes out hours wrong if it is simply converted to the timezone the computer is
+        sitting in right now. SnapDragger works the offset out <b>per recording</b>: from a nearby clip that carries a
+        suitable tag, which states the offset outright, or, failing that, from the photographs taken around the same
+        time. A folder covering a trip abroad and the weeks either side of it comes out right throughout.
+    </p>
+
+    <div class="note">
+        Offsets are rounded to whole hours, so a recording made somewhere on a half-hour offset &mdash; India or Nepal,
+        for instance &mdash; comes out half an hour out. Rounding finely enough to reach those would fold the minutes
+        between a photograph and a clip into the answer instead, which is wrong far more often.
+    </div>
+    <hr>
+
+    <h2 id="Renaming">Renaming and Filing</h2>
+
+    <ul>
+        <li>
+            <b>--prefix</b> renames your photos to <em>&lt;prefix&gt;_YYYYMMDD_HHMMSS&lt;suffix&gt;.&lt;ext&gt;</em>,
+            keeping the extension.
+        </li>
+        <li>
+            The prefix defaults to <b>WP</b>, but you can change it. It may be nothing at all, so names just start with
+            the year: <em>20190704_112233.jpg</em>.
+        </li>
+        <li>
+            The pictures can optionally be moved into <b>YYYY\MM</b> folders, into a folder you name, or just left in
+            place.
+        </li>
+        <li>
+            Two pictures taken in the <b>same second</b> are made distinguishable by adding <em>_1</em>, <em>_2</em> and
+            so on at the end of the file name.
+        </li>
+        <li>
+            Lower-resolution image copies can be marked with <b>--small</b>, so a thumbnail and its original don't
+            collide.
+        </li>
+    </ul>
+
+    <p>Whatever you choose, the summary line, the HTML links and the place the file actually ends up all agree:</p>
+
+    <div class="cli-block">--folder=Albums&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Albums\name.jpg
+--folder=auto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2024\01\name.jpg
+--folder=Albums/auto&nbsp;&nbsp;&nbsp;Albums\2024\01\name.jpg</div>
+
+    <!-- Help Image - a real run renaming and filing into PhotoAlbum\YYYY\MM. -->
+    <img class="screenshot" src="SnapDragger_Screenshot_Folder_Auto_Example.png"
+         alt="SnapDragger renaming twelve files with an IMG prefix and filing them into PhotoAlbum/2016/12 and PhotoAlbum/2012/02, finishing with the command needed to undo the run">
+    <p class="screenshot-caption">
+        A real run: <b>--prefix=IMG --folder=auto --url-prefix=PhotoAlbum</b>. Twelve files taken in December 2016 and
+        February 2012 are renamed and filed into <em>PhotoAlbum\2016\12</em> and <em>PhotoAlbum\2012\02</em> according to
+        the date inside each one &mdash; note the <b>.MOV</b> clip, whose date came from its QuickTime tags. The last
+        line is the command that would put it all back again.
+    </p>
+    <hr>
+
+    <h2 id="ContactSheet">The Contact Sheet</h2>
+
+    <p>
+        SnapDragger optionally writes an HTML page with a <b>table for each month</b>, in date order, each cell holding
+        a thumbnail that links to the picture itself.
+    </p>
+
+    <!-- Help Image - the generated contact sheet, one table per month. -->
+    <img class="screenshot shot-center" src="SnapDragger_Screenshot_Folder_HTML_Contact_Sheet_Example.png"
+         alt="A generated SnapDragger contact sheet: a February 2012 table of two photographs above a December 2016 table of ten, each thumbnail captioned with its date and linking to the picture or clip"
+         style="max-width: 88%;">
+    <p class="screenshot-caption">
+        The page produced by the run above. Each month gets its own table, oldest first, and every cell is captioned with
+        the moment the picture was taken. A clip is labelled <b>Play Video</b> rather than <b>View Photo</b>, and its
+        thumbnail is a frame taken from a few seconds in. (Faces blurred here for the website.)
+    </p>
+
+    <p>
+        The page is rebuilt from <b>what is on disk</b> rather than from whatever this particular run happened to be
+        given, so it always describes the whole library. Add more photographs later, run it again, and only the months
+        you actually added to are rebuilt &mdash; every other month is carried through exactly as it was. Thumbnails are
+        made for anything on the page that lacks one, so an older file never shows a broken picture.
+    </p>
+
+    <p>
+        Thumbnails all share a height so a row of them lines up, and the width follows each picture's own shape, so a
+        portrait photograph is never squashed into a landscape box. The <b>Exif orientation</b> is honoured, which
+        matters more than you might think &mdash; how often have you seen people's photos stored sideways and had to
+        awkwardly tilt your head to view them?
+    </p>
+
+    <div class="note">
+        Making thumbnails needs <b>ImageMagick</b>, and clips additionally need <b>ffmpeg</b>. <b>Neither is
+        included.</b> SnapDragger looks for them on your PATH, uses them if they are there, and quietly does without
+        where they are not. For pictures to get their thumbnails, just having ImageMagick installed is enough; if you
+        want that for video too, then install ffmpeg. Both are free &mdash; see
+        <a href="#Download">Download and Install</a>.
+    </div>
+
+    <p>
+        <b>--scanfolders</b> builds the page from the folders and does nothing else. It reads everything under the
+        folder given, however deep, and writes a table per month covering all of it. Nothing is renamed and nothing is
+        moved. Useful for indexing a library that is already tidy, or for building a fresh page after moving things
+        about by hand.
+    </p>
+    <hr>
+
+    <h2 id="Safety">Nothing Happens That You Did Not Ask For</h2>
+
+    <ul>
+        <li>
+            <b>--list</b> reports on every file and changes nothing at all. It is a read-only look at a folder: it will
+            not rename, move or delete, and if you give it an option that would, it <b>says so and stops</b> rather than
+            quietly ignoring it.
+        </li>
+        <li>
+            <b>--dry-run</b> shows exactly what would happen, including the clash suffixes a real run would allocate,
+            without touching anything. The name each file would take is shown in green.
+        </li>
+        <li>
+            <b>--first=n</b> deals with only the first <em>n</em> files, for trying an option out on a big folder
+            without committing to all of it.
+        </li>
+    </ul>
+
+    <!-- Help Image - a dry run, showing the would-be names and the closing DRY RUN banner. -->
+    <img class="screenshot" src="SnapDragger_Screenshot_Dry_Run_Example.png"
+         alt="A SnapDragger dry run showing the name each of twelve files would be given, and a closing line reading DRY RUN - nothing was renamed, moved or created">
+    <p class="screenshot-caption">
+        A <b>--dry-run</b>: every name each file would be given is shown in green, and the run finishes by saying
+        plainly that nothing was renamed, moved or created. Run it again without <b>--dry-run</b> to do it for real.
+    </p>
+
+    <h3 id="Undo">Undoing a run</h3>
+
+    <p>
+        And when a run has done something you did not want, it can be undone. Every run that moves anything writes a
+        plain-text log beside the files and finishes by telling you how to use it:
+    </p>
+
+    <div class="cli-block">To undo this run: snapdragger --revert snapdragger_log_20260728_133709.txt</div>
+
+    <p>
+        Undoing puts every file back under its old name, removes the thumbnails that run created, and takes away any
+        folder it emptied. A file already sitting where one belongs is left alone rather than written over, and reported.
+        <b>--dry-run</b> works here too, showing everything that would go back without touching anything.
+    </p>
+
+    <div class="note">
+        Every effort is made to ensure that your photos are safe at every step, but of course you should make a complete
+        backup of your pictures before using any tool on them, SnapDragger included.
+    </div>
+    <hr>
+
+    <h2 id="Options">Command Line Reference</h2>
+
+    <p>
+        Every option has a spelled-out name; six of them also keep a single letter. Run <b>snapdragger --help</b> for the
+        full built-in help, which is where this summary comes from.
+    </p>
+
+    <div class="cli-block">snapdragger [--list] [--timesource=source] [--prefix[=text]]
+            [--suffix=text] [--folder=name] [--dedupe] [--dry-run]
+            [--first=n] [--small[=pixels]] [--html=file]
+            [--url-prefix=text] [--thumbnails=when]
+            [--label=date|name] [--scanfolders] [--revert=log]
+            [--help] [wildcard_in]</div>
+
+    <h3>Choosing files and reporting</h3>
+    <ul>
+        <li><b>wildcard_in</b> &mdash; input files, e.g. <em>DSC*.JPG</em>. Pictures <em>.jpg .jpeg .heic .avif .png</em>
+            and movies <em>.mpg .mov .mp4 .m4v .wmv .asf .avi</em> are dealt with; anything else is passed over.</li>
+        <li><b>--list</b>, <b>-l</b> &mdash; report on everything and change nothing.</li>
+        <li><b>--first=n</b> &mdash; stop after <em>n</em> files.</li>
+        <li><b>--dry-run</b> &mdash; say what would happen without renaming, moving or creating anything.</li>
+        <li><b>--help</b>, <b>-h</b>, <b>-?</b> &mdash; show the built-in help.</li>
+    </ul>
+
+    <h3>Where the date comes from</h3>
+    <ul>
+        <li>
+            <b>--timesource=</b>, <b>-t</b> &mdash; one of <b>auto</b> (the date inside the file, falling back to a file
+            timestamp where there is none &mdash; the default), <b>embedded</b> (only files carrying their own date;
+            skip the rest), <b>modified</b>, or <b>created</b>. The first letter will do, so <em>-t=e</em> is
+            <em>--timesource=embedded</em>.
+        </li>
+    </ul>
+
+    <div class="note">
+        Windows can rewrite a creation time when files are renamed &mdash; a filesystem feature called <em>tunnelling</em>
+        &mdash; so <b>created</b> may not survive a second run. <b>auto</b> falls back to <b>modified</b>.
+    </div>
+
+    <h3>Renaming and filing</h3>
+    <ul>
+        <li><b>--prefix[=text]</b>, <b>-r</b> &mdash; rename to <em>&lt;prefix&gt;_YYYYMMDD_HHMMSS</em>, keeping the
+            extension. Defaults to <b>WP</b>. The short form takes its prefix attached: <em>-rIMG</em>.</li>
+        <li><b>--suffix=text</b> &mdash; text to keep on the end of the name, after the timestamp, e.g.
+            <em>--suffix=_iOS</em> gives <em>WP_20190704_112233_iOS.jpg</em>.</li>
+        <li><b>--folder=name</b> &mdash; move renamed files into a subfolder, which implies renaming. Either a folder
+            name, or the word <b>auto</b> to work it out from each file's date. Only the exact word <em>auto</em> means
+            the date tree, so any other name is taken literally.</li>
+        <li><b>--small[=pixels]</b> &mdash; add <em>_Small</em> after the timestamp for reduced-size copies. An image
+            counts as reduced when its <b>shorter</b> side is under 1024 pixels; give another size as
+            <em>--small=800</em>.</li>
+        <li><b>--dedupe</b>, <b>-d</b> &mdash; find files whose content is <b>byte-for-byte identical</b> and offer to
+            delete the copies, keeping whichever was found first. <b>Y</b> deletes it, <b>N</b> keeps it, <b>A</b>
+            deletes it and every later one without asking again. Deletions go to the <b>Recycle Bin</b>, and never
+            happen on a dry run, nor when the output is redirected, since then there is nobody to ask. Files are
+            compared in full, not by checksum, so &ldquo;identical&rdquo; means identical.</li>
+    </ul>
+
+    <h3>The HTML contact sheet</h3>
+    <ul>
+        <li><b>--html=file</b>, <b>-o</b> &mdash; write the contact sheet to this file. Without it no HTML is kept.</li>
+        <li><b>--url-prefix=text</b> &mdash; a folder everything is filed under, which then begins every link in the
+            page. It really moves the files there, so the links point at where they are.</li>
+        <li><b>--thumbnails=missing|always|never</b> &mdash; <b>missing</b> makes only the ones not there yet (the
+            default), <b>always</b> makes them all again every run, <b>never</b> makes none.</li>
+        <li><b>--label=date|name</b> &mdash; what each entry is captioned with. <b>name</b> cannot be combined with
+            renaming, since the caption would then name a file that no longer exists under it.</li>
+        <li><b>--scanfolders</b> &mdash; build the page from the folders and do nothing else. Needs <b>--html</b> to say
+            where the page goes.</li>
+    </ul>
+
+    <h3>Putting a run back</h3>
+    <ul>
+        <li><b>--revert=log</b> &mdash; undo an earlier run using the log it wrote. Nothing else on the command line is
+            used, except <b>--dry-run</b>; anything else you give is listed and you are asked whether to carry on.</li>
+    </ul>
+
+    <p>
+        Coloured output can be turned off by setting the <b>NO_COLOR</b> environment variable.
+    </p>
+    <hr>
+
+    <h2 id="Examples">Examples</h2>
+
+    <p>Look at what is in a folder, changing nothing:</p>
+    <div class="cli-block">snapdragger --list *.jpg</div>
+
+    <p>Rename by the date inside each file, with an <em>IMG</em> prefix, and file everything into the YYYY\MM tree:</p>
+    <div class="cli-block">snapdragger --prefix=IMG --folder=auto *.jp*</div>
+
+    <p>See exactly what that would do, without touching anything:</p>
+    <div class="cli-block">snapdragger --prefix=IMG --folder=auto --dry-run *.jp*</div>
+
+    <p>Try it on just the first ten files before committing to the lot:</p>
+    <div class="cli-block">snapdragger --prefix=IMG --first=10 *.jp*</div>
+
+    <p>
+        Rename a folder holding both originals and reduced copies, keeping the two apart rather than letting them
+        collide:
+    </p>
+    <div class="cli-block">snapdragger -r --small *.jpg</div>
+
+    <p>Start the name with the year rather than a prefix, and keep the <em>_iOS</em> that the phone put on the end:</p>
+    <div class="cli-block">snapdragger --prefix= --suffix=_iOS *.MOV</div>
+
+    <p>Only files that carry their own date, skipping the rest:</p>
+    <div class="cli-block">snapdragger -t=embedded --list *.*</div>
+
+    <p>Build a contact sheet for a library that is already tidy, changing nothing else:</p>
+    <div class="cli-block">snapdragger --html index.html --scanfolders</div>
+    <hr>
+
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>The Real Capture Date</h3>
+            <p>Read from inside JPEG, HEIC, AVIF, MOV, MP4, M4V, WMV and AVI files, not from the timestamp Windows shows.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Sortable Names</h3>
+            <p>Renames to <em>&lt;prefix&gt;_YYYYMMDD_HHMMSS</em>, so a folder listing is a timeline.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Year and Month Folders</h3>
+            <p>Files everything into a YYYY\MM tree, optionally underneath a folder of your own choosing.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Monthly Contact Sheet</h3>
+            <p>An HTML page with one table per month, in date order, each thumbnail linking to the picture itself.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Incremental Rebuild</h3>
+            <p>Add more photographs later and only the affected months are rebuilt; the rest of the page is untouched.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Orientation Honoured</h3>
+            <p>Pictures taken sideways are shown the right way up, and each thumbnail is sized to its own picture's shape.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Holiday Timezones</h3>
+            <p>Works out a video's offset from UTC per recording, so a trip abroad no longer comes out hours wrong.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Preview Anything</h3>
+            <p><em>--dry-run</em> shows exactly what would happen, clash suffixes and all, without touching a thing.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Undo a Run</h3>
+            <p>Every run that moves anything writes a log, and <em>--revert</em> puts every file back where it came from.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Find Duplicates</h3>
+            <p>Compares files in full, not by checksum, and offers to send the copies to the Recycle Bin.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Read-Only Mode</h3>
+            <p><em>--list</em> reports on a folder and changes nothing &mdash; and says so if an option would.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Readable Output</h3>
+            <p>Colour-coded lines telling you where each date came from and what took the picture, in lined-up columns.</p>
+        </div>
+    </div>
+    <hr>
+
+    <h2 id="Download">Download and Install</h2>
+
+    <div class="download-box">
+        <h3>SnapDragger</h3>
+        <p>
+            The app can be installed from:
+            <ul>
+                <li>
+                    The <a href="https://apps.microsoft.com/detail/9N1R2K1788N4"
+                           target="_blank">SnapDragger Microsoft Store web page</a>
+                </li>
+                <li>
+                    <a href="ms-windows-store://pdp/?productid=9N1R2K1788N4" target="_blank">
+                        <img src="ms_store_badge.svg" alt="Get SnapDragger from the Microsoft Store app" style="height:40px;vertical-align:middle;">
+                    </a>
+                </li>
+            </ul>
+        </p>
+        <p>Requires Windows 10 version 1809 or later, or Windows 11. Both x86 and x64 are supported. Run it from
+            Command Prompt, PowerShell or Windows Terminal.</p>
+    </div>
+
+    <h3>Optional: thumbnail tools</h3>
+
+    <p>
+        SnapDragger does everything except making thumbnails without any help. For thumbnails it uses two free tools,
+        <b>neither of which is included</b>. It finds them on your <b>PATH</b>, so they need to be somewhere Windows
+        looks:
+    </p>
+
+    <ul>
+        <li>
+            <b>ImageMagick</b>, for picture thumbnails &mdash;
+            <a href="https://imagemagick.org/download/" target="_blank">imagemagick.org/download</a>. The Windows
+            installer offers to add itself to your PATH; let it.
+        </li>
+        <li>
+            <b>ffmpeg</b>, needed as well if you want thumbnails for video clips &mdash;
+            <a href="https://ffmpeg.org/download.html" target="_blank">ffmpeg.org/download.html</a>. The Windows builds
+            it points at are
+            <a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a> and
+            <a href="https://github.com/BtbN/FFmpeg-Builds/releases" target="_blank">BtbN</a>. These come as a zip
+            archive, so unpack it somewhere sensible and add that folder to your PATH yourself.
+        </li>
+    </ul>
+
+    <p>
+        With only ImageMagick installed, pictures get their thumbnails and movies do not. With neither, no thumbnails
+        are made at all and the run carries on regardless &mdash; the page is still written, and the links to the
+        pictures themselves still work.
+    </p>
+
+    <p style="font-size:9pt; color:#666;">
+        <a href="index.htm">&#8592; Back to KLO Software</a>
+    </p>
+    <script src="KLODarkModeSwitch.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Only run if opened locally
+            if (window.location.protocol === 'file:') {
+                const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+                // Show the "this is a local copy, see the online version" notice - it stays
+                // hidden (via CSS) when the page is served normally, since it would be
+                // redundant/confusing on the live site itself.
+                document.querySelectorAll('.local-copy-notice').forEach(el => {
+                    el.style.display = 'block';
+                });
+
+                // Grab every single link on the page
+                document.querySelectorAll('a').forEach(link => {
+                    const href = link.getAttribute('href');
+
+                    // Rewrite only genuine relative links: skip anything with its own scheme (http://,
+                    // https://, ms-windows-store:// and so on) and in-page anchor links (#)
+                    if (href && !href.includes('://') && !href.startsWith('#')) {
+
+                        // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                        const cleanHref = href.replace(/^\.\//, '');
+
+                        // Rewrite the link to point to the live site
+                        link.href = baseWebUrl + cleanHref;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
