@@ -126,6 +126,27 @@ pre.console .ok     { color: #6a9955; }
 pre.console .dg     { color: #808080; }
 pre.console .dr     { color: #f44747; }
 
+/* Captured console colour. Where the classes above are written by hand for a
+   hand-made example, these are the sixteen ANSI colours, so a real run can be
+   captured to a file and dropped straight into a page with its colours intact.
+   The console block is dark in both themes, so these need no light variant. */
+pre.console .c-black         { color: #1e1e1e; }
+pre.console .c-red           { color: #cd3131; }
+pre.console .c-green         { color: #0dbc79; }
+pre.console .c-yellow        { color: #e5e510; }
+pre.console .c-blue          { color: #2472c8; }
+pre.console .c-magenta       { color: #bc3fbc; }
+pre.console .c-cyan          { color: #11a8cd; }
+pre.console .c-white         { color: #e5e5e5; }
+pre.console .c-grey          { color: #808080; }
+pre.console .c-brightred     { color: #f14c4c; }
+pre.console .c-brightgreen   { color: #23d18b; }
+pre.console .c-brightyellow  { color: #f5f543; }
+pre.console .c-brightblue    { color: #3b8eea; }
+pre.console .c-brightmagenta { color: #d670d6; }
+pre.console .c-brightcyan    { color: #29b8db; }
+pre.console .c-brightwhite   { color: #ffffff; }
+
 /* BBC BASIC blocks */
 pre.bbc, pre.bbc7 {
     background: black;

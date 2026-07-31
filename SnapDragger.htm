@@ -118,6 +118,13 @@
         </li>
     </ul>
 
+    <div class="note">
+        File names are handled as <b>UTF-8</b> throughout, so a picture called <em>Pore&#269;.jpg</em> or
+        <em>M&uuml;nchen.heic</em> is read, renamed and linked under its own name rather than being mangled or skipped.
+        Anything that looks like a picture and still cannot be read is named in the output, so nothing goes missing
+        quietly.
+    </div>
+
     <p>Whatever you choose, the summary line, the HTML links and the place the file actually ends up all agree:</p>
 
     <div class="cli-block">--folder=Albums&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Albums\name.jpg
@@ -174,11 +181,45 @@
         <a href="#Download">Download and Install</a>.
     </div>
 
+    <h3 id="SelfContained">The page stands on its own</h3>
+
     <p>
-        <b>--scanfolders</b> builds the page from the folders and does nothing else. It reads everything under the
-        folder given, however deep, and writes a table per month covering all of it. Nothing is renamed and nothing is
-        moved. Useful for indexing a library that is already tidy, or for building a fresh page after moving things
-        about by hand.
+        Everything the contact sheet needs is written into it &mdash; the stylesheet and all &mdash; so it can be
+        mailed, copied onto a memory stick or opened years later without hunting for anything alongside it. There is a
+        button in the top right corner that cycles <b>follow the machine &rarr; light &rarr; dark</b>, and it remembers
+        which you chose, so a page kept beside these ones agrees with them about the theme.
+    </p>
+
+    <p>
+        A page whose header you wrote yourself keeps it. SnapDragger only supplies one where there was nothing above the
+        first table, so a contact sheet you have dropped your own heading or styling onto is left as you made it.
+    </p>
+
+    <h3 id="ScanFolders">Building a page and nothing else</h3>
+
+    <p>
+        <b>--scanfolders</b> builds the page from what is on disk and does nothing else: nothing is renamed and nothing
+        is moved. Useful for indexing a library that is already tidy, or for building a fresh page after moving things
+        about by hand. What goes in which table is up to you:
+    </p>
+
+    <ul>
+        <li>
+            <b>--scanfolders=folders</b> &mdash; the default. Every folder holding pictures gets a table named for
+            itself and the folder above it, so <em>Holiday\Nice</em> becomes <b>Holiday - Nice</b>. A year folder over a
+            month folder &mdash; the tree <b>--folder=auto</b> builds &mdash; reads as <b>January 2004</b> instead.
+        </li>
+        <li>
+            <b>--scanfolders=dates</b> &mdash; a table per month worked out from each file's own date, however the
+            folders happen to be arranged. This is what <b>--scanfolders</b> did before there was a choice.
+        </li>
+    </ul>
+
+    <p>
+        The folder form looks two folders deep, counting only folders that actually <b>hold pictures</b>: one holding
+        nothing but other folders describes nothing, so it is walked through for free. That matters because
+        <b>--folder=auto</b> given a base folder builds <em>Albums\YYYY\MM</em> &mdash; the pictures sit three folders
+        down with the first two empty, and they are still found from the top.
     </p>
     <hr>
 
@@ -229,6 +270,124 @@
     </div>
     <hr>
 
+    <h2 id="Colour">Colour, and Keeping It</h2>
+
+    <p>
+        The output is colour-coded: the file as it is now, the name it is being given, where the date came from, and
+        anything that needs your attention. On Windows that colour is a property of the console rather than part of what
+        the program writes, so redirecting a run to a file has always produced clean plain text &mdash; correct, but no
+        use to anything that wanted the colours.
+    </p>
+
+    <p>
+        <b>--color=always</b> writes the colour into the output instead, as ANSI escape sequences, wherever that output
+        is going. A captured run keeps its colours, which is what these are &mdash; real runs, captured to a file and
+        turned into HTML, not screenshots:
+    </p>
+
+    <p>
+        <b>--list</b> over a folder: fifteen files found, twelve of them pictures, nothing changed. Each line
+        gives the file as it is now, the name it would be given, its size, and where the date came from.
+    </p>
+    <pre class="console"><span class="c-brightwhite">SnapDragger v3.0.4
+</span>Command line arguments: --color=always --list
+     Looking in folder: <span class="c-brightcyan">C:\LocalOnly\Snappy
+</span><span class="c-brightcyan">20161201_154932020_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_074932.jpg    </span><span class="c-white">  2.319 MB </span><span class="c-green">(EXIF: 2016-12-01 07:49:32, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161201_185438509_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_105438.jpg    </span><span class="c-white">  2.302 MB </span><span class="c-green">(EXIF: 2016-12-01 10:54:38, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161201_190227427_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_110227.jpg    </span><span class="c-white">  2.678 MB </span><span class="c-green">(EXIF: 2016-12-01 11:02:27, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_031930377_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_191930.jpg    </span><span class="c-white">  1.139 MB </span><span class="c-green">(EXIF: 2016-12-01 19:19:30, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032005579_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192005.jpg    </span><span class="c-white">  1.098 MB </span><span class="c-green">(EXIF: 2016-12-01 19:20:05, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QuickTime Apple: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
+</span><span class="c-brightcyan">20161202_032345127_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192345.jpg    </span><span class="c-white">  973.2 KB </span><span class="c-green">(EXIF: 2016-12-01 19:23:45, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032427273_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192427.jpg    </span><span class="c-white">  955.5 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:27, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032433941_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192433.jpg    </span><span class="c-white">  1.274 MB </span><span class="c-green">(EXIF: 2016-12-01 19:24:33, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032452242_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192452.jpg    </span><span class="c-white">  987.4 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:52, Apple iPhone 6s)
+</span><span class="c-brightcyan">                IMG001.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20120221_113248.jpg    </span><span class="c-white">  537.2 KB </span><span class="c-green">(EXIF: 2012-02-21 11:32:48)
+</span><span class="c-brightcyan">                IMG002.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20120222_185418.jpg    </span><span class="c-white">  948.5 KB </span><span class="c-green">(EXIF: 2012-02-22 18:54:18)
+</span><span class="c-brightgreen">Given file spec (*.*) matched 15 files
+Number of files actually processed was 12
+Number of files renamed was 0
+Number of files skipped was 3
+No HTML page created - use --html to ask for one
+</span></pre>
+
+    <p>
+        Renaming and filing for real with <b>--folder=auto --url-prefix=Albums</b>: twelve files sorted into
+        <em>Albums\2016\12</em> and <em>Albums\2012\02</em> by the date inside each one. The last line is the
+        command that would put them all back.
+    </p>
+    <pre class="console"><span class="c-brightwhite">SnapDragger v3.0.4
+</span>Command line arguments: --color=always --folder=auto --url-prefix=Albums
+     Looking in folder: <span class="c-brightcyan">C:\LocalOnly\Snappy
+</span><span class="c-brightcyan">20161201_154932020_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_074932.jpg    </span><span class="c-white">  2.319 MB </span><span class="c-green">(EXIF: 2016-12-01 07:49:32, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161201_185438509_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_105438.jpg    </span><span class="c-white">  2.302 MB </span><span class="c-green">(EXIF: 2016-12-01 10:54:38, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161201_190227427_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_110227.jpg    </span><span class="c-white">  2.678 MB </span><span class="c-green">(EXIF: 2016-12-01 11:02:27, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_031930377_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_191930.jpg    </span><span class="c-white">  1.139 MB </span><span class="c-green">(EXIF: 2016-12-01 19:19:30, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032005579_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192005.jpg    </span><span class="c-white">  1.098 MB </span><span class="c-green">(EXIF: 2016-12-01 19:20:05, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QuickTime Apple: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
+</span><span class="c-brightcyan">20161202_032345127_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192345.jpg    </span><span class="c-white">  973.2 KB </span><span class="c-green">(EXIF: 2016-12-01 19:23:45, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032427273_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192427.jpg    </span><span class="c-white">  955.5 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:27, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032433941_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192433.jpg    </span><span class="c-white">  1.274 MB </span><span class="c-green">(EXIF: 2016-12-01 19:24:33, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032452242_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192452.jpg    </span><span class="c-white">  987.4 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:52, Apple iPhone 6s)
+</span><span class="c-brightcyan">                IMG001.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2012/02/</span><span class="c-brightblue">WP_20120221_113248.jpg    </span><span class="c-white">  537.2 KB </span><span class="c-green">(EXIF: 2012-02-21 11:32:48)
+</span><span class="c-brightcyan">                IMG002.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2012/02/</span><span class="c-brightblue">WP_20120222_185418.jpg    </span><span class="c-white">  948.5 KB </span><span class="c-green">(EXIF: 2012-02-22 18:54:18)
+</span><span class="c-brightgreen">Given file spec (*.*) matched 17 files
+Number of files actually processed was 12
+Number of files renamed was 12
+Number of files skipped was 5
+Moved 12 renamed files to subfolders with date-format layout, YYYY/MM/
+No HTML page created - use --html to ask for one
+</span><span class="c-brightcyan">To undo this run: snapdragger --revert snapdragger_log_20260730_163934.txt
+</span></pre>
+
+    <p>
+        A <b>--dry-run</b> with <b>--dedupe</b> and a contact sheet: the duplicate search, every name that would
+        be given and every folder that would be made &mdash; without a single file being touched.
+    </p>
+    <pre class="console"><span class="c-brightwhite">SnapDragger v3.0.4
+</span>Command line arguments: --color=always --html=index.htm "--url-prefix=Family Albums" --folder=auto --dedupe --dry-run
+     Looking in folder: <span class="c-brightcyan">C:\LocalOnly\Snappy
+</span><span class="c-brightcyan">
+Looking for identical files among the 13 found...
+</span>No duplicates were deleted.
+
+<span class="c-brightcyan">20161201_154932020_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_074932.jpg    </span><span class="c-white">  2.319 MB </span><span class="c-green">(EXIF: 2016-12-01 07:49:32, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161201_185438509_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_105438.jpg    </span><span class="c-white">  2.302 MB </span><span class="c-green">(EXIF: 2016-12-01 10:54:38, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161201_190227427_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_110227.jpg    </span><span class="c-white">  2.678 MB </span><span class="c-green">(EXIF: 2016-12-01 11:02:27, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_031930377_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_191930.jpg    </span><span class="c-white">  1.139 MB </span><span class="c-green">(EXIF: 2016-12-01 19:19:30, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032005579_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192005.jpg    </span><span class="c-white">  1.098 MB </span><span class="c-green">(EXIF: 2016-12-01 19:20:05, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QuickTime Apple: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
+</span><span class="c-brightcyan">20161202_032345127_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192345.jpg    </span><span class="c-white">  973.2 KB </span><span class="c-green">(EXIF: 2016-12-01 19:23:45, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032427273_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192427.jpg    </span><span class="c-white">  955.5 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:27, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032433941_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192433.jpg    </span><span class="c-white">  1.274 MB </span><span class="c-green">(EXIF: 2016-12-01 19:24:33, Apple iPhone 6s)
+</span><span class="c-brightcyan">20161202_032452242_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192452.jpg    </span><span class="c-white">  987.4 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:52, Apple iPhone 6s)
+</span><span class="c-brightcyan">                IMG001.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2012/02/</span><span class="c-brightgreen">WP_20120221_113248.jpg    </span><span class="c-white">  537.2 KB </span><span class="c-green">(EXIF: 2012-02-21 11:32:48)
+</span><span class="c-brightcyan">                IMG002.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2012/02/</span><span class="c-brightgreen">WP_20120222_185418.jpg    </span><span class="c-white">  948.5 KB </span><span class="c-green">(EXIF: 2012-02-22 18:54:18)
+</span><span class="c-brightgreen">Given file spec (*.*) matched 13 files
+Number of files actually processed was 12
+Number of files that would be renamed was 12
+Number of files skipped was 1
+Would move 12 renamed files to subfolders with date-format layout, YYYY/MM/
+HTML table would be written to index.htm
+</span><span class="c-brightcyan">*** DRY RUN - nothing was renamed, moved or created. Run again without --dry-run to do it for real. ***
+</span></pre>
+
+    <p>
+        Being escape sequences rather than a picture, a capture like that is still text: searchable, selectable, and
+        sharp at any size. It also means a run stays coloured through a pipe, into a pager, or in a build log.
+    </p>
+
+    <div class="note">
+        Only the colour is affected. The running <em>Found:</em> and <em>Processing:</em> counts are drawn on a console
+        alone, because they are redrawn in place and the backspaces that do it would be litter in a captured file.
+    </div>
+
+    <p>
+        <b>--color=never</b>, or the <b>NO_COLOR</b> environment variable, turns colour off everywhere. The default,
+        <b>--color=auto</b>, is what has always happened: colour on a console, plain text into a file.
+    </p>
+    <hr>
+
     <h2 id="Options">Command Line Reference</h2>
 
     <p>
@@ -240,8 +399,8 @@
             [--suffix=text] [--folder=name] [--dedupe] [--dry-run]
             [--first=n] [--small[=pixels]] [--html=file]
             [--url-prefix=text] [--thumbnails=when]
-            [--label=date|name] [--scanfolders] [--revert=log]
-            [--help] [wildcard_in]</div>
+            [--label=date|name] [--scanfolders[=how]] [--revert=log]
+            [--color=when] [--help] [wildcard_in]</div>
 
     <h3>Choosing files and reporting</h3>
     <ul>
@@ -296,8 +455,18 @@
             default), <b>always</b> makes them all again every run, <b>never</b> makes none.</li>
         <li><b>--label=date|name</b> &mdash; what each entry is captioned with. <b>name</b> cannot be combined with
             renaming, since the caption would then name a file that no longer exists under it.</li>
-        <li><b>--scanfolders</b> &mdash; build the page from the folders and do nothing else. Needs <b>--html</b> to say
-            where the page goes.</li>
+        <li><b>--scanfolders[=folders|dates]</b> &mdash; build the page from what is on disk and do nothing else.
+            <b>folders</b> (the default) gives a table per folder; <b>dates</b> gives one per month from the file dates.
+            Needs <b>--html</b> to say where the page goes. See
+            <a href="#ScanFolders">Building a page and nothing else</a>.</li>
+    </ul>
+
+    <h3>Colour</h3>
+    <ul>
+        <li><b>--color=auto|always|never</b> &mdash; <b>auto</b> (the default) colours a console and writes plain text
+            when the output is redirected; <b>always</b> writes the colour into the output as ANSI escape sequences, so
+            a captured run keeps it; <b>never</b> turns colour off altogether. Spelled <b>--colour</b> as well.
+            <em>auto</em> and <em>always</em> share a letter, so shorten them to <em>au</em> and <em>al</em>.</li>
     </ul>
 
     <h3>Putting a run back</h3>
@@ -307,7 +476,8 @@
     </ul>
 
     <p>
-        Coloured output can be turned off by setting the <b>NO_COLOR</b> environment variable.
+        Coloured output can be turned off by setting the <b>NO_COLOR</b> environment variable, or with
+        <b>--color=never</b>, and kept when the output is redirected with <b>--color=always</b>.
     </p>
     <hr>
 
@@ -339,6 +509,12 @@
 
     <p>Build a contact sheet for a library that is already tidy, changing nothing else:</p>
     <div class="cli-block">snapdragger --html index.html --scanfolders</div>
+
+    <p>The same, but with a table per month worked out from the dates rather than from the folders:</p>
+    <div class="cli-block">snapdragger --html index.html --scanfolders=dates</div>
+
+    <p>Capture a run to a file and keep the colours in it:</p>
+    <div class="cli-block">snapdragger --color=always --list *.jpg &gt; run.txt 2&gt;&amp;1</div>
     <hr>
 
     <h2>Features</h2>
@@ -401,6 +577,26 @@
         <div class="feature-item">
             <h3>Readable Output</h3>
             <p>Colour-coded lines telling you where each date came from and what took the picture, in lined-up columns.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Colour You Can Keep</h3>
+            <p><em>--color=always</em> puts the colour into the output itself, so a run captured to a file stays coloured.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Grouped By Folder</h3>
+            <p><em>--scanfolders</em> gives every folder its own table, named for it &mdash; or a table per month, as you prefer.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>A Page That Travels</h3>
+            <p>The contact sheet carries its own styling and a light and dark switch, so it works wherever you put it.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Names In Any Language</h3>
+            <p>UTF-8 throughout, so accents and non-Latin scripts in file names are handled rather than mangled.</p>
         </div>
     </div>
     <hr>
