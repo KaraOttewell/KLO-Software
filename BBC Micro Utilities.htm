@@ -42,7 +42,7 @@ The utilities are:</p>
 <p>This utility displays a tokenized, binary BBC Micro BASIC file as text, HTML, or BBCode for bulletin board posts.
 If there is "hidden data" after the BASIC program, that will be displayed in hex, as will control characters.</p>
 
-<img src="Screenshot_BBCBasicToTextExample.png" class="screenshot" alt="BBCBasicToText example output">
+<img src="BBC Micro Utilities/Screenshot_BBCBasicToTextExample.png" class="screenshot" alt="BBCBasicToText example output">
 
 <p>Here's an example of HTML output using the Sketch program from
 <a href="https://www.bbcbasic.co.uk/bbcwin/tutorial/appendixe.html" target="_blank">bbcbasic.co.uk</a> as input,
@@ -129,7 +129,7 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 
 <p>Show BBC <code>PRINT#</code>-type data files as text, HTML, or BBCode, with hex and ASCII dump options.</p>
 
-<img src="Screenshot_BBCDataFileToTextExample.png" class="screenshot" alt="BBCDataFileToText example output">
+<img src="BBC Micro Utilities/Screenshot_BBCDataFileToTextExample.png" class="screenshot" alt="BBCDataFileToText example output">
 
 <p>This can actually be used as a "hex dump" program for any PC file. I have</p>
 
@@ -155,14 +155,14 @@ BBCDataFileToText found and processed 1 file, ignored 0, excluded 0, produced re
     BBCDataFileToText --hex Test.pdf*
 </pre>
 <p>you will see output similar to that shown below</p>
-<img src="Screenshot_BBCDataFileToTextAsHexDumper.png" class="screenshot" alt="BBCDataFileToText dumping in hex" style="max-width: 66%;">
+<img src="BBC Micro Utilities/Screenshot_BBCDataFileToTextAsHexDumper.png" class="screenshot" alt="BBCDataFileToText dumping in hex" style="max-width: 66%;">
 <hr>
 
 <h2>BBCReadDiskImage</h2>
 
 <p>Display <code>*CAT</code>-style output of <code>.SSD</code> or <code>.DSD</code> disk images, with the ability to export files individually and dump raw sectors.</p>
 
-<img src="Screenshot_BBCReadDiskImageExample.png" class="screenshot" alt="BBCReadDiskImage example output">
+<img src="BBC Micro Utilities/Screenshot_BBCReadDiskImageExample.png" class="screenshot" alt="BBCReadDiskImage example output">
 
 <p>All three can produce colour output — strings, keywords, and the like are each coloured differently — writing
 plain text (in colour when sent to a command-prompt window), BBCode, or HTML, and can optionally launch your
@@ -185,14 +185,14 @@ by a single line, <b>A</b> shows all the rest without pausing again, and <b>Q</b
 prompt is written so that it disappears again once you have pressed a key, leaving the output clean when you scroll
 back through it. You can also use the short form <code>/m</code> or <code>-m</code>.</p>
 
-<img src="Screenshot_BBCBasicToText_more_Example.png" class="screenshot" alt="BBCBasicToText paused at the -- More -- prompt part way through a BASIC listing">
+<img src="BBC Micro Utilities/Screenshot_BBCBasicToText_more_Example.png" class="screenshot" alt="BBCBasicToText paused at the -- More -- prompt part way through a BASIC listing">
 <p class="screenshot-caption">A BASIC listing paused at the end of the first screenful, with the <code>-- More --</code> prompt</p>
 
 <p>It counts the lines the screen actually shows rather than the lines in the file, so a long
 <span class="blue">DATA</span> statement that wraps onto three rows is counted as three. That matters most for a hex
 dump, where every line is the same width and a wrapped line would otherwise push a row off the top unnoticed:</p>
 
-<img src="Screenshot_BBCDataFileToTextAsHexDumper_more.png" class="screenshot" alt="BBCDataFileToText hex dump paused at the -- More -- prompt">
+<img src="BBC Micro Utilities/Screenshot_BBCDataFileToTextAsHexDumper_more.png" class="screenshot" alt="BBCDataFileToText hex dump paused at the -- More -- prompt">
 <p class="screenshot-caption"><i>BBCDataFileToText</i> dumping a ROM image in hex, paused at the end of the first screenful</p>
 
 <p>If the output is redirected to a file or piped into another command there is nothing to page, so the option
@@ -205,7 +205,7 @@ quietly does nothing. That makes it safe to leave in a DOSKEY macro permanently:
 <p>Shows only the first <i>n</i> lines and stops, which is the quickest way to see what a file actually is. Without a
 number it shows 20 lines.</p>
 
-<img src="Screenshot_BBCBasicToText_head_Example.png" class="screenshot" alt="BBCBasicToText showing only the first twenty lines of a BASIC program">
+<img src="BBC Micro Utilities/Screenshot_BBCBasicToText_head_Example.png" class="screenshot" alt="BBCBasicToText showing only the first twenty lines of a BASIC program">
 <p class="screenshot-caption"><code>--head</code> showing the first 20 lines of a teletext editor written in 1983</p>
 
 <h3><code>--tail[=n]</code> &mdash; just the end</h3>
@@ -214,7 +214,7 @@ number it shows 20 lines.</p>
 hex or ASCII dump it seeks straight to the end of the file rather than reading through the whole thing, so
 <code>--tail</code> on a large file is quick no matter how big the file is.</p>
 
-<img src="Screenshot_BBCBasicToText_tail_Example.png" class="screenshot" alt="BBCBasicToText showing only the last twenty lines of a BASIC program">
+<img src="BBC Micro Utilities/Screenshot_BBCBasicToText_tail_Example.png" class="screenshot" alt="BBCBasicToText showing only the last twenty lines of a BASIC program">
 <p class="screenshot-caption"><code>--tail</code> showing the last 20 lines of the same program, having skipped the 685 before them</p>
 
 <p>Both <code>--head</code> and <code>--tail</code> apply to what is shown on screen. If you give the tool an output

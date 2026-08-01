@@ -25,7 +25,7 @@
     <span class="badge">MOV &middot; MP4 &middot; WMV &middot; AVI</span>
 
     <!-- Help Image - snapdragger --list over a folder, showing the coloured summary lines. -->
-    <img class="screenshot" src="SnapDragger_Screenshot_List_Example.png"
+    <img class="screenshot" src="SnapDragger/SnapDragger_Screenshot_List_Example.png"
          alt="SnapDragger running --list over a folder of 490 JPEGs, showing each iOS file name, the timestamped name it would be given, its size, and the Exif date and camera it was read from">
     <p class="screenshot-caption">
         <b>--list</b> over a folder of 490 photographs. Each line shows the file as it is now, the name SnapDragger
@@ -132,7 +132,7 @@
 --folder=Albums/auto&nbsp;&nbsp;&nbsp;Albums\2024\01\name.jpg</div>
 
     <!-- Help Image - a real run renaming and filing into PhotoAlbum\YYYY\MM. -->
-    <img class="screenshot" src="SnapDragger_Screenshot_Folder_Auto_Example.png"
+    <img class="screenshot" src="SnapDragger/SnapDragger_Screenshot_Folder_Auto_Example.png"
          alt="SnapDragger renaming twelve files with an IMG prefix and filing them into PhotoAlbum/2016/12 and PhotoAlbum/2012/02, finishing with the command needed to undo the run">
     <p class="screenshot-caption">
         A real run: <b>--prefix=IMG --folder=auto --url-prefix=PhotoAlbum</b>. Twelve files taken in December 2016 and
@@ -150,7 +150,7 @@
     </p>
 
     <!-- Help Image - the generated contact sheet, one table per month. -->
-    <img class="screenshot shot-center" src="SnapDragger_Screenshot_Folder_HTML_Contact_Sheet_Example.png"
+    <img class="screenshot shot-center" src="SnapDragger/SnapDragger_Screenshot_Folder_HTML_Contact_Sheet_Example.png"
          alt="A generated SnapDragger contact sheet: a February 2012 table of two photographs above a December 2016 table of ten, each thumbnail captioned with its date and linking to the picture or clip"
          style="max-width: 88%;">
     <p class="screenshot-caption">
@@ -242,7 +242,7 @@
     </ul>
 
     <!-- Help Image - a dry run, showing the would-be names and the closing DRY RUN banner. -->
-    <img class="screenshot" src="SnapDragger_Screenshot_Dry_Run_Example.png"
+    <img class="screenshot" src="SnapDragger/SnapDragger_Screenshot_Dry_Run_Example.png"
          alt="A SnapDragger dry run showing the name each of twelve files would be given, and a closing line reading DRY RUN - nothing was renamed, moved or created">
     <p class="screenshot-caption">
         A <b>--dry-run</b>: every name each file would be given is shown in green, and the run finishes by saying
@@ -267,6 +267,104 @@
     <div class="note">
         Every effort is made to ensure that your photos are safe at every step, but of course you should make a complete
         backup of your pictures before using any tool on them, SnapDragger included.
+    </div>
+    <hr>
+
+    <h2 id="Info">Looking Inside a File</h2>
+
+    <p>
+        <b>--info</b> shows everything a file says about itself and changes nothing. The camera and lens, every date it
+        carries, the settings it was taken with, and &mdash; where the camera recorded one &mdash; the position:
+    </p>
+
+    <pre class="console"><span class="c-brightmagenta">=== WP_20130922_002.jpg ===</span>
+<span class="c-brightcyan">        File size</span> : 2.587 MB (2713060 bytes)
+<span class="c-brightcyan">      Camera make</span> : Nokia
+<span class="c-brightcyan">     Camera model</span> : Lumia 920
+<span class="c-brightcyan">             Lens</span> : 
+<span class="c-brightcyan">         Software</span> : Windows Phone
+<span class="c-brightcyan">            Taken</span> : 2013:09:22 08:23:10
+<span class="c-brightcyan">      Orientation</span> : 1 (upright)
+<span class="c-brightcyan">       Resolution</span> : 2000 x 3552 pixels
+<span class="c-brightcyan">        ISO speed</span> : 100
+<span class="c-brightcyan">    Exposure time</span> : 1/289 second
+<span class="c-brightcyan">         Aperture</span> : f/2.0
+<span class="c-brightcyan">     Focal length</span> : 
+<span class="c-brightcyan">            Flash</span> : did not fire
+<span class="c-brightcyan">    Metering mode</span> : 
+<span class="c-brightcyan"> Exposure program</span> : 
+<span class="c-brightcyan">      Description</span> : 
+<span class="c-brightcyan">          Comment</span> : 
+<span class="c-brightcyan">     GPS latitude</span> : N  49d 27m 36.284s
+<span class="c-brightcyan">    GPS longitude</span> : E  11d  5m 13.091s
+<span class="c-brightcyan">     GPS position</span> : 49.460079, 11.086970
+<span class="c-brightcyan">     GPS altitude</span> : 0.0 m above sea level
+<span class="c-grey">                    Main block
+</span><span class="c-brightcyan">     X resolution</span> : 72
+<span class="c-brightcyan">     Y resolution</span> : 72
+<span class="c-brightcyan">  Resolution unit</span> : 2
+<span class="c-brightcyan">YCbCr positioning</span> : 1
+<span class="c-brightcyan">       Tag 0xEA1C</span> : 2060 bytes
+<span class="c-grey">                    Exif block
+</span><span class="c-brightcyan">     Exif version</span> : 4 bytes
+<span class="c-brightcyan">   Components cfg</span> : 4 bytes
+<span class="c-brightcyan">    Exposure bias</span> : 0/6 (0)
+<span class="c-brightcyan">       Maker note</span> : 5231 bytes
+<span class="c-brightcyan"> Flashpix version</span> : 4 bytes
+<span class="c-brightcyan">     Colour space</span> : 1
+<span class="c-brightcyan"> Interoperability</span> : 9805
+<span class="c-brightcyan">       Tag 0xEA1C</span> : 2060 bytes
+<span class="c-grey">                    GPS block
+</span><span class="c-brightcyan">      GPS version</span> : 4 bytes
+<span class="c-brightcyan"> GPS measure mode</span> : 3
+<span class="c-brightcyan">     GPS accuracy</span> : 10000/130000 (0.0769231)
+<span class="c-brightcyan">       Tag 0xEA1C</span> : 1888 bytes
+<span class="c-grey">                    Thumb block
+</span><span class="c-brightcyan">      Compression</span> : 6
+<span class="c-brightcyan">     X resolution</span> : 72
+<span class="c-brightcyan">     Y resolution</span> : 72
+<span class="c-brightcyan">  Resolution unit</span> : 2
+<span class="c-brightcyan"> Thumbnail offset</span> : 12008
+<span class="c-brightcyan"> Thumbnail length</span> : 12708</pre>
+
+    <p class="screenshot-caption">
+        One photograph, taken in Nuremberg on a Nokia Lumia 920. This is a real run captured to a file and turned into
+        HTML; only the run's opening banner and closing summary are trimmed, since the captures above already show those.
+    </p>
+
+    <p>
+        The labels are right aligned so the colons line up, and the file name is in a colour nothing else uses, so a run
+        over a folder breaks cleanly into one block per picture.
+    </p>
+
+    <p>
+        <b>The first block is always the same shape</b>, blank where the file said nothing, so two files can be read
+        down side by side and a missing camera is as plain as a present one. Every date the file carries is listed under
+        the name of where it came from rather than only the one a new name would be built from &mdash; a file
+        disagreeing with itself is the usual explanation for a name that looks wrong.
+    </p>
+
+    <p>
+        <b>The position block appears only where there is one.</b> It is given both as degrees, minutes and seconds to
+        read, and as a signed decimal pair to paste into a map. Exif stores the hemisphere as a letter with the number
+        always positive, so the sign is worked out here &mdash; otherwise everywhere south and west lands in the wrong
+        quarter of the world.
+    </p>
+
+    <p>
+        <b>Then whatever else the file turned out to carry</b>, grouped by the block it came from: the main image, the
+        Exif block, the GPS block, and the thumbnail's own. A tag with a name gets it; one without is shown by its
+        number, as <em>Tag 0xEA1C : 2060 bytes</em>, because a file holding something the program does not recognise is
+        worth knowing about &mdash; and hiding it is the one thing an option called <b>--info</b> must not do. Around a
+        hundred tags are named.
+    </p>
+
+    <div class="note">
+        A tag being of type &ldquo;ASCII&rdquo; is not a promise that it holds text. Some phones write several hundred
+        bytes of private binary into the description and comment fields, so anything whose content is not readable text
+        is reported by its size instead &mdash; <em>956 bytes, not text</em> &mdash; rather than being printed at your
+        terminal. Accented text is comfortably inside the test: <em>N&uuml;rnberg</em> is two bytes in ten outside
+        ASCII, where those private blocks are three fifths.
     </div>
     <hr>
 
@@ -297,7 +395,7 @@
 </span><span class="c-brightcyan">20161201_190227427_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_110227.jpg    </span><span class="c-white">  2.678 MB </span><span class="c-green">(EXIF: 2016-12-01 11:02:27, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_031930377_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_191930.jpg    </span><span class="c-white">  1.139 MB </span><span class="c-green">(EXIF: 2016-12-01 19:19:30, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032005579_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192005.jpg    </span><span class="c-white">  1.098 MB </span><span class="c-green">(EXIF: 2016-12-01 19:20:05, Apple iPhone 6s)
-</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QuickTime Apple: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
+</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QT: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
 </span><span class="c-brightcyan">20161202_032345127_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192345.jpg    </span><span class="c-white">  973.2 KB </span><span class="c-green">(EXIF: 2016-12-01 19:23:45, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032427273_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192427.jpg    </span><span class="c-white">  955.5 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:27, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032433941_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-grey">WP_20161201_192433.jpg    </span><span class="c-white">  1.274 MB </span><span class="c-green">(EXIF: 2016-12-01 19:24:33, Apple iPhone 6s)
@@ -324,7 +422,7 @@ No HTML page created - use --html to ask for one
 </span><span class="c-brightcyan">20161201_190227427_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_110227.jpg    </span><span class="c-white">  2.678 MB </span><span class="c-green">(EXIF: 2016-12-01 11:02:27, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_031930377_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_191930.jpg    </span><span class="c-white">  1.139 MB </span><span class="c-green">(EXIF: 2016-12-01 19:19:30, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032005579_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192005.jpg    </span><span class="c-white">  1.098 MB </span><span class="c-green">(EXIF: 2016-12-01 19:20:05, Apple iPhone 6s)
-</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QuickTime Apple: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
+</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QT: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
 </span><span class="c-brightcyan">20161202_032345127_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192345.jpg    </span><span class="c-white">  973.2 KB </span><span class="c-green">(EXIF: 2016-12-01 19:23:45, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032427273_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192427.jpg    </span><span class="c-white">  955.5 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:27, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032433941_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Albums/2016/12/</span><span class="c-brightblue">WP_20161201_192433.jpg    </span><span class="c-white">  1.274 MB </span><span class="c-green">(EXIF: 2016-12-01 19:24:33, Apple iPhone 6s)
@@ -356,7 +454,7 @@ Looking for identical files among the 13 found...
 </span><span class="c-brightcyan">20161201_190227427_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_110227.jpg    </span><span class="c-white">  2.678 MB </span><span class="c-green">(EXIF: 2016-12-01 11:02:27, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_031930377_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_191930.jpg    </span><span class="c-white">  1.139 MB </span><span class="c-green">(EXIF: 2016-12-01 19:19:30, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032005579_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192005.jpg    </span><span class="c-white">  1.098 MB </span><span class="c-green">(EXIF: 2016-12-01 19:20:05, Apple iPhone 6s)
-</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QuickTime Apple: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
+</span><span class="c-brightcyan">20161202_032159000_iOS.MOV</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192159.MOV    </span><span class="c-white">  110.3 MB </span><span class="c-green">(QT: 2016-12-01 19:21:59; QuickTime mvhd 2016-12-01 19:22:00)
 </span><span class="c-brightcyan">20161202_032345127_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192345.jpg    </span><span class="c-white">  973.2 KB </span><span class="c-green">(EXIF: 2016-12-01 19:23:45, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032427273_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192427.jpg    </span><span class="c-white">  955.5 KB </span><span class="c-green">(EXIF: 2016-12-01 19:24:27, Apple iPhone 6s)
 </span><span class="c-brightcyan">20161202_032433941_iOS.jpg</span><span class="c-blue"> &#8594; </span><span class="c-brightcyan">Family Albums/2016/12/</span><span class="c-brightgreen">WP_20161201_192433.jpg    </span><span class="c-white">  1.274 MB </span><span class="c-green">(EXIF: 2016-12-01 19:24:33, Apple iPhone 6s)
@@ -395,7 +493,7 @@ HTML table would be written to index.htm
         full built-in help, which is where this summary comes from.
     </p>
 
-    <div class="cli-block">snapdragger [--list] [--timesource=source] [--prefix[=text]]
+    <div class="cli-block">snapdragger [--list] [--info] [--timesource=source] [--prefix[=text]]
             [--suffix=text] [--folder=name] [--dedupe] [--dry-run]
             [--first=n] [--small[=pixels]] [--html=file]
             [--url-prefix=text] [--thumbnails=when]
@@ -407,6 +505,9 @@ HTML table would be written to index.htm
         <li><b>wildcard_in</b> &mdash; input files, e.g. <em>DSC*.JPG</em>. Pictures <em>.jpg .jpeg .heic .avif .png</em>
             and movies <em>.mpg .mov .mp4 .m4v .wmv .asf .avi</em> are dealt with; anything else is passed over.</li>
         <li><b>--list</b>, <b>-l</b> &mdash; report on everything and change nothing.</li>
+        <li><b>--info</b> &mdash; show everything each file says about itself and change nothing: camera, lens,
+            dates, settings and position. Implies <b>--list</b>. See
+            <a href="#Info">Looking Inside a File</a>.</li>
         <li><b>--first=n</b> &mdash; stop after <em>n</em> files.</li>
         <li><b>--dry-run</b> &mdash; say what would happen without renaming, moving or creating anything.</li>
         <li><b>--help</b>, <b>-h</b>, <b>-?</b> &mdash; show the built-in help.</li>
@@ -577,6 +678,11 @@ HTML table would be written to index.htm
         <div class="feature-item">
             <h3>Readable Output</h3>
             <p>Colour-coded lines telling you where each date came from and what took the picture, in lined-up columns.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Look Inside a File</h3>
+            <p><em>--info</em> shows every date, setting and tag a photograph carries, and where it was taken.</p>
         </div>
 
         <div class="feature-item">

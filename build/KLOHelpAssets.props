@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  KLOHelpAssets.props - single source of truth for the in-app HTML help pages.
+
+  The apps used to keep their own copies of the help page and its screenshots under
+  <Project>\Assets. Those copies drifted (stale KLO.css, older KOContour screenshots,
+  KOBrot images that were on disk but never added to the .vcxproj and so never shipped),
+  so the files now live only here in KLO-Software and the projects reference them in place.
+
+  A consuming project sets KLOHelpApp, imports this file, and turns the two item lists into
+  whatever item types it packages with:
+
+      @(KLOHelpRootAsset)   ->  Assets\                  (the page itself, stylesheet, script, icons)
+      @(KLOHelpImageAsset)  ->  Assets\$(KLOHelpApp)\    (that page's screenshots)
+
+      <PropertyGroup>
+        <KLOHelpApp>KOBrot</KLOHelpApp>
+      </PropertyGroup>
+      <Import Project="..\..\KLO-Software\build\KLOHelpAssets.props"
+              Condition="Exists('..\..\KLO-Software\build\KLOHelpAssets.props')" />
+
+  KLOHelpApp is both the page's file name and its screenshot folder - KOBrot.htm sits beside a
+  KOBrot\ folder - so the lists below need no per-app file names at all. Adding a screenshot
+  means dropping the file into that folder and writing the <img> tag; nothing here changes.
+  That layout has to be mirrored in the package, because the same .htm is served from the
+  website and opened from Assets\ in the app, and its <img src="KOBrot/..."> must resolve in
+  both. Hence the separate Link paths above.
+
+  The import is conditional so that a missing KLO-Software clone produces the explicit error in
+  the project's KLOHelpAssetsCheck target rather than a bare "imported project not found". Each
+  solution folder is assumed to sit alongside KLO-Software under source\repos, which makes the
+  path ..\..\KLO-Software\ from every project folder.
+
+  index.htm is deliberately absent: the script at the foot of each page rewrites relative links
+  to https://karaottewell.github.io/KLO-Software/ when the page is opened as file:, which is how
+  the apps open it.
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <!-- This file lives in KLO-Software\build\, so the site root is one level up. -->
+    <KLOSoftwareDir>$(MSBuildThisFileDirectory)..\</KLOSoftwareDir>
+    <!-- Consuming projects test this to detect a successful import. -->
+    <KLOHelpAssetsFound>true</KLOHelpAssetsFound>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(KLOHelpApp)' != ''">
+    <!-- Files that sit beside the page at the root of Assets\. -->
+    <KLOHelpRootAsset Include="$(KLOSoftwareDir)$(KLOHelpApp).htm" />
+    <KLOHelpRootAsset Include="$(KLOSoftwareDir)KLO.css" />
+    <KLOHelpRootAsset Include="$(KLOSoftwareDir)KLODarkModeSwitch.js" />
+    <KLOHelpRootAsset Include="$(KLOSoftwareDir)favicon.ico" />
+
+    <!-- Every screenshot the page references, picked up from its folder. -->
+    <KLOHelpImageAsset Include="$(KLOSoftwareDir)$(KLOHelpApp)\*" />
+  </ItemGroup>
+
+  <!-- Only the Store apps show the "Get it from Microsoft" badge; GenGIS ships as a zip. -->
+  <ItemGroup Condition="'$(KLOHelpApp)' == 'KOBrot' or '$(KLOHelpApp)' == 'KOContour'">
+    <KLOHelpRootAsset Include="$(KLOSoftwareDir)ms_store_badge.svg" />
+  </ItemGroup>
+
+  <!-- A wildcard that matches nothing fails silently, which would ship a help page with no
+       screenshots in it. Catch that here rather than in each project. -->
+  <Target Name="KLOHelpAssetsVerify" BeforeTargets="PrepareForBuild">
+    <Error Condition="'@(KLOHelpImageAsset)' == ''"
+           Text="No screenshots were found in $(KLOSoftwareDir)$(KLOHelpApp)\. Each help page's images live in a folder named after the page - $(KLOHelpApp).htm alongside $(KLOHelpApp)\ - and the page's &lt;img src=&quot;$(KLOHelpApp)/...&quot;&gt; tags depend on it. Check that folder exists in the KLO-Software repository." />
+  </Target>
+
+</Project>

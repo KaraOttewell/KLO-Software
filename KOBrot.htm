@@ -15,7 +15,7 @@
     <p class="subtitle">
         An interactive explorer for the <b>Mandelbrot</b> and <b>Julia</b> sets &mdash; zoom endlessly into the fractal,
         paint it with perceptually-uniform colour maps such as Viridis and Magma, watch the matching Julia set update live,
-        and save your favourite views.
+        fly around it as a 3D landscape, and save your favourite views.
     </p>
 
     <span class="badge">Windows</span>
@@ -23,7 +23,7 @@
     <span class="badge">Microsoft Store</span>
     <span class="badge">Free</span>
 
-    <img class="screenshot" src="KOBrot_Screenshot_AppWithJuliaSetAndMandelbrot.png" alt="KOBrot main screen showing the Mandelbrot set with its companion Julia set">
+    <img class="screenshot" src="KOBrot/KOBrot_Screenshot_AppWithJuliaSetAndMandelbrot.png" alt="KOBrot main screen showing the Mandelbrot set with its companion Julia set">
     <hr>
 
     <h2>Overview</h2>
@@ -49,7 +49,7 @@
 
     <h2 id="Zooming">Zooming and Panning</h2>
 
-    <img class="screenshot shot-right" src="KOBrot_Screenshot_AppViridisMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Viridis colour map" style="max-width: 44%;">
+    <img class="screenshot shot-right" src="KOBrot/KOBrot_Screenshot_AppViridisMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Viridis colour map" style="max-width: 44%;">
 
     <p>
         To dive into the fractal, <b>click and drag a rectangle</b> across the area you want to magnify. A selection box
@@ -75,9 +75,9 @@
 
     <h2 id="ColourMaps">Colour Maps</h2>
 
-    <img class="screenshot shot-left" src="KOBrot_Screenshot_AppMagmaMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Magma colour map" style="max-width: 44%;">
+    <img class="screenshot shot-left" src="KOBrot/KOBrot_Screenshot_AppMagmaMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Magma colour map" style="max-width: 44%;">
 
-    <img src="KOBrot_Screenshot_AppColourSchemeDropdown.png" alt="KOBrot Colour map dropdown" style="max-width: 20%; float: right;">
+    <img src="KOBrot/KOBrot_Screenshot_AppColourSchemeDropdown.png" alt="KOBrot Colour map dropdown" style="max-width: 20%; float: right;">
     <p>
         The same fractal can look completely different depending on how the escape counts are mapped to colours. KOBrot
         includes the well-known <b>perceptually-uniform</b> colour maps &mdash; such as <b>Viridis</b> (purple-blue through
@@ -112,7 +112,7 @@
 
     <h3>A Random Colour Map</h3>
 
-    <img class="screenshot shot-right" src="KOBrot_Screenshot_RandomColourmapMandelbrot.png" alt="KOBrot Mandelbrot set drawn with a randomly generated colour map" style="max-width: 44%;">
+    <img class="screenshot shot-right" src="KOBrot/KOBrot_Screenshot_RandomColourmapMandelbrot.png" alt="KOBrot Mandelbrot set drawn with a randomly generated colour map" style="max-width: 44%;">
 
     <p>
         The "Colour Wheel" is the default, and typical Mandelbrot choice, but for something more playful, try the <b>random colour map</b>: KOBrot generates a fresh palette so each band gets
@@ -152,16 +152,22 @@
     </p>
     <div style="clear:both;"></div>
 
-    <h3>Colour Scheme Controls</h3>
+    <h3>Colour Scheme and Other Controls</h3>
 
-    <img class="screenshot shot-left" src="KOBrot_Screenshot_AppColourSchemeControls.png" alt="KOBrot colour scheme control panel with colour-map chooser and sliders" style="max-width: 32%;">
-
-    <p>
-        All of the colouring options live together in the <b>colour scheme controls</b>. From here you pick the colour map,
-        set the number of colours, and adjust the hue offset, with the picture updating live as you make changes so you can
-        see the effect straight away.
+    <!-- PLACEHOLDER IMAGE: replace with a screenshot of the controls part of the sidebar panel,
+         showing the collapsible "Colour scheme" and "Output & startup" sections. -->
+    <img class="screenshot shot-left" src="KOBrot/KOBrot_Screenshot_SidebarControlSections.png" alt="KOBrot sidebar controls showing the collapsible Colour scheme and Output and startup sections" style="max-width: 32%;">
+    <img style="max-width: 10%;" src="KOBrot/KOBrot_Screenshot_AppColourSchemeControlsButton.png" alt="KOBrot Julia Set and colour scheme sidebar open button">
+     <p>
+        The controls in the sidebar are grouped into <b>collapsible sections</b>, each with a headed bar you click to fold
+        the section away or open it out again &mdash; handy for keeping the panel tidy and leaving more room for the Julia
+        set picture. The <b>Colour scheme</b> section (open by default) holds the <b>number-of-colours</b>,
+        <b>saturation</b> and <b>lightness</b> sliders, along with a <b>hue offset</b> slider when Histogram colouring is
+        selected and a colour picker when the Monochrome map is chosen. The <b>Output &amp; startup</b> section (folded
+        away by default) holds the <b>snapshot size</b>, <b>startup behaviour</b> and <b>drawing method</b> choices and the
+        favourites <b>slideshow delay</b>. The picture updates live as you make changes so you can see the effect straight
+        away.
     </p>
-    <img src="KOBrot_Screenshot_AppColourSchemeControlsButton.png" alt="KOBrot Julia Set and colour scheme sidebar open button" style="max-width: 10%;">
     <p>
         To open the colour scheme controls or to see the <a href="#JuliaSets">Julia Set</a> just click on the button shown above, in the top ribbon.
         The sidebar will slide open (the same button closes it again) and as you move the pointer around in the main Mandelbrot image to the right
@@ -169,14 +175,14 @@
         you obviously don't want to change that point position else you'd change the picture. To prevent that just <b>hold down the <i>Shift</i> key</b>
         as you move the pointer to the snapshot button. You can release the <i>Shift</i> key once you are away from the Mandelbrot canvas.
     </p>
-    <img src="KOBrot_Screenshot_AppCameraSnapshotButton.png" alt="KOBrot Camera snapshot button" style="max-width: 10%;">
+    <img src="KOBrot/KOBrot_Screenshot_AppCameraSnapshotButton.png" alt="KOBrot Camera snapshot button" style="max-width: 6%;">
     <div style="clear:both;"></div>
 
     <hr>
 
     <h2 id="JuliaSets">Julia Sets</h2>
 
-    <img class="screenshot shot-right" src="KOBrot_Screenshot_JustJuliaSet.png" alt="KOBrot showing a Julia set on its own" style="max-width: 44%;">
+    <img class="screenshot shot-right" src="KOBrot/KOBrot_Screenshot_JustJuliaSet.png" alt="KOBrot showing a Julia set on its own" style="max-width: 44%;">
 
     <p>
         Every point <code>c</code> on the Mandelbrot plane defines its own <b>Julia set</b> &mdash; the picture you get by
@@ -196,9 +202,76 @@
     <div style="clear:both;"></div>
     <hr>
 
+    <h2 id="ThreeD">The 3D Relief View</h2>
+
+    <!-- PLACEHOLDER IMAGE: replace with a real 3D Mandelbrot snapshot. -->
+    <img class="screenshot shot-right" src="KOBrot/KOBrot_Screenshot_3DMandelbrot.png" alt="KOBrot Mandelbrot set rendered as a three-dimensional relief landscape" style="max-width: 44%;">
+
+    <p>
+        KOBrot can also draw the fractal as a <b>three-dimensional landscape</b>. Click the <b>3D button</b> in the top
+        ribbon and the flat picture is replaced by a relief surface in which the <em>height</em> of each point comes from
+        its escape count &mdash; the coloured bands around the set become terraced hillsides climbing towards the black
+        body of the set itself. The surface is rendered on your graphics card, so spinning and zooming it stays smooth
+        even at high detail. The same button &mdash; whose face now reads <b>2D</b> &mdash; returns you to the flat view,
+        and everything else (zoom history, favourites, colour maps) carries on exactly where you left it.
+    </p>
+
+    <p>Moving around the landscape works like this:</p>
+    <ul>
+        <li><b>Drag</b> to rotate: dragging sideways spins the model round, while dragging up or down tilts it between an
+            almost edge-on view and looking straight down on it.</li>
+        <li>The <b>mouse wheel</b> zooms in and out, centred on whatever is under the pointer; on a touchscreen,
+            <b>pinch</b> or <b>spread</b> two fingers to do the same.</li>
+        <li><b>Click</b> (or tap) a point on the 3D Mandelbrot surface to choose that point's Julia set &mdash; the same
+            thing hovering over the flat picture does &mdash; and the Julia view updates to match.</li>
+    </ul>
+
+    <p>
+        While the 3D view is active a small <b>3D relief</b> panel floats at the right-hand edge of the picture with
+        controls for shaping the landscape:
+    </p>
+
+    <table class="options">
+        <thead>
+            <tr><th>Control</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><b>Mesh detail</b></td><td>How finely the surface is divided into grid cells. Higher values give a crisper, more detailed landscape but take a little longer to rebuild.</td></tr>
+            <tr><td><b>Height</b></td><td>The vertical exaggeration &mdash; how tall the relief rises for a given change in escape count, from a gentle ripple to dramatic peaks.</td></tr>
+            <tr><td><b>Plateau body</b></td><td>Ticked, the black in-set body sits at the top as a flat plateau with the escape bands falling away below it; unticked, it lies flat at &ldquo;sea level&rdquo; and the bands rise around it.</td></tr>
+            <tr><td><b>Smooth height</b></td><td>Ticked, heights use the smooth continuous escape value, so the terraced steps blend into a continuous slope; unticked, each whole escape count is its own terrace.</td></tr>
+            <tr><td><b>Smooth shading</b></td><td>Ticked, the lighting is softened so the shading flows smoothly over the surface while the geometry keeps its detail; unticked, the lighting follows every step and facet.</td></tr>
+        </tbody>
+    </table>
+    <div style="clear:both;"></div>
+
+    <h3>Julia Sets in 3D</h3>
+
+    <!-- PLACEHOLDER IMAGE: replace with a real (square) Julia set 3D snapshot. -->
+    <img class="screenshot shot-left" src="KOBrot/KOBrot_Screenshot_3DJuliaSet.png" alt="KOBrot Julia set rendered as a three-dimensional relief landscape" style="max-width: 38%;">
+
+    <p>
+        The 3D view is not just for the Mandelbrot set: when the sidebar is open, the same 3D button switches the
+        <b>Julia set</b> into a relief landscape as well. The Julia landscape rotates and zooms independently of the
+        Mandelbrot one, so you can pose each view exactly as you like. Click a point on the 3D Mandelbrot surface (or
+        hover over the 2D one) and the Julia landscape rebuilds for the new point.
+    </p>
+
+    <p>
+        The <b>camera buttons</b> understand the 3D view too: while a 3D view is showing, taking a snapshot captures the
+        landscape exactly as you have posed it &mdash; rotation, tilt, zoom, colours and all.
+    </p>
+
+    <p>
+        The 3D view needs a compatible graphics device; on the rare machine without one, KOBrot simply says so and
+        carries on in 2D.
+    </p>
+    <div style="clear:both;"></div>
+    <hr>
+
     <h2 id="Favourites">Saving and Loading Favourites</h2>
 
-    <img class="screenshot shot-left" src="KOBrot_Screenshot_FavouritesCollectionsDialog.png" alt="KOBrot favourites collection dialog listing saved views" style="max-width: 42%;">
+    <img class="screenshot shot-left" src="KOBrot/KOBrot_Screenshot_FavouritesCollectionsDialog.png" alt="KOBrot favourites collection dialog listing saved views" style="max-width: 42%;">
 
     <p>
         When you find a view worth keeping, save it to your <b>favourites</b>. Each favourite remembers the exact location,
@@ -211,6 +284,14 @@
         Open the <b>favourites collection</b> dialog to browse your saved views; double-click an entry to jump straight back
         to it. From here you can also manage the list &mdash; rename, remove, or step through your collection as a slideshow.
         Because a favourite stores the full set of parameters, re-opening one reproduces the picture exactly as you saved it.
+    </p>
+
+    <p>
+        KOBrot keeps your collection free of <b>duplicates</b>. If you try to add a view that is identical to one you already
+        have &mdash; the same location, magnification, colour map and colouring &mdash; it is not added again; instead KOBrot
+        tells you which existing favourite it matches and selects that one for you. The same check runs when you
+        <b>load a favourites file</b>: any views already in your collection are skipped, and KOBrot reports how many
+        duplicates it ignored, so merging someone else's collection with your own never leaves you with repeats.
     </p>
     <div style="clear:both;"></div>
     <hr>
@@ -237,9 +318,33 @@
         You can save the picture you are looking at as an image. The first time it runs, KOBrot offers to create a
         <b>KaraBrot Snapshots</b> folder inside your <em>Pictures</em> library as a convenient place to keep them, and adds a
         clickable link to open that folder. Saving a snapshot captures the current fractal &mdash; colours and all &mdash; as
-        a high-resolution image you can share or print.
+        a high-resolution image you can share or print. Both the Mandelbrot set and a Julia set can be snapshotted, each from
+        its own <b>camera button</b>.
     </p>
-    <img class="screenshot shot-center" src="KOBrot_HeroScreenshot.png" alt="KOBrot snapshot example" style="max-width: 75%;">
+
+    <p>
+        You can also choose the <b>size</b> of the saved image, independently of the window size:
+    </p>
+
+    <table class="options">
+        <thead>
+            <tr><th>Snapshot size</th><th>What you get</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><b>Visible dimensions</b></td><td>Matches what is on screen &mdash; the same shape and proportions as the drawing area, saved at your display's full pixel resolution.</td></tr>
+            <tr><td><b>UHD (4K)</b></td><td>A fixed 3840&nbsp;&times;&nbsp;2160 image whatever the window size &mdash; ideal for high-resolution wallpaper or printing.</td></tr>
+            <tr><td><b>8K</b></td><td>A fixed 7680&nbsp;&times;&nbsp;4320 image for maximum detail; the files are larger and take a little longer to render.</td></tr>
+        </tbody>
+    </table>
+
+    <p>
+        The larger sizes are rendered fresh at their full resolution rather than scaled up from the screen, so the extra
+        pixels show genuinely finer detail rather than just a bigger copy of what you can already see. And if the
+        <a href="#ThreeD">3D relief view</a> is active, the same camera buttons capture the 3D landscape just as you have
+        posed it on screen.
+    </p>
+
+    <img class="screenshot shot-center" src="KOBrot/KOBrot_HeroScreenshot.png" alt="KOBrot snapshot example" style="max-width: 75%;">
     <hr>
 
     <h2>Features</h2>
@@ -252,6 +357,11 @@
         <div class="feature-item">
             <h3>Live Julia Sets</h3>
             <p>See the Julia set for the point under the pointer update in real time, or view a chosen Julia set on its own.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>3D Relief View</h3>
+            <p>Turn the Mandelbrot or Julia set into a GPU-rendered 3D landscape &mdash; spin, tilt and zoom it, and shape its height, detail and shading.</p>
         </div>
 
         <div class="feature-item">
@@ -279,12 +389,7 @@
 
         <div class="feature-item">
             <h3>Favourites</h3>
-            <p>Save views &mdash; location, zoom and colours &mdash; with a title and creator tag, and reload them in one click.</p>
-        </div>
-
-        <div class="feature-item">
-            <h3>Drawing Modes</h3>
-            <p>Watch the image fill in left-to-right or resolve all at once with random pixel ordering.</p>
+            <p>Save views &mdash; location, zoom and colours &mdash; with a title and creator tag, and reload them in one click. Duplicates are detected and skipped automatically.</p>
         </div>
 
         <div class="feature-item">
@@ -294,7 +399,7 @@
 
         <div class="feature-item">
             <h3>Snapshots</h3>
-            <p>Save the current fractal as a high-resolution image, with a dedicated Pictures subfolder offered on first run.</p>
+            <p>Save the current fractal as an image at screen, 4K or 8K resolution, with a dedicated Pictures subfolder offered on first run.</p>
         </div>
     </div>
     <hr>
@@ -340,8 +445,9 @@
                 document.querySelectorAll('a').forEach(link => {
                     const href = link.getAttribute('href');
 
-                    // If the link exists, doesn't start with http/https, and isn't an anchor jump link (#)
-                    if (href && !href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('#')) {
+                    // Rewrite only genuine relative links: skip anything with its own scheme (http://,
+                // https://, ms-windows-store:// and so on) and in-page anchor links (#)
+                    if (href && !href.includes('://') && !href.startsWith('#')) {
 
                         // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
                         const cleanHref = href.replace(/^\.\//, '');
