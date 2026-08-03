@@ -30,7 +30,7 @@ The utilities are:</p>
 <ul>
     <li><b>BBCBasicToText</b> — display a tokenised, binary BBC Micro BASIC file as <b style="color:green">plaintext</b>, <b style="color:darkred">HTML</b>, or <b style="color:darkcyan">BBCode</b>.</li>
     <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as plaintext, HTML, or BBCode.</li>
-    <li><b>BBCReadDiskImage</b> — display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</li>
+    <li><b>BBCReadDiskImage</b> — display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually, import files back in, delete files, and dump sectors.</li>
 </ul>
 <p class="local-copy-notice">
     The most up to date version of this information will always be the <a href="BBC Micro Utilities.htm">online version</a>.
@@ -89,7 +89,10 @@ switches. Indentation is applied to <span class="blue">FOR</span>, <span class="
 
 <p>I extracted the program from the Welcome disk using:</p>
 
-<pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcreaddiskimage Welcome.ssd --export=*welcome*</span></pre>
+<pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcreaddiskimage Welcome.ssd --export=*.*welcome*</span></pre>
+
+<p>The leading <code>*.</code> there says "in any directory" &mdash; this particular file lives in directory
+<code>W</code>, and a pattern without a directory looks only in <code>$</code>, just as it would on the Beeb itself.</p>
 
 <p>then converted it to BBCode using:</p>
 
@@ -160,9 +163,64 @@ BBCDataFileToText found and processed 1 file, ignored 0, excluded 0, produced re
 
 <h2>BBCReadDiskImage</h2>
 
-<p>Display <code>*CAT</code>-style output of <code>.SSD</code> or <code>.DSD</code> disk images, with the ability to export files individually and dump raw sectors.</p>
+<p>Display <code>*CAT</code>-style output of <code>.SSD</code> or <code>.DSD</code> disk images, with the ability to
+export files individually, import files back into an image, delete files from one, and dump raw sectors.</p>
 
 <img src="BBC Micro Utilities/Screenshot_BBCReadDiskImageExample.png" class="screenshot" alt="BBCReadDiskImage example output">
+
+<h3>Naming files on the disk</h3>
+
+<p>The patterns given to <code>--export</code>, <code>--search</code> and <code>--delete</code> are written the way a
+file specification is written on the BBC itself, and they cover the <b>whole</b> name. A pattern that does not say
+which directory it means looks in the default directory <code>$</code> &mdash; or in whatever <code>--directory</code>
+names, since that is what stands in for <code>*DIR</code> here.</p>
+
+<table class="options">
+<thead><tr><th>Pattern</th><th>Means</th></tr></thead>
+<tbody>
+<tr><td><code>MYPROG*</code></td><td>a name <b>starting</b> with MYPROG, in <code>$</code></td></tr>
+<tr><td><code>*PROG*</code></td><td>a name with PROG anywhere in it, in <code>$</code></td></tr>
+<tr><td><code>*</code></td><td>every file in <code>$</code></td></tr>
+<tr><td><code>*.*</code></td><td><b>every file on the disk</b>, in every directory</td></tr>
+<tr><td><code>P.O*</code></td><td>a name starting with O, in directory <code>P</code></td></tr>
+<tr><td><code>*.O*</code></td><td>a name starting with O, in any directory</td></tr>
+</tbody>
+</table>
+
+<h3>Where exported files go</h3>
+
+<p>Name a <b>folder</b> as the destination and the exported files are written there, with the report of the run going
+to the console. A name ending in <code>\</code> is taken as a folder even if it is not there yet, and is created.
+Name a <b>file</b> instead and the report goes into it, with the exported files written alongside &mdash; so
+<code>.\Output\ExtractedFiles.log</code> gives you both in <code>Output</code>.</p>
+
+<pre class="console"><span class="prompt">C:\...\MakeRFS&gt;</span> <span class="cmd">bbcreaddiskimage MakeRFSROM.dsd --export=*.RFSRom .\Output\</span></pre>
+
+<h3>Importing files into an image</h3>
+
+<p>The reverse of exporting. The image named is <b>created first if it does not exist</b> &mdash; give the name in
+full, ending <code>.ssd</code> or <code>.dsd</code>, and you get an empty 80-track image titled after the file name.
+Each side is compacted as it is written, so space left by deleted files is reclaimed.</p>
+
+<pre class="console"><span class="prompt">C:\...\MakeRFS&gt;</span> <span class="cmd">bbcreaddiskimage NEWDISK.ssd --import=0_$.MYPROG,C:\Beeb\Screens\*</span></pre>
+
+<p>Each file's BBC name, directory and side are worked out from, in increasing order of precedence: the default of
+<code>$</code> on side 0; the host file name in the <code>0_$.NAME</code> form that <code>--export</code> writes
+(drive 0 is side 0, drive 2 is side 1); a matching <code>.INF</code> file, which also supplies the load and execution
+addresses and the lock flag; and finally <code>--directory</code> and <code>--side</code>. Names are shortened to the
+seven characters DFS allows. A name shaped like the convention but starting with something that is not a drive &mdash;
+<code>1_T.RFSROM</code> when <code>2_T.RFSROM</code> was meant &mdash; is queried rather than quietly imported under an
+odd name.</p>
+
+<h3>Deleting files from an image</h3>
+
+<p>Takes the same patterns as <code>--export</code>, and compacts the side afterwards so the space comes back. Each
+file is confirmed before it goes, unless <code>--force</code> is given, and a <b>locked</b> file is only deleted when
+it is. There is no undo, so work on a copy if you are in any doubt.</p>
+
+<pre class="console"><span class="prompt">C:\...\MakeRFS&gt;</span> <span class="cmd">bbcreaddiskimage MakeRFSROM.dsd --delete=OLDPROG,P.M*</span>
+<span class="dg">Delete :0.P.MTWO (300 bytes) from MakeRFSROM.dsd?
+This cannot be undone. Delete it? (Yes/No/All) : </span></pre>
 
 <p>All three can produce colour output — strings, keywords, and the like are each coloured differently — writing
 plain text (in colour when sent to a command-prompt window), BBCode, or HTML, and can optionally launch your
@@ -274,6 +332,11 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
     <div class="feature-item">
         <h3>BBCReadDiskImage</h3>
         <p>Display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Editing disk images</h3>
+        <p>Import files into a <code>.DSD</code> or <code>.SSD</code> image &mdash; creating the image if it does not
+        exist &mdash; and delete files from one, with the side compacted so the space is reclaimed.</p>
     </div>
     <div class="feature-item">
         <h3>Paging and line limits</h3>
