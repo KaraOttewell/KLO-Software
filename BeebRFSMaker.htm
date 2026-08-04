@@ -126,6 +126,46 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
 
 <hr>
 
+<h2 id="editing_addresses">Editing load and execution addresses</h2>
+
+<p>The <b>Load</b> and <b>Exec</b> fields beneath the file name are editable. Click into either, type a new address, and
+    press <b>Enter</b> or move away from the field: the address is written to the selected file and the ROM image is
+    rebuilt around it straight away. Both are shown in full as eight hex digits, so a host address such as
+    <code>FFFF1900</code> can be read and typed exactly as the BBC states it, rather than in a shortened form that
+    leaves you guessing at the high bits.</p>
+
+<p>Typing is <b>overstrike</b> here too: each keystroke replaces the digit under the cursor, so the field always holds
+    a complete address and can never be left half-finished. Only the hex digits <code>0</code>&#8211;<code>9</code> and
+    <code>A</code>&#8211;<code>F</code> are accepted.</p>
+
+<p>The <b>Size</b> field alongside them is shown for reference but cannot be edited &#8212; a file&#8217;s length is
+    whatever its contents amount to, and the hex editor above deliberately preserves it.</p>
+
+<p>A BBC BASIC program dropped in without a <code>.inf</code> file beside it is now given the host addresses
+    <code>FFFF1900</code> and <code>FFFF8023</code> &#8212; <code>PAGE</code> and the BASIC entry point, marked as being
+    in the host rather than across the tube, which is what a program loaded from a ROM filing system wants.</p>
+
+<hr>
+
+<h2 id="disk_image_files">Files exported from a disk image</h2>
+
+<p>Files taken off a <code>.ssd</code> or <code>.dsd</code> disk image &#8212; by
+    <a href="BBC Micro Utilities.htm">BBCReadDiskImage</a> or a similar tool &#8212; arrive with the drive and directory
+    written into the PC file name, as <code>0_$.MAKERFS</code> or <code>0_P.MakeRFS</code>. Drop those in and the drive
+    and directory are stripped off, since a ROM filing system has no directories: they go in as <code>MAKERFS</code> and
+    <code>MakeRFS</code>. A name can no longer keep a dot either, which the BBC would read as a directory separator.</p>
+
+<p>Where two files differ only by the directory they came from, their names collide once the directory is dropped. You
+    are offered the directory letter as a prefix so both can go in &#8212; the copy from <code>P</code> becomes
+    <code>PMakeRFS</code> &#8212; or you can decline and leave that file out. The root directory <code>$</code> is never
+    offered as a prefix, since it says nothing about where a file came from.</p>
+
+<p>A <code>.inf</code> file dropped alongside the file it describes is read for that file&#8217;s addresses and quietly
+    consumed, rather than being added to the ROM as a file in its own right. One dropped on its own asks what you meant,
+    and will still be added if that is what you want.</p>
+
+<hr>
+
 <h2>"Burning" an EEPROM</h2>
 <p>Rather than using old-style, UV-erasable EPROMs, I bought five compatible
 <a href="https://www.amazon.com/dp/B0GG12YGGC" target="_blank">AT28C256-15PU EEPROMs</a> for around $11 on Amazon. The "256"
@@ -165,6 +205,14 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
     <div class="feature-item">
         <h3>Edit file content in place</h3>
         <p>The preview pane doubles as a hex editor for the selected file. Overstrike bytes in either the hex or the ASCII column, then press Apply to rebuild the ROM image around your changes. Edits are made to the copy held for packing, so the files on your PC are never modified. See <a href="#editing_file_content">Editing file content</a>.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Edit load and exec addresses</h3>
+        <p>Type a new load or execution address into its field and press Enter, and the ROM image is rebuilt around it. Both are shown in full as eight hex digits so a host address such as <code>FFFF1900</code> reads as the BBC states it. The length is shown alongside but is not editable. See <a href="#editing_addresses">Editing load and execution addresses</a>.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Disk image files understood</h3>
+        <p>Files exported from a <code>.ssd</code> or <code>.dsd</code> image keep their BBC names: the <code>0_$.</code> drive and directory prefix is stripped, and where two files clash the directory letter is offered as a prefix instead. Matching <code>.inf</code> files are read as metadata rather than packed. See <a href="#disk_image_files">Files exported from a disk image</a>.</p>
     </div>
     <div class="feature-item">
         <h3>Compression feedback</h3>

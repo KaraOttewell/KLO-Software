@@ -283,7 +283,11 @@ End of ROM marker '+' seen at byte 0x003903 [014595]
     </div>
     <div class="feature-item">
         <h3>.inf sidecar support</h3>
-        <p>Reads and writes <code>.inf</code> sidecar files in the standard BBC Micro format used by DFS tools, preserving load addresses, execution addresses, and BBC filenames.</p>
+        <p>Reads and writes <code>.inf</code> sidecar files in the standard BBC Micro format used by DFS tools, preserving load addresses, execution addresses, and BBC filenames. Addresses are written as eight hex digits, so a host address such as <code>FFFF1900</code> is stated in full; the shorter four- and six-digit forms written by other tools are still read.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Disk image file names</h3>
+        <p>A folder of files exported from a <code>.ssd</code> or <code>.dsd</code> disk image packs under the BBC names they had. The drive and directory that <code>0_$.MAKERFS</code> and <code>0_P.MakeRFS</code> carry are stripped off, since a ROM filing system has no directories, and a name never keeps a dot &#8212; which the BBC would read as a directory separator.</p>
     </div>
 </div>
 
