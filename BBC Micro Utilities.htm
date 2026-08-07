@@ -30,7 +30,7 @@ The utilities are:</p>
 <ul>
     <li><b>BBCBasicToText</b> — display a tokenised, binary BBC Micro BASIC file as <b style="color:green">plaintext</b>, <b style="color:darkred">HTML</b>, or <b style="color:darkcyan">BBCode</b>.</li>
     <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as plaintext, HTML, or BBCode.</li>
-    <li><b>BBCReadDiskImage</b> — display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually, import files back in, delete files, and dump sectors.</li>
+    <li><b>BBCReadDiskImage</b> — display <code>*CAT</code>-style output of <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> disk images, with the ability to export files individually, import files back in, delete files, and dump sectors.</li>
 </ul>
 <p class="local-copy-notice">
     The most up to date version of this information will always be the <a href="BBC Micro Utilities.htm">online version</a>.
@@ -163,10 +163,28 @@ BBCDataFileToText found and processed 1 file, ignored 0, excluded 0, produced re
 
 <h2>BBCReadDiskImage</h2>
 
-<p>Display <code>*CAT</code>-style output of <code>.SSD</code> or <code>.DSD</code> disk images, with the ability to
-export files individually, import files back into an image, delete files from one, and dump raw sectors.</p>
+<p>Display <code>*CAT</code>-style output of <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> disk images, with
+the ability to export files individually, import files back into an image, delete files from one, and dump raw
+sectors.</p>
 
 <img src="BBC Micro Utilities/Screenshot_BBCReadDiskImageExample.png" class="screenshot" alt="BBCReadDiskImage example output">
+
+<h3>Single-sided, double-sided, and <code>.IMG</code></h3>
+
+<p>A <code>.SSD</code> is single-sided and a <code>.DSD</code> double-sided, as their names say, and those are taken at
+their word. A <code>.IMG</code> &mdash; the extension BeebEm and several other tools use &mdash; says nothing either
+way, so the image itself is asked instead.</p>
+
+<p>The catalogue records how many sectors there are on <b>one side</b> of the disk, and multiplying that by the 256-byte
+sector size gives the length a single-sided image of that disk would have. Anything longer must hold a second side. A
+200&nbsp;KB image whose catalogue reports 800 sectors is therefore an 80-track single-sided disk, where a 200&nbsp;KB
+image reporting 400 sectors is a 40-track disk with two sides. The length on its own cannot tell those apart, which is
+why the catalogue has to be consulted. The run reports which it settled on and what decided it.</p>
+
+<p>An image that holds no catalogue at all is named and skipped rather than listed as nonsense, and the reason is given
+&mdash; a disk that has been formatted but never written to holds nothing but filler bytes, while an image in some other
+format, such as an ADFS or DOS disk from a Master 512, has its own idea of what belongs at the start of a disk. Neither
+is something this tool can read.</p>
 
 <h3>Naming files on the disk</h3>
 
@@ -331,11 +349,11 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
     </div>
     <div class="feature-item">
         <h3>BBCReadDiskImage</h3>
-        <p>Display <code>*CAT</code>-style output of <code>.DSD</code> or <code>.SSD</code> disk images, with the ability to export files individually and dump sectors.</p>
+        <p>Display <code>*CAT</code>-style output of <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> disk images, with the ability to export files individually and dump sectors. A <code>.IMG</code> does not say whether it is single- or double-sided, so that is worked out from the image's own catalogue.</p>
     </div>
     <div class="feature-item">
         <h3>Editing disk images</h3>
-        <p>Import files into a <code>.DSD</code> or <code>.SSD</code> image &mdash; creating the image if it does not
+        <p>Import files into a <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> image &mdash; creating the image if it does not
         exist &mdash; and delete files from one, with the side compacted so the space is reclaimed.</p>
     </div>
     <div class="feature-item">
