@@ -22,7 +22,7 @@ Three command-line tools for inspecting BBC Micro files:
 - **BBCDataFileToText** — display `PRINT#`-style BBC data files as text, HTML, or bbcode
 - **BBCReadDiskImage** — list and export files from `.SSD` and `.DSD` disk images
 
-Distributed as a Windows MSI installer. Requires .NET 8 or later.
+Available on the **Microsoft Store**. Requires Windows 10 (build 1809) or later, or Windows 11.
 
 ### [KOContour](https://karaottewell.github.io/KLO-Software/KOContour.htm)
 A UWP contour map viewer that reads elevation data from local files or from online DEM servers such as [Open Topo Data](https://www.opentopodata.org/datasets/mapzen/) and Azure Maps. Supports GPX file generation, place management, elevation lookup, and distance/bearing measurement.

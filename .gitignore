@@ -17,3 +17,35 @@ KLO BBC Micro Utilities_files/
 /OldPictures
 .claude/
 KOBrot/KOBrot_Screenshot_3DMandelbrot2.png
+
+# ==================================================================================================
+# NEVER COMMIT SIGNING CERTIFICATES, KEYS OR CREDENTIAL FILES
+#
+# Visual Studio generates <Project>_TemporaryKey.pfx for sideload signing. It is a private key, it
+# is per-developer and disposable, and it must stay out of git - VS recreates it on demand. The same
+# goes for any real certificate, SSH key, API-key file or environment file.
+# Added 2026-08-07 after KOBrot_TemporaryKey.pfx was found committed and purged from history.
+# ==================================================================================================
+*.pfx
+*.snk
+*.p12
+*.pem
+*.key
+*.cer
+*.crt
+*.publishsettings
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+*.env
+.env
+.env.*
+secrets.json
+appsettings.*.local.json
+
+# Key/credential data files, however they get named
+*[Kk]eys*.csv
+*[Aa]pplication[Kk]ey*
+*[Aa]pi[Kk]ey*
+*[Cc]redential*
