@@ -167,6 +167,13 @@
     </p>
 
     <p>
+        Thumbnails <b>load as you scroll to them</b>, so a month of several hundred pictures opens at once rather
+        than waiting on every image at the top. A page is only a hundred kilobytes of HTML; it was the hundreds of
+        separate image reads that made a big one slow, especially from a synced folder where some may not be on the
+        disk yet. Each cell already declares the size it will be, so nothing jumps about as they arrive.
+    </p>
+
+    <p>
         Thumbnails all share a height so a row of them lines up, and the width follows each picture's own shape, so a
         portrait photograph is never squashed into a landscape box. The <b>Exif orientation</b> is honoured, which
         matters more than you might think &mdash; how often have you seen people's photos stored sideways and had to
@@ -195,6 +202,50 @@
         first table, so a contact sheet you have dropped your own heading or styling onto is left as you made it.
     </p>
 
+    <h3 id="Viewer">Looking through the pictures</h3>
+
+    <p>
+        Clicking a thumbnail shows the picture <b>over the contact sheet</b> rather than opening a tab. An arrow at each
+        edge moves to the previous or next item <b>in the same table</b>, and disappears when there is nothing that way.
+        The left and right keys do the same, Escape closes, and so does clicking the background. Underneath sits the
+        caption, the file name, and how far through you are.
+    </p>
+
+    <p>
+        The point is not having to switch tabs to see the next photograph, so nothing about it opens a tab if it can
+        avoid it. Nothing extra is written into the page to make it work either: every cell already holds the full-size
+        path and its caption, and the cells are in a table, so &ldquo;the next one&rdquo; is simply the next cell along.
+        The links keep their <em>target="_blank"</em>, so with JavaScript turned off the page behaves exactly as it did
+        before there was a viewer at all.
+    </p>
+
+    <h4>Formats a browser cannot show</h4>
+
+    <p>
+        HEIC is the awkward one &mdash; browsers cannot generally display it, although the thumbnail works because
+        SnapDragger generates a JPEG for it. WMV, ASF and AVI no browser will play.
+    </p>
+
+    <p>
+        Rather than carry a list of what browsers could manage on the day the page was written, the viewer <b>tries the
+        file and believes the answer</b>. If it will not decode, the viewer gets out of the way and the file opens in a
+        tab exactly as it used to &mdash; and that format is not attempted again while the page is open, so only the
+        first click on a given format costs anything.
+    </p>
+
+    <div class="note">
+        This is deliberate, and it is about how long these pages last. A contact sheet outlives the browser that reads
+        it. If a browser gains HEIC one day, <b>a page written today starts showing HEIC</b> &mdash; nothing rebuilt, no
+        new version of SnapDragger, and nothing sent anywhere to find out. A page carries no reference to anything
+        outside itself: no fonts, no scripts, no images from the internet, nothing to fetch and nothing to report back.
+    </div>
+
+    <p>
+        Arrowing onto something that will not decode <b>steps over it</b> rather than throwing you into a tab midway
+        through a month. A tab is opened only when that file is the one you clicked, which is the case where opening it
+        is what you actually asked for.
+    </p>
+
     <h3 id="ScanFolders">Building a page and nothing else</h3>
 
     <p>
@@ -220,6 +271,50 @@
         nothing but other folders describes nothing, so it is walked through for free. That matters because
         <b>--folder=auto</b> given a base folder builds <em>Albums\YYYY\MM</em> &mdash; the pictures sit three folders
         down with the first two empty, and they are still found from the top.
+    </p>
+
+    <h3 id="SplitPages">A page for each folder</h3>
+
+    <p>
+        One page for a whole library gets slow to open long before it gets hard to read &mdash; a few thousand cells is a
+        few thousand thumbnails, and loading them as you scroll defers the reading but not the parsing. Put a
+        <b>*</b> in the name and you get <b>a page per subfolder</b> instead, the star standing for the folder's own
+        name:
+    </p>
+
+    <div class="cli-block">snapdragger --scanfolders --html=*.html</div>
+
+    <div class="cli-block">2012 Munich.html
+2013 Nuremburg.html
+Odds and Ends.html
+index.html</div>
+
+    <p>
+        Each page holds every table belonging to that subfolder, however many levels down they were found, so
+        <em>2016\01</em> and <em>2016\02</em> stay together on <em>2016.html</em> rather than being scattered. Pictures
+        sitting <b>directly</b> in the folder you scanned belong to no subfolder, so their page is named for that folder.
+    </p>
+
+    <p>
+        Any folder given in the pattern is kept, so <b>--html=pages\*.htm</b> writes the whole set into <em>pages</em>.
+        The extension is kept too, which is what decides the index's name: <b>*.html</b> gives <em>index.html</em> and
+        <b>*.htm</b> gives <em>index.htm</em>, since one set of pages with two spellings in it would only confuse. A star
+        is the sentinel precisely because <b>Windows will not allow one in a file name</b>, so no real name can be
+        mistaken for a pattern.
+    </p>
+
+    <p>
+        The way in is written last, once every page is known: one cell per page, showing that folder's <b>first
+        picture</b> as its thumbnail, its name, and how many pictures it holds. The index carries the theme switch but
+        <b>not</b> the picture viewer &mdash; the links here go to pages rather than to photographs, and a viewer would
+        try to display one as though it were a picture. A folder actually called <em>index</em> would have taken that
+        name already, and rather than write over a real page the run keeps it and says so.
+    </p>
+
+    <p>
+        Splitting is something only the folder grouping can do: a table per month comes from the dates rather than from
+        the folders, so there is nothing to name a page after. Asking for both is refused rather than quietly given one
+        page.
     </p>
     <hr>
 
@@ -549,7 +644,9 @@ HTML table would be written to index.htm
 
     <h3>The HTML contact sheet</h3>
     <ul>
-        <li><b>--html=file</b>, <b>-o</b> &mdash; write the contact sheet to this file. Without it no HTML is kept.</li>
+        <li><b>--html=file</b>, <b>-o</b> &mdash; write the contact sheet to this file. Without it no HTML is kept. A
+            <b>*</b> in the name asks for one page per subfolder rather than one page for the lot, and an index to open
+            first. See <a href="#SplitPages">A page for each folder</a>.</li>
         <li><b>--url-prefix=text</b> &mdash; a folder everything is filed under, which then begins every link in the
             page. It really moves the files there, so the links point at where they are.</li>
         <li><b>--thumbnails=missing|always|never</b> &mdash; <b>missing</b> makes only the ones not there yet (the
@@ -613,6 +710,12 @@ HTML table would be written to index.htm
 
     <p>The same, but with a table per month worked out from the dates rather than from the folders:</p>
     <div class="cli-block">snapdragger --html index.html --scanfolders=dates</div>
+
+    <p>
+        The same again, but giving each subfolder its own page rather than one enormous one, with an
+        <em>index.html</em> to open first:
+    </p>
+    <div class="cli-block">snapdragger --scanfolders --html=*.html</div>
 
     <p>Capture a run to a file and keep the colours in it:</p>
     <div class="cli-block">snapdragger --color=always --list *.jpg &gt; run.txt 2&gt;&amp;1</div>
@@ -693,6 +796,16 @@ HTML table would be written to index.htm
         <div class="feature-item">
             <h3>Grouped By Folder</h3>
             <p><em>--scanfolders</em> gives every folder its own table, named for it &mdash; or a table per month, as you prefer.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>A Page Per Folder</h3>
+            <p><em>--html=*.html</em> splits a big library into one page per subfolder, with an index showing each one's first picture.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Flick Through Them</h3>
+            <p>Click a thumbnail and page along the month with the arrow keys, without ever leaving the contact sheet.</p>
         </div>
 
         <div class="feature-item">
