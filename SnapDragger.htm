@@ -273,8 +273,10 @@
     <h4>Formats a browser cannot show</h4>
 
     <p>
-        HEIC is the awkward one &mdash; browsers cannot generally display it, although the thumbnail works because
-        SnapDragger generates a JPEG for it. WMV, ASF and AVI no browser will play.
+        Other than Safari, most browsers cannot display HEIC, although the thumbnail works because
+        SnapDragger, via ImageMagick, generates a JPEG for it. WMV, ASF and AVI no browser will play,
+        but MP4, MOV and MPG generally work. You can, of course, convert your photos to JPEG and save the
+        originals &mdash; see the <a href="#HeicTip">HEIC tip</a> below for details.
     </p>
 
     <p>
@@ -285,17 +287,10 @@
     </p>
 
     <div class="note">
-        This is deliberate, and it is about how long these pages last. A contact sheet outlives the browser that reads
-        it. If a browser gains HEIC one day, <b>a page written today starts showing HEIC</b> &mdash; nothing rebuilt, no
-        new version of SnapDragger, and nothing sent anywhere to find out. A page carries no reference to anything
-        outside itself: no fonts, no scripts, no images from the internet, nothing to fetch and nothing to report back.
+        This is deliberate, and it is about how long these pages last. If a browser gains HEIC one day,
+        <b>a page written today will start showing HEIC</b> &mdash; nothing rebuilt, no new version of SnapDragger,
+        and no downloads needed. A page is self-contained, needing no fonts, no scripts, no images from the internet.
     </div>
-
-    <p>
-        Arrowing onto something that will not decode <b>steps over it</b> rather than throwing you into a tab midway
-        through a month. A tab is opened only when that file is the one you clicked, which is the case where opening it
-        is what you actually asked for.
-    </p>
 
     <h3 id="ScanFolders">Building a page and nothing else</h3>
 
@@ -321,7 +316,9 @@
         The folder form looks two folders deep, counting only folders that actually <b>hold pictures</b>: one holding
         nothing but other folders describes nothing, so it is walked through for free. That matters because
         <b>--folder=auto</b> given a base folder builds <em>Albums\YYYY\MM</em> &mdash; the pictures sit three folders
-        down with the first two empty, and they are still found from the top.
+        down with the first two empty, and they are still found from the top. Folders named <em>thumbnails</em> and their
+        contents are ignored other than for thumbnail image creation and display, so you can stash files you do not
+        want to display in those folders.
     </p>
 
     <h3 id="SplitPages">A page for each folder</h3>
@@ -336,7 +333,7 @@
     <div class="cli-block">snapdragger --scanfolders --html=*.html</div>
 
     <div class="cli-block">2012 Munich.html
-2013 Nuremburg.html
+2013 Paris.html
 Odds and Ends.html
 index.html</div>
 
@@ -381,17 +378,11 @@ index.html</div>
 
     <p>
         A folder name and a file spec look exactly alike on a command line, and only the <b>directory part</b> of a file
-        spec &mdash; everything up to the last backslash &mdash; says which folder to work in. So a bare folder name used
-        to be read as a file <em>name</em> to match, and the run went through the current folder instead of the one you
-        asked for.
+        spec &mdash; everything up to the last backslash &mdash; says which folder to work in. So if a bare folder name
+        really is a folder then everything in it is what to work on, and the run clearly says so:
     </p>
 
-    <p>
-        The disk settles it. Where the argument really is a folder, it is the folder to work in and everything in it is
-        what to work on, and the run says so rather than quietly working somewhere you did not type:
-    </p>
-
-    <div class="cli-block">snapdragger --scanfolders ".\Holiday Pictures" --html=page.htm
+    <div class="cli-block">snapdragger --scanfolders ".\Holiday Pictures" --html=Holidays.htm
 
      Looking in folder: C:\Users\...\Pictures\Holiday Pictures
                Read as: .\Holiday Pictures is a folder, so everything in it: .\Holiday Pictures\*.*</div>
@@ -410,7 +401,7 @@ index.html</div>
         runs on into whatever followed it, so this:
     </p>
 
-    <div class="cli-block">snapdragger --scanfolders ".\Holiday Pictures\" --html=page.htm</div>
+    <div class="cli-block">snapdragger --scanfolders ".\Holiday Pictures\" --html=Holidays.htm</div>
 
     <p>
         arrives as one argument reading <em>Holiday Pictures" --html=</em>, with the option that was swallowed simply
@@ -425,7 +416,7 @@ index.html</div>
         quotation mark in a file name, finding one is never a false alarm:
     </p>
 
-    <div class="cli-block">     Check the quoting: .\Holiday Pictures" --html=page.htm
+    <div class="cli-block">     Check the quoting: .\Holiday Pictures" --html=Holidays.htm
                          a " cannot be in a Windows file name, so this is one
                          argument that was meant to be two or more. A quoted path
                          ending in \ escapes its own closing quote, so "folder\"
@@ -507,12 +498,13 @@ index.html</div>
         A <b>--dry-run</b>: every name each file would be given is shown in green, and the run finishes by saying
         plainly that nothing was renamed, moved or created. Run it again without <b>--dry-run</b> to do it for real.
     </p>
+    <hr>
 
-    <h3 id="Undo">Undoing a run</h3>
+    <h2 id="Undo">Undoing a run</h2>
 
     <p>
-        And when a run has done something you did not want, it can be undone. Every run that moves anything writes a
-        plain-text log beside the files and finishes by telling you how to use it:
+        If a run has done something you did not want, do not worry; <b>it can be undone</b>. Every run that moves
+        or renames anything writes a plain-text log beside the files and finishes by telling you how to use it:
     </p>
 
     <div class="cli-block">To undo this run: snapdragger --revert snapdragger_log_20260728_133709.txt</div>
@@ -520,20 +512,21 @@ index.html</div>
     <p>
         Undoing puts every file back under its old name, removes the thumbnails that run created, and takes away any
         folder it emptied. A file already sitting where one belongs is left alone rather than written over, and reported.
-        <b>--dry-run</b> works here too, showing everything that would go back without touching anything.
+        If you use <b>--dry-run</b> first, that will <b>show everything that would be done but without changing anything</b>,
+        so that is a safety mechanism too.
     </p>
 
     <div class="note">
-        Every effort is made to ensure that your photos are safe at every step, but of course you should make a complete
-        backup of your pictures before using any tool on them, SnapDragger included.
+        Every effort is made to ensure that your photos are safe at every step, but <b>of course you should make a complete
+        backup of your pictures before using any tool on them</b>, SnapDragger included.
     </div>
     <hr>
 
     <h2 id="Info">Looking Inside a File</h2>
 
     <p>
-        <b>--info</b> shows everything a file says about itself and changes nothing. The camera and lens, every date it
-        carries, the settings it was taken with, and &mdash; where the camera recorded one &mdash; the position:
+        <b>--info</b> shows the information a file carries within itself, <b>and changes nothing</b>. The camera and lens, every date it
+        carries, the settings it was taken with, and &mdash; where the camera recorded one &mdash; the GPS position:
     </p>
 
     <pre class="console"><span class="c-brightmagenta">=== WP_20130922_002.jpg ===</span>
