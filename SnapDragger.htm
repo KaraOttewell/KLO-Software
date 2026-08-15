@@ -202,6 +202,43 @@
         first table, so a contact sheet you have dropped your own heading or styling onto is left as you made it.
     </p>
 
+    <h3 id="Headings">What each table heading says</h3>
+
+    <p>
+        A heading carries the name, then how many pictures are under it and when they were taken:
+    </p>
+
+    <div class="cli-block">Scans   47 pictures &middot; Mar 1998 - Jun 2001</div>
+
+    <p>
+        so a table can be judged before it is scrolled through, and two compared without counting. The range is said at
+        the coarsest granularity that still tells you something &mdash; <b>12 Jan 2016</b> for a single day,
+        <b>3-27 Jan 2016</b> across one month, <b>Mar-Jun 1998</b> across one year, and <b>Mar 1998 - Jun 2001</b> for
+        anything wider.
+    </p>
+
+    <p>
+        It is left off where it would only repeat the heading: a table called <em>September 2013</em> holding nothing but
+        September 2013 gains nothing from a date after it, so it shows just the count. A folder whose name says nothing
+        about when &mdash; <em>Scans</em>, <em>Odds and Ends</em> &mdash; always keeps its range, which is the case the
+        range is really there for.
+    </p>
+
+    <h3 id="Contents">Finding your way round a long page</h3>
+
+    <p>
+        A page holding more than one table gets a strip of links across the top, one per table, each with its count
+        &mdash; <em>September 2013 9 &middot; October 2013 41 &middot; December 2016 23</em>. A page with a single table
+        gets no strip rather than a strip with one entry in it.
+    </p>
+
+    <p>
+        The strip is built by the page itself when it opens rather than written out by the program, and the reason is the
+        way pages are rebuilt: a month at a time, with every untouched month copied through byte for byte, so nothing in
+        SnapDragger ever holds the whole list of tables at once. By the time they are all in the one document, the
+        browser does.
+    </p>
+
     <h3 id="Viewer">Looking through the pictures</h3>
 
     <p>
@@ -217,6 +254,20 @@
         path and its caption, and the cells are in a table, so &ldquo;the next one&rdquo; is simply the next cell along.
         The links keep their <em>target="_blank"</em>, so with JavaScript turned off the page behaves exactly as it did
         before there was a viewer at all.
+    </p>
+
+    <p>
+        There is a <b>slideshow</b> too, from the button beside the close or from <b>S</b> or the space bar. Four seconds
+        a picture; a movie is left to play out and moves on when it ends, rather than being cut off after the same few
+        seconds a photograph gets. It steps the same way the arrows do, so it skips whatever they skip, and it stops at
+        the end of the table rather than sitting on the last picture with a timer still going round.
+    </p>
+    <img class="screenshot" src="SnapDragger/SnapDragger_Screenshot_Slideshow_Example.jpg"
+         alt="The viewer open over a contact sheet, showing a desert photograph of Joshua trees below a ridge of boulders. An arrow sits at each edge, the play and close buttons are in the top right corner, and the line underneath reads 10-Apr-2013 14:35:28, WP_20130410_143528.jpg (51 of 145)">
+    <p class="screenshot-caption">
+        The viewer, with the contact sheet still behind it. The arrows move along the table and the &#9654; starts the
+        slideshow; underneath sits the caption, the file name, and how far through the table you are &mdash;
+        <b>51 of 145</b>.
     </p>
 
     <h4>Formats a browser cannot show</h4>
@@ -315,6 +366,119 @@ index.html</div>
         Splitting is something only the folder grouping can do: a table per month comes from the dates rather than from
         the folders, so there is nothing to name a page after. Asking for both is refused rather than quietly given one
         page.
+    </p>
+    <img class="screenshot" src="SnapDragger/SnapDragger_Screenshot_Table_Example.png"
+         alt="A generated contact sheet in the dark theme. A strip of links across the top reads 2017_07_Maui 306 and Snorkelling Maui - 2017-07-27 266; the table below is headed 2017_07_Maui, 306 pictures, Jul-Dec 2017, over rows of thumbnails each captioned View Photo and the date and time it was taken">
+    <p class="screenshot-caption">
+        A generated page, in the dark theme. The strip along the top links to each table with its count; the heading
+        gives the folder's name, how many pictures are under it and when they were taken &mdash;
+        <b>306 pictures &middot; Jul-Dec 2017</b>.
+    </p>
+
+    <hr>
+
+    <h2 id="NamingAFolder">Naming a Folder</h2>
+
+    <p>
+        A folder name and a file spec look exactly alike on a command line, and only the <b>directory part</b> of a file
+        spec &mdash; everything up to the last backslash &mdash; says which folder to work in. So a bare folder name used
+        to be read as a file <em>name</em> to match, and the run went through the current folder instead of the one you
+        asked for.
+    </p>
+
+    <p>
+        The disk settles it. Where the argument really is a folder, it is the folder to work in and everything in it is
+        what to work on, and the run says so rather than quietly working somewhere you did not type:
+    </p>
+
+    <div class="cli-block">snapdragger --scanfolders ".\Holiday Pictures" --html=page.htm
+
+     Looking in folder: C:\Users\...\Pictures\Holiday Pictures
+               Read as: .\Holiday Pictures is a folder, so everything in it: .\Holiday Pictures\*.*</div>
+
+    <p>
+        A wildcard can never name a folder &mdash; no file system here allows <b>*</b> or <b>?</b> in a name &mdash; so
+        every file spec that already worked is untouched. The folder may also be given on the option itself, as
+        <b>--scanfolders="Holiday Pictures"</b>; the words <em>folders</em> and <em>dates</em> keep their meaning there,
+        so a folder named one of those two has to be given as the file spec instead.
+    </p>
+
+    <h3 id="Quoting">A quotation mark in an argument</h3>
+
+    <p>
+        A quoted path <b>ending in a backslash escapes its own closing quote</b>. The quoted string then never closes and
+        runs on into whatever followed it, so this:
+    </p>
+
+    <div class="cli-block">snapdragger --scanfolders ".\Holiday Pictures\" --html=page.htm</div>
+
+    <p>
+        arrives as one argument reading <em>Holiday Pictures" --html=</em>, with the option that was swallowed simply
+        gone. This is the Windows argument parser rather than SnapDragger or the command prompt, and it catches every
+        program the same way &mdash; which is why the failure that follows never seems to have anything to do with the
+        cause.
+    </p>
+
+    <p>
+        By the time a program sees its arguments the backslash has gone and a literal quotation mark is left in its
+        place. That is the only trace there is, so that is what SnapDragger looks for; and since Windows permits no
+        quotation mark in a file name, finding one is never a false alarm:
+    </p>
+
+    <div class="cli-block">     Check the quoting: .\Holiday Pictures" --html=page.htm
+                         a " cannot be in a Windows file name, so this is one
+                         argument that was meant to be two or more. A quoted path
+                         ending in \ escapes its own closing quote, so "folder\"
+                         runs on and swallows what follows it. Write "folder\*.*"
+                         instead, or double the backslash.</div>
+
+    <p>
+        It is a warning rather than a refusal: by that point the arguments have been merged and nothing can un-merge
+        them, so the run carries on and fails on its own terms.
+    </p>
+    <hr>
+
+    <h2 id="HeicTip">Tip: A Folder Full of HEIC Pictures</h2>
+
+    <p>
+        If you want to convert a folder of <b>.heic</b> images to <b>.jpg</b> so you can view them all in your browser,
+        and have SnapDragger build the pages for them, this procedure works well. Starting with your command window in
+        the folder holding the <b>.heic</b> files, convert them with ImageMagick and then move the originals into the
+        <em>thumbnails</em> folder. That way you still have them, but they are not included in the SnapDragger tables:
+    </p>
+
+    <div class="cli-block">mkdir thumbnails &amp; magick mogrify -format jpg -auto-orient -quality 92 *.heic &amp; for %f in (*.heic) do @if exist "%~nf.jpg" move "%f" thumbnails\</div>
+
+    <p>
+        It works because SnapDragger never reads a <em>thumbnails</em> folder &mdash; it is where the generated
+        thumbnails live, and reading it would list every picture twice. So anything put in there is invisible to the
+        contact sheet while staying exactly where you can find it. The <b>-auto-orient</b> turns each picture the way its
+        Exif says it should be shown, and the <b>if exist</b> moves an original only once its JPEG has actually appeared,
+        so a conversion that fails leaves that file where it is.
+    </p>
+
+    <p>
+        One thing to watch if you are typing this into a <b>.cmd</b> file rather than at the prompt: the loop variable
+        has to be doubled there, so <b>%f</b> becomes <b>%%f</b> and <b>%~nf</b> becomes <b>%%~nf</b>. Left single it
+        fails with <em>was unexpected at this time</em>.
+    </p>
+
+    <p>
+        HEIC support in ImageMagick comes from the <em>libheif</em> delegate, which the standard Windows installer
+        includes. If nothing converts, check with:
+    </p>
+
+    <div class="cli-block">magick -list format | findstr HEIC</div>
+
+    <p>
+        A line reading <b>HEIC HEIC r--</b> is all this needs. The <em>r</em> is for reading, which is the direction that
+        matters &mdash; the JPEGs come out of the JPEG encoder. A build that cannot <em>write</em> HEIC, which is the
+        common case, still converts out of it perfectly well.
+    </p>
+
+    <p>
+        Lastly, a folder called <em>thumbnails</em> looks disposable: it is exactly the sort of thing that gets deleted to
+        reclaim space, so keep that in mind if the originals matter to you.
     </p>
     <hr>
 
@@ -600,6 +764,9 @@ HTML table would be written to index.htm
         <li><b>wildcard_in</b> &mdash; input files, e.g. <em>DSC*.JPG</em>. Pictures <em>.jpg .jpeg .heic .avif .png</em>
             and movies <em>.mpg .mov .mp4 .m4v .wmv .asf .avi</em> are dealt with; anything else is passed over.</li>
         <li><b>--list</b>, <b>-l</b> &mdash; report on everything and change nothing.</li>
+        <li><b>--open</b> &mdash; show the page when the run has written it, in whatever opens HTML on this
+            machine. Quiet on a <b>--dry-run</b> and where no page was written; with <b>--html=*.html</b> it opens the
+            index.</li>
         <li><b>--info</b> &mdash; show everything each file says about itself and change nothing: camera, lens,
             dates, settings and position. Implies <b>--list</b>. See
             <a href="#Info">Looking Inside a File</a>.</li>
@@ -655,8 +822,9 @@ HTML table would be written to index.htm
             renaming, since the caption would then name a file that no longer exists under it.</li>
         <li><b>--scanfolders[=folders|dates]</b> &mdash; build the page from what is on disk and do nothing else.
             <b>folders</b> (the default) gives a table per folder; <b>dates</b> gives one per month from the file dates.
-            Needs <b>--html</b> to say where the page goes. See
-            <a href="#ScanFolders">Building a page and nothing else</a>.</li>
+            A folder name may be given instead, and is then the folder to scan. Needs <b>--html</b> to say where the
+            page goes. See <a href="#ScanFolders">Building a page and nothing else</a> and
+            <a href="#NamingAFolder">Naming a Folder</a>.</li>
     </ul>
 
     <h3>Colour</h3>
@@ -716,6 +884,9 @@ HTML table would be written to index.htm
         <em>index.html</em> to open first:
     </p>
     <div class="cli-block">snapdragger --scanfolders --html=*.html</div>
+
+    <p>Scan one folder rather than the current one, and open the page when it is built:</p>
+    <div class="cli-block">snapdragger --scanfolders "Holiday Pictures" --html=holiday.htm --open</div>
 
     <p>Capture a run to a file and keep the colours in it:</p>
     <div class="cli-block">snapdragger --color=always --list *.jpg &gt; run.txt 2&gt;&amp;1</div>
@@ -801,6 +972,11 @@ HTML table would be written to index.htm
         <div class="feature-item">
             <h3>A Page Per Folder</h3>
             <p><em>--html=*.html</em> splits a big library into one page per subfolder, with an index showing each one's first picture.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Slideshow</h3>
+            <p>Press S in the viewer and it runs itself, four seconds a picture, letting each movie play out in full.</p>
         </div>
 
         <div class="feature-item">
