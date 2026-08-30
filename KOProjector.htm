@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<title>KOProjector &mdash; KLO Software</title>
+<link rel="stylesheet" href="KLO.css">
+</head>
+<body>
+    <div id="theme-toggle-icon" title="Change theme">🖥️</div>
+    <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
+
+    <h1>KOProjector</h1>
+    <p class="subtitle">
+        Rescue <b>old home movie projects</b> from video-editing software that no longer runs. <b>KOProjector</b> reads projects made
+        with <b>Roxio VideoWave</b>, <b>Windows Movie Maker&nbsp;2</b> and <b>Windows Live Movie Maker</b>, hunts down the
+        photographs and video clips that have been renamed, reorganised and swept into the cloud in the twenty years
+        since, and rebuilds the whole production as a <b>CyberLink PowerDirector</b> project you can open and finish today.
+    </p>
+
+    <span class="badge">Windows</span>
+    <span class="badge">Command line</span>
+    <span class="badge">.NET 9</span>
+    <span class="badge">Experimental</span>
+    <span class="badge">Free</span>
+
+    <hr>
+
+    <h2>Overview</h2>
+    <p>
+        A family film from 2004 is rarely lost because the video is gone. It is lost because the <b>project</b> &mdash; the
+        file that says which clip follows which, where each one was trimmed, what the titles said and where the music came
+        in &mdash; was written by an application that will not install on a modern PC. The video is usually still there. The
+        instructions for assembling it are the part that has become unreadable.
+    </p>
+    <p>
+        KOProjector reads those instructions and writes them out again in a form a current editor understands. It also
+        solves the other half of the problem, which is that <b>nothing is where the project says it is</b>. Folders have been
+        renamed, drive letters have vanished, photographs have been re-cropped and given better names, and everything has
+        moved into OneDrive. You describe those moves once, as rules, and the same rules serve every project you convert.
+    </p>
+    <p>
+        The result opens in <b>PowerDirector&nbsp;24</b> with the clips, trims, transitions, soundtrack, camera moves and
+        titles in place &mdash; ready to adjust and produce, rather than ready to rebuild from scratch.
+    </p>
+
+    <p class="local-copy-notice">
+        The most up to date version of this information will always be the <a href="KOProjector.htm">online version</a>.
+    </p>
+    <hr>
+
+    <h2 id="Formats">What it reads and writes</h2>
+
+    <p>
+        Five source formats, spanning about twenty years of consumer video editing, and one destination:
+    </p>
+
+    <ul>
+        <li>
+            <b>Roxio VideoWave</b> productions &mdash; <b>.dmsm</b> and <b>.dmss</b>, all three schema generations, from the
+            Easy CD Creator&nbsp;6 era onwards.
+        </li>
+        <li>
+            <b>Roxio disc projects</b> &mdash; <b>.dmsd</b>. A disc project is not a timeline at all but a menu with a
+            whole production behind each of its titles, so it is read as those titles <b>played end to end</b>, one
+            chapter after another &mdash; what pressing "play all" on the finished disc would have given you.
+            <b>Both shapes are read</b>: the kind that carries its productions inside, and the kind that only
+            <em>names</em> them in separate <b>.dmsm</b> files. The second sort is easy to mistake for a disc holding
+            nothing at all &mdash; three in one collection were nearly deleted as empty, when each in fact recorded
+            which productions went on that disc and in what order, and one turned out to be a 41-minute film whose
+            productions were sitting in the same folder all along.
+        </li>
+        <li>
+            <b>Windows Movie Maker&nbsp;2</b> projects &mdash; <b>.MSWMM</b>. These are not text files at all but
+            "compound documents", a little file system packed inside a single file, and the reader for them was written
+            from scratch.
+        </li>
+        <li>
+            <b>Windows Live Movie Maker</b> projects &mdash; <b>.wlmp</b>, the later and much simpler format.
+        </li>
+        <li>
+            <b>CyberLink PowerDirector</b> projects &mdash; <b>.pds</b> &mdash; which is both what everything is written
+            out as, and a format it can <a href="#Relinking">read back in</a>.
+        </li>
+    </ul>
+
+    <p>
+        The format is worked out by <b>looking inside the file rather than at its extension</b>. Extensions turn out to be a
+        weak hint: one real collection contained a <b>.dat</b> file that was a compound document, a <b>.dmsd</b> that used a
+        different schema from the <b>.dmsm</b> sitting beside it, and two entirely unrelated Movie Maker formats that shared
+        nothing but a vendor.
+    </p>
+
+    <div class="note">
+        <b>Note:</b> none of these formats is publicly documented. Everything KOProjector knows about them was worked out by
+        examining real files &mdash; and, for PowerDirector, by building pairs of projects that differ by exactly one thing
+        and comparing them byte by byte.
+    </div>
+    <hr>
+
+    <h2 id="Finding">Finding the media again</h2>
+
+    <p>
+        When media has moved, the breakage is almost never random: <b>whole folders get renamed or relocated together</b>.
+        That is what makes it tractable. You write a small rules file describing the moves you know about &mdash; this drive
+        letter became that folder, this account name became that one, this apostrophe was dropped by a cloud sync &mdash;
+        and KOProjector applies them to every path in every project.
+    </p>
+
+    <p>
+        Rules are worth writing because each one pays back many times over. In one real collection a single rule for a web
+        folder that had moved into OneDrive accounted for roughly <b>1,386 photograph references</b>, and one rule correcting
+        a changed user account found <b>174 of one slideshow's 179 items</b> outright.
+    </p>
+
+    <p>
+        You write the rules file once and <b>keep it beside the program</b>. KOProjector looks in its own folder, so if you
+        put the tool somewhere on your <b>PATH</b> with its rules alongside, every conversion from then on is just the
+        project name and where to put the result &mdash; no rules to remember, from whatever folder you happen to be in.
+    </p>
+
+    <p>
+        Anything a rule cannot reach is then <b>searched for by name</b> in folders you nominate, which handles the files
+        that were tidied into subfolders rather than moved wholesale. Whatever is still missing is reported with everything
+        the project recorded about it &mdash; its size in bytes and its exact duration &mdash; so that you can go looking
+        through an old backup drive armed with something more useful than a file name.
+    </p>
+
+    <p>
+        There is one further tier, for photographs that were <b>renamed but kept their date and time</b>. A camera's
+        <b>mvc2004_11_03_091448.jpg</b> and a phone sync's <b>WP_20041103_091448.jpg</b> share fourteen digits, and it is
+        the digits rather than the prefix that survive a wholesale renaming. It is <b>off unless you ask for it</b>, and it
+        <b>refuses an ambiguous match rather than guessing</b> &mdash; in one collection 11 of 122 matching timestamps named
+        more than one file, usually an original sitting beside a downscaled copy. Every other tier can only fail to find
+        something; this one could find the <em>wrong</em> thing, and a wrong photograph in a family film is worse than a
+        missing one, because nothing announces it.
+    </p>
+
+    <p>
+        Or you can be <b>asked about them one at a time</b>, with <b>--find</b>. Type where a file went, and if you name a
+        <b>folder</b> rather than a file, that folder &mdash; and everywhere beneath it &mdash; is searched not only for
+        that file but for <b>every other one still missing</b>. Since media goes missing a folder at a time rather than a
+        file at a time, a slideshow whose two hundred photographs all moved together usually costs a single answer. Every
+        file found that way is named on screen as it is found, so you can see exactly what your answer accounted for
+        rather than wondering why the questions stopped.
+    </p>
+
+    <p>
+        And when you have finished answering, it <b>offers to write what you found into your rules file</b>, worked out
+        as the fewest rules that account for it &mdash; twenty photographs from one folder become one rule, not twenty.
+        Every rule it proposes is <b>checked against every other answer first</b>, so one that would send some other
+        located file to a place it demonstrably is not never gets written, and the evidence behind each is recorded in
+        its note. That saves you writing JSON by hand, where a single stray quote makes the whole file unreadable and
+        takes every other rule in it with you.
+    </p>
+
+    <div class="note">
+        <b>Note:</b> answers given to <b>--find</b> <b>extend</b> the rules rather than replacing them &mdash; only files
+        the rules could not already place are ever asked about. Decline the offer to save and they still apply to that
+        run; accept it and the previous version of the rules file is kept alongside, just in case.
+    </div>
+
+    <h3>What is missing, and what only looks it</h3>
+
+    <p>
+        Missing material is <b>split by whether the film actually uses it</b>. Every editor keeps a pool of imported
+        material &mdash; PowerDirector calls it "My Media" &mdash; and a real project of twenty years' standing carries a
+        surprising number of files that were imported, considered and never used. One of those going missing cannot affect
+        the finished production at all.
+    </p>
+
+    <p>
+        So they are listed under a heading that says so, in <b>grey rather than red</b>, and <b>--find</b> never asks you
+        where they went. They are still <em>found</em> if a rule happens to reach them, and still counted &mdash; but they
+        are never allowed to make a complete conversion look damaged, which is what a single undifferentiated list of
+        missing files does.
+    </p>
+
+    <p>
+        The <em>found</em> material is split the same way, and for a sharper reason. One real project here imported a
+        whole theme library: <b>296 items, of which the film plays two</b>. Listing them together and marking the unused
+        ones meant the two that mattered were the lines with <em>nothing</em> after them &mdash; findable only by
+        noticing the absence of a marker, 291 times over. So <b>what the production uses is a section of its own and
+        comes first</b>, the pool follows for completeness, and the question "what does this film actually need?" is
+        answered by the first few lines instead of by reading three hundred.
+    </p>
+
+    <h3>What the colours tell you</h3>
+
+    <p>
+        The report is colour-coded, and the distinction that earns its keep is between the <b>two greens</b>: the regular
+        one means the file was sitting exactly where the project said, and the brighter one means <b>only a rule found
+        it</b>. The bright entries are the interesting ones &mdash; they depend on a rule, so they go missing again if that
+        rule is removed or the folder moves once more. Anything genuinely absent is in magenta with its recorded path in
+        dark red, and the material nobody needs is in grey.
+    </p>
+    <hr>
+
+    <h2 id="Reports">Reports you can keep</h2>
+
+    <p>
+        There is one reporting option, <b>--report</b>, and it covers the three questions worth asking of an old project:
+        <em>what shape is it, what is it made of, and what has gone missing?</em> On its own it puts all of that on the
+        screen. Given a file name it is written straight there instead &mdash; no redirection needed, and none of the
+        banner or the run summary comes with it:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" --report=Christmas2004.htm</b></div>
+
+    <p>
+        Name the file <b>.htm</b> or <b>.html</b> and a <b>web page</b> is written &mdash; properly coloured, self-contained,
+        ready to open or to send to somebody. Any other extension gives text: plain, or with the colours embedded in it if
+        you asked for <b>--colour always</b>. And <b>--json</b> writes a complete description of the project &mdash; every
+        clip with its position and trim points, the transitions, titles, sound and a deduplicated media list &mdash; which
+        is enough to redraw the timeline without the project file.
+    </p>
+
+    <p>
+        With a wildcard source, the file name takes a wildcard too: <b>--report=*.htm</b> names each page after its own
+        project, so a shelf of projects becomes a shelf of pages in one command. Each page carries the timeline and the
+        source material under links that move between them, and a link back to the index over the lot.
+    </p>
+
+    <p>
+        The <b>timeline chart</b> is the quickest way to see the shape of a production before deciding anything about it
+        &mdash; what follows what, how long each clip runs, where the transitions fall and where sound sits underneath:
+    </p>
+
+    <pre class="console"><span class="c-white">EnglishCottages.pds TIMELINE  20s total, 4 clip(s)</span>
+
+<span class="c-cyan">      |-----------5s-----------|-----------5s------------|-----------5s------------|-----------5s------------|</span>
+<span class="c-cyan">video </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_4-3.png  </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_9-16.png  </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_16-9.png  </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_16-9_Cont&#8230;</span><span class="c-cyan">|</span>
+<span class="c-cyan">audio </span><span class="c-cyan">|</span><span class="c-white">KaraGuitarChords.m4a                                                                                   </span>
+<span class="c-cyan">                               ^                         ^                                                    </span>
+
+<span class="c-white">    ^ at 5s  Dynamic Shift 01, 1s</span>
+<span class="c-white">    ^ at 10s  Camera Shutter, 1s</span>
+
+<span class="c-white">      (a) = the clip brings its own soundtrack;  ~ = the sound fades</span></pre>
+
+    <p>
+        A long film does not get squeezed into one unreadable strip. When there is more production than there is width, the
+        chart <b>continues on further sets of rows</b>, as a musical score does, each set carrying its own scale &mdash; so
+        a forty-minute film with thirty-four clips stays legible instead of collapsing into a row of single characters. Each
+        transition is named underneath with its length, and a clip too short to be drawn is widened rather than dropped,
+        which is why the chart says <b>not to scale</b> when it has had to do that.
+    </p>
+
+    <h3 id="MissingFiles">One table for a whole shelf of projects</h3>
+
+    <p>
+        A timeline and a media listing answer questions about <em>one</em> production. There is a different question:
+        <em>which of my projects can I actually open, and what is stopping the rest?</em> That is only worth asking across a
+        collection at once, so it is answered by <b>a single table for the entire run</b> however many projects the
+        wildcard matched &mdash; written to the file you name, or gathered into the index when you asked for a page each:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool *.dmsm,*.pds --report=missing.htm</b></div>
+
+    <p>
+        Note the <b>comma</b>. Several patterns can be given at once &mdash; the convention Windows itself uses in
+        <em>dir *.txt,*.doc</em> &mdash; and a folder written on the first carries to the rest, so
+        <b>D:\Videos\*.dmsm,*.pds</b> searches that one folder for both. It is also the <em>only</em> spelling available: a
+        second pattern separated by a space already means the <a href="#Using">destination</a>, so
+        <b>*.dmsm *.pds</b> converts every VideoWave production into a PowerDirector one rather than reporting on both.
+        A file whose own name contains a comma &mdash; and they exist, <em>Ben's Haircut, May 2007.wmv</em> &mdash; is
+        recognised and used as it stands rather than being split into two patterns that match nothing.
+    </p>
+
+    <p>
+        Worst first, so the projects needing attention come to the top and the finished ones settle at the bottom where they
+        read as reassurance rather than as noise:
+    </p>
+
+    <table class="options">
+        <thead>
+            <tr><th style="width:24%">Project</th><th>Media</th><th style="width:14%">Report</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <b>SummerFete2006</b><br>
+                    <span style="font-size:9pt; color:#777;">.dmsm</span>
+                </td>
+                <td>
+                    <p style="color:#0dbc79; font-weight:600; margin:0 0 6px;">
+                        The fete footage is on the disc labelled "Village Fete" in the box of school videos</p>
+                    <p style="color:#cd3131; font-weight:600; margin:0 0 4px;">
+                        Found 118 of 124 media files. Missing files:</p>
+                    <span style="font-family:Consolas,monospace; font-size:9pt; color:#cd3131;">
+                        D:\Photos 2006\Fete\DSC00412.JPG</span><br>
+                    <span style="font-size:8.5pt; color:#777;">Image, 2,118,336 bytes, duration not recorded,
+                        starts 0:42 (42.15s) ends 0:52 (52.19s)</span><br>
+                    <span style="font-family:Consolas,monospace; font-size:9pt; color:#cd3131;">
+                        D:\Photos 2006\Fete\DSC00418.JPG</span><br>
+                    <span style="font-size:8.5pt; color:#777;">Image, 2,004,771 bytes, duration not recorded,
+                        starts 3:08 (188.44s) ends 3:18 (198.48s)</span>
+                    <p style="font-size:9pt; color:#0dbc79; margin:6px 0 2px;">
+                        4 more in the media pool only &mdash; not needed for the production:</p>
+                    <span style="font-family:Consolas,monospace; font-size:9pt; color:#888;">
+                        C:\Users\Old\Music\Brass Band\03 The March.mp3<br>
+                        C:\Users\Old\Music\Brass Band\05 Slow Air.mp3<br>
+                        D:\Photos 2006\Fete\DSC00401.JPG<br>
+                        D:\Photos 2006\Fete\DSC00402.JPG</span>
+                </td>
+                <td><span style="color:#467886;">timeline &amp; source material</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>ChoirConcert2021</b><br>
+                    <span style="font-size:9pt; color:#777;">.pds</span>
+                </td>
+                <td>
+                    <p style="color:#cd3131; font-weight:600; margin:0 0 4px;">
+                        Found 96 of 97 media files. Missing files:</p>
+                    <span style="font-family:Consolas,monospace; font-size:9pt; color:#cd3131;">
+                        C:\Users\Old\Videos\Concert\03_Finale_20211204_193052000.MOV</span><br>
+                    <span style="font-size:8.5pt; color:#777;">Video, 1,884,301,824 bytes, 612.480s,
+                        starts 1:04:11 (3851.02s) ends 1:14:23 (4463.50s)</span>
+                </td>
+                <td><span style="color:#467886;">timeline &amp; source material</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>WeddingSlideshow2019</b><br>
+                    <span style="font-size:9pt; color:#777;">.wlmp</span>
+                </td>
+                <td>
+                    <p style="color:#3b8eea; font-weight:600; margin:0 0 4px;">
+                        Found 84 of 86 media files &mdash; no missing files used in the production. Missing files:</p>
+                    <p style="font-size:9pt; color:#0dbc79; margin:6px 0 2px;">
+                        2 in the media pool only &mdash; not needed for the production:</p>
+                    <span style="font-family:Consolas,monospace; font-size:9pt; color:#888;">
+                        C:\Users\Old\Music\Wedding\First Dance.mp3<br>
+                        D:\Photos 2019\Church\IMG_0042.JPG</span>
+                </td>
+                <td><span style="color:#467886;">timeline &amp; source material</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <b>BeachHoliday2004</b><br>
+                    <span style="font-size:9pt; color:#777;">.dmsd</span>
+                </td>
+                <td><span style="color:#1a7f37; font-weight:600;">Found 212 of 212 media files.</span></td>
+                <td><span style="color:#467886;">timeline &amp; source material</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        The most useful part of each line is the last of it: <b>where in the finished film the missing item appears</b>.
+        Everything else describes the file that has gone; that describes the <em>hole it left</em> &mdash; and the hole can
+        still be looked at, in whatever was produced from the project at the time. A slideshow of scanned negatives makes
+        the point: the file names say nothing at all, but winding the old video to <b>0:42</b> shows the photograph that is
+        missing, and whether another would serve in its place. Both forms are given, minutes and seconds to scrub by hand
+        and the raw figure for anything scripted, and a file used more than once is reported at every appearance.
+    </p>
+
+    <p>
+        Two more things earn their place. Every entry carries <b>the size and duration the project recorded</b>, so a
+        single line is enough to go hunting through an old backup drive with. And material is split by whether the film
+        actually uses it &mdash; so <b>BeachHoliday2004 above is genuinely finished</b>, and SummerFete2006 needs two
+        photographs rather than six files. Pool entries carry no position, because there is no moment to wind to. The
+        <b>Report</b> column links to that project's own page: its timeline, and where every one of its files was found.
+    </p>
+
+    <p>
+        That split is why the heading over the pool entries is <b>green rather than grey</b>, while the files under it stay
+        grey. At a glance down a long table the two lists look alike &mdash; a row of paths under a row of paths &mdash; and
+        the heading is the only thing distinguishing "this film has holes in it" from "these were never needed". The
+        reassurance has to be the part that catches the eye, or the colour is doing nothing.
+    </p>
+
+    <p>
+        The count at the top of each cell carries the same distinction in <b>three colours rather than two</b>, because
+        "something is missing" covers two quite different situations. Green: everything is there. Red: the film itself has
+        holes in it. <span style="color:#3b8eea; font-weight:600;">Blue</span> for the third case &mdash;
+        <b>WeddingSlideshow2019</b> above, where files are missing but <em>no missing file is used in the production</em>.
+        That project opens and plays complete. Colouring it red alongside the genuinely broken ones is what sends somebody
+        hunting an old backup drive for a photograph no part of the film shows.
+    </p>
+
+    <h3 id="Everything">The whole collection in one command</h3>
+
+    <p>
+        Give <b>--report</b> a pattern with a star in it rather than a plain name and you get the lot &mdash; a page for
+        each project, and an index over them carrying the table above:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool *.dmsm,*.pds --report=Reports\*.htm</b></div>
+
+    <p>
+        Read across a folder of two projects, that writes <b>three</b> files:
+    </p>
+
+    <div class="cli-block">Reports\index.htm             &lt;- ONE table, both projects in it, links to both pages
+Reports\Christmas2004_dmsm.htm    &lt;- timeline and source material
+Reports\YRL_pds.htm</div>
+
+    <p>
+        <b>The kind is in the name on purpose.</b> Four productions in the collection this was built from exist as
+        <em>both</em> a <b>.dmsm</b> timeline and a <b>.dmsd</b> disc project of the same name &mdash; and with the bare
+        name, the second page wrote over the first and nothing said so. <b>Christmas2010_dmsm.htm</b> and
+        <b>Christmas2010_dmsd.htm</b> cannot collide. An underscore rather than a dot, so the result is one plain name
+        with one extension.
+    </p>
+
+    <p>
+        <b>Reports land beside the projects unless you say otherwise</b>, and for a large collection that is a
+        lot of company &mdash; a hundred projects would leave a hundred new files among them. Put a folder in the
+        pattern, as above, and they go there instead. Worth doing for a second reason: anything left in the folder being
+        scanned is looked at again on the next run, and a report is not a project.
+    </p>
+
+    <p>
+        <b>The reports folder is created if it is not there, and emptied of its old pages before the new ones are written</b>, so what is in it always
+        describes one run. A stale report is worse than a missing one: rename a project and its old page would otherwise
+        sit there for ever, linked from nothing, looking exactly like a current one. Only the extension being written is
+        touched, only in that one folder, and nothing beneath it &mdash; a folder you keep other things in does not lose
+        them because a report happened to be aimed there.
+    </p>
+
+    <p>
+        A conversion <em>destination</em> folder is deliberately <b>not</b> created for you, and the
+        difference is the cost of being wrong. A mistyped destination scatters converted projects
+        somewhere nobody thinks to look; a stray reports folder costs a glance and a delete.
+    </p>
+
+    <h3 id="Messages">Notes to yourself</h3>
+
+    <p>
+        The green line at the top of the first row is not something KOProjector worked out. It is a <b>note you wrote into
+        your own rules file</b>, and it appears whenever that project is processed &mdash; on the console and in the table
+        both.
+    </p>
+
+    <div class="cli-block">"projectMessages": [
+  {
+    "project": "SummerFete2006*",
+    "message": "The fete footage is on the disc labelled \"Village Fete\" in the box of school videos"
+  }
+]</div>
+
+    <p>
+        The rules answer <em>where did this file go</em>. A note answers the question that comes after it &mdash; <em>what do
+        I do about the ones that are gone</em> &mdash; and that answer is usually not in any file at all. Which shelf, which
+        labelled disc, which box in the loft: it lives in somebody's memory, and a rules file kept beside the tool is a
+        better place for it. The note appears exactly where the question arises, next to the list of what is missing.
+    </p>
+
+    <p>
+        The name is matched with or without its extension and ignoring case, and a <b>*</b> stands for any run of
+        characters &mdash; so one entry covers the <b>.dmsm</b>, the <b>.dmsd</b> and the converted <b>.pds</b> of the same
+        production together. Several notes may match one project; all of them appear, in the order you wrote them.
+    </p>
+
+    <p>
+        Name the file <b>.htm</b> for the page above, anything else for plain text, or leave the name off and everything
+        goes to the console.
+    </p>
+    <hr>
+
+    <h2 id="Relinking">Relinking a project you already have</h2>
+
+    <p>
+        The same problem turns up without any old software involved: the project is last month's, but you moved to a new
+        machine, or the photographs went onto an external drive, or everything was swept into OneDrive. Nothing is wrong
+        with the project except that it is looking in the wrong places.
+    </p>
+
+    <p>
+        Give KOProjector a <b>.pds</b> as its source and it writes a copy pointing at where the media actually is, and
+        <b>changes nothing else whatsoever</b>. That is not a claim about intent &mdash; it is checked by putting the
+        paths back afterwards and confirming the file is byte-for-byte what it was.
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "LastYear.pds" "LastYear_relinked.pds"</b></div>
+
+    <p>
+        It matters because the alternative would quietly throw things away. Reading a project into a general-purpose
+        model and writing it out again would lose everything that model does not happen to describe: colour grading,
+        masks, audio effects, keyframed opacity, picture-in-picture objects, and any track it did not know about. So the
+        document is <b>edited</b> rather than rebuilt, and only the fields naming your own media are touched. Masks,
+        colour presets and downloaded content are left exactly as they are &mdash; those belong to your PowerDirector
+        installation rather than to the film.
+    </p>
+
+    <p>
+        Reading a <b>.pds</b> is also the quickest way to answer "what does this project actually depend on?", since
+        <b>--report</b> works on one just as it does on anything else &mdash; including the split between the material the
+        film uses and the material <a href="#Finding">only sitting in "My Media"</a>, which an established project tends to
+        have a good deal of.
+    </p>
+    <hr>
+
+    <h2 id="Faithful">How faithful is the conversion?</h2>
+
+    <p>
+        The honest answer is <b>very, with three named exceptions</b> &mdash; and KOProjector tells you what they are at
+        the end of every run rather than leaving you to discover them. A run that lost nothing says so, in as many words,
+        instead of printing a warning anyway: a caution that appears every time is a caution people learn to skip, and then
+        they miss the run where it mattered.
+    </p>
+
+    <p>What comes across accurately:</p>
+
+    <ul>
+        <li>
+            <b>Clips, trims and timing</b>, to the frame. Every clip boundary lands on a whole frame at the project's own
+            rate, and a transition that shortened the original film shortens the conversion by the same amount.
+        </li>
+        <li>
+            <b>Photographs keep their shape.</b> A portrait photograph is letterboxed rather than stretched across a
+            widescreen frame. This is harder than it sounds: VideoWave records <em>no size at all</em> for a photograph, and
+            Movie Maker records the size the file had when the slideshow was made &mdash; which a later re-crop quietly
+            invalidates. So the picture is measured from the file itself wherever it can be read, and a quarter turn
+            recorded by the camera is honoured.
+        </li>
+        <li>
+            <b>Sound</b> &mdash; each clip's own soundtrack and any separate music, with its volume, its fades, and any
+            envelope the author drew by hand. Theme music that outlasts its clip is faded out rather than cut off mid-note.
+        </li>
+        <li>
+            <b>Transitions</b>, mapped to their nearest PowerDirector equivalent, with a plain cross-fade for anything with
+            no counterpart &mdash; and a note in the report naming each one that was substituted.
+        </li>
+        <li>
+            <b>Pan and zoom</b> on stills, rewritten as PowerDirector camera moves.
+        </li>
+        <li>
+            <b>Titles and credits</b> &mdash; the words, their line breaks, timing, placing, styling, and how they arrive and
+            leave.
+        </li>
+    </ul>
+
+    <p>The three things that are approximate or absent, and why:</p>
+
+    <ul>
+        <li>
+            <b>Pan-and-zoom end points</b> are close rather than exact. They are far easier to nudge into place than to add
+            from nothing, which is why they are written at all.
+        </li>
+        <li>
+            <b>Letter spacing in titles</b> is estimated. PowerDirector stores a title with its layout already resolved
+            <em>character by character</em>, so reproducing one exactly would mean writing a text-layout engine. A generated
+            title has the right words in roughly the right place &mdash; and since PowerDirector's title editor is a slow
+            thing to type into, having the text already there is worth a great deal more than having it perfect.
+        </li>
+        <li>
+            <b>A changed playback speed is not carried across yet.</b> Where the original author slowed a clip down or ran
+            it fast, the conversion lays the timeline out correctly around it but the clip itself plays at its normal rate,
+            so the speed has to be set again by hand. It stays on the list rather than in the finished column because it is
+            genuinely rare &mdash; two clips in a collection of seventy-odd projects &mdash; and everything else was a
+            better use of the time.
+        </li>
+    </ul>
+
+    <div class="note">
+        <b>Note:</b> KOProjector never overwrites or modifies your original project files or your media. It only ever reads
+        them, and writes a new <b>.pds</b> alongside. Keep the originals; check the conversion against them before you set
+        anything aside.
+    </div>
+    <hr>
+
+    <h2 id="Using">Using it</h2>
+
+    <p>
+        KOProjector is a <b>command-line tool</b>. The general shape is a source project, optionally a destination, and
+        options in any order:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool [options] source [destination]</b></div>
+
+    <p>
+        <b>Look at a production without converting anything.</b> Give it just a file name and it reports what the project
+        contains &mdash; its schema version, aspect ratio and frame rate (or an honest statement that the format never
+        recorded them), how many clips, transitions, sounds and titles it holds, and how long the finished film runs beside
+        whatever length the file itself claims:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm"</b></div>
+
+    <p>
+        <b>Report on it.</b> The timeline drawn as a chart, scaled to the width of your console &mdash; what follows what,
+        how long each clip runs, where the transitions fall and where music sits underneath &mdash; then the source
+        material, <b>what the film plays listed first</b> and the rest of the media pool after it, each grouped by the
+        folder the files were actually found in, busiest folder first:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" --report</b></div>
+
+    <p>
+        <b>Keep it.</b> Name a file after the option and it goes there instead, as a
+        <a href="#Reports">coloured web page</a> if the name ends <b>.htm</b>:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2005.dmsm" --report=Christmas2005.htm</b></div>
+
+    <p>
+        <b>Do a whole folder of projects at once</b> &mdash; a page each, and an index over them saying what every one of
+        them is missing, which is the quickest way to see which are ready to open and which are not:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool *.dmsm --report=Reports\*.htm</b></div>
+
+    <p>
+        <b>Leave some out.</b> A source pattern says which kinds to take, but it cannot say
+        <em>except</em>. That is what <b>--exclude</b> is for &mdash; a comma-separated list in which
+        <b>each entry is either an exact name or a wildcard</b>, and a list may mix them freely:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool *.* *.pds --exclude=Christmas2004.dmsm,*.pds,Draft*</b></div>
+
+    <p>
+        So <b>*.*</b> takes every project in the folder and <b>--exclude=*.pds</b> drops the ones
+        that are already conversions. A name given <em>without</em> an extension covers that
+        production in every form &mdash; its <b>.dmsm</b>, the <b>.dmsd</b> beside it and the
+        converted <b>.pds</b> together. A bare name matches in any folder; put a slash in an entry
+        and it is matched against the whole path instead.
+    </p>
+
+    <div class="note">
+        <b>An exclusion that matches nothing is reported</b> &mdash; <em>"Nothing matched --exclude
+        Chrismas2004 &mdash; check the spelling"</em> &mdash; and said even when the run is quiet.
+        That is the failure worth catching: a mistyped exclusion leaves the run looking exactly as it
+        would have looked had it worked, while converting the very file you meant to leave alone.
+        Entries are matched literally rather than compiled as regular expressions, so a stray bracket
+        in a name like <b>Fairies[G1].dmsm</b> cannot throw and stop a run of eighty projects.
+    </div>
+
+    <p>
+        <b>Convert.</b> Add a destination. If you leave the extension off, <b>.pds</b> is assumed:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" "Christmas2004"</b></div>
+
+    <img class="screenshot shot-left" src="KOProjector/KOProjectorTimeLineMarker.png"
+         style="max-width: 34%;"
+         alt="A converted project open in PowerDirector. A marker sits on the timeline ruler at the very start, and
+              hovering it shows a panel headed KOProjector Conversion Info, the timecode 00:00:00:00, and the text
+              'Converted from Christmas2004Spring2005.dmsd by KOProjector on 2026-08-22' followed by the full path of
+              the original project.">
+
+    <p>
+        <b>Every project written remembers where it came from</b>, as a <b>marker on the timeline</b> at 0:00 named
+        <em>"KOProjector Conversion Info"</em>. Hover it in PowerDirector and it tells you:
+        <em>"Converted from Christmas2004.dmsm by KOProjector on 2026-08-22"</em>, followed by the full original path.
+        Relinked projects get the same marker, worded for a relink and counting what was rewritten. Years from now that
+        is the difference between a file you recognise and one you do not.
+    </p>
+
+    <p>
+        A marker rather than the project's description field, because a marker can be <em>seen</em>. Hovering the small
+        tag on the ruler at 0:00 gives the panel shown here: the heading is the marker's name, and everything below it
+        is the comment. The description field carries the same sentence as well, and it is free text that nothing
+        reads, but it is empty in all 51 hand-made projects measured and where PowerDirector displays it is anybody's
+        guess. A note nobody can find is not much of a note.
+    </p>
+
+    <p>
+        The marker is stored the way PowerDirector stores its own: an entry in the timeline's ruler-marker list, at
+        time zero, with a name and a comment. That means it is <b>a normal marker in every respect</b> &mdash; you can
+        read it, drag it, edit its text or delete it, and nothing depends on it. Markers you put there yourself are
+        kept, and converting the same project again <b>replaces</b> our note rather than stacking another beside it.
+    </p>
+
+    <p>
+        <b>A slideshow is opened out</b> into the photographs it is made of. PowerDirector shows a slideshow as a single
+        clip and keeps its pictures on a timeline of their own; both are read, so the photographs appear on the chart
+        where they belong and are never mistaken for material nothing plays. The stretches where the style animates on
+        its own are kept too, at their true length and labelled &mdash; without them one real production read four
+        minutes shorter than it actually plays.
+    </p>
+
+    <p>
+        <b>Leave the media pool behind.</b> Every editor keeps a pool of imported material &mdash; PowerDirector calls
+        it "My Media" &mdash; and a project of twenty years' standing carries a surprising amount that was imported,
+        considered and never used. One measured project holds <b>296 items and plays two of them</b>:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" "Christmas2004.pds" --trim</b></div>
+
+    <p>
+        That costs nothing until the material lives in cloud storage, where PowerDirector fetches whatever its library
+        names &mdash; so opening a two-clip production can pull down hundreds of files it never shows. It works when
+        converting and when <a href="#Relinking">relinking a .pds</a>, which is where the pool actually lives: measured
+        across one collection, the VideoWave and Movie Maker projects had <em>no</em> unused media at all, while 41 of
+        53 PowerDirector projects carried 2,429 pool-only files between them.
+    </p>
+
+    <p>
+        <b>The timeline is untouched.</b> Only the library changes, and identifiers are not renumbered, so every clip
+        still points at exactly what it did before. That is checked rather than asserted: relinking one project both
+        ways and comparing them, the timeline comes out character-for-character identical while the library goes from
+        five entries to three.
+    </p>
+
+    <div class="note">
+        <b>A slideshow is safe.</b> PowerDirector's Slideshow Creator puts its photographs on a timeline of their own
+        and leaves a single clip on the main one, so counting only the main timeline would call every photograph in
+        every slideshow unused &mdash; and trimming would then destroy the slideshow. Every clip in the project is
+        counted instead, wherever it sits.
+        <br><br>
+        <b>A library entry of a kind KOProjector does not model stops the trim altogether</b>, and says why. Such an
+        entry may be what plays the material that merely <em>appears</em> unused, and a file removed on a guess is a
+        clip missing from somebody's family video. After any trim the result is read back and checked before it is
+        written: it must still be well-formed, and no surviving clip may refer to anything that was removed.
+    </div>
+
+    <p>
+        <b>Convert a whole folder at once.</b> Wildcards work in the source, the destination and the description, with
+        the <b>*</b> in a destination standing for each project's own name and kind. <b>--quiet</b> reduces each project
+        to a single line, which is what you want when converting dozens &mdash; a page of output per project buries the
+        one that went wrong:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool *.dmsm Converted\*.pds --quiet</b></div>
+
+    <p>
+        Naming <em>one</em> output file for several projects is refused rather than left to overwrite itself, with the
+        pattern to use instead. Windows hands a program its command line unexpanded, so the tool does the expanding
+        &mdash; only the folder you name, never the tree beneath it, and in name order so two runs can be compared line
+        by line. Anything a wildcard matches that is no reader's idea of a project is passed over quietly, so
+        <b>*.*</b> means "every project here" and nothing else.
+    </p>
+
+    <div class="note">
+        <b>Nothing is downloaded behind your back.</b> KOProjector works out a file's format by looking inside it &mdash;
+        and with OneDrive's Files On-Demand, looking inside a file that has not been downloaded <em>fetches the whole
+        thing</em>. So a file that is only in the cloud is <b>left alone rather than opened</b>, and counted on a line of
+        its own so you know it was there. Everything that needs no more than a name, a size or a date &mdash; the
+        same-size matching behind <b>--find</b>, the folder searches &mdash; reads the directory entry, which costs
+        nothing and downloads nothing.
+    </div>
+
+    <p>
+        A bare <b>*.pds</b> destination becomes <b>*_CONVERTED.pds</b>, and a later run passes over files already named
+        that way: converting a conversion only copies it, and <b>*.dmsm,*.pds *.pds</b> would otherwise fill the folder
+        with copies of copies that nothing tells apart. Write a pattern with anything of your own in it, such as
+        <b>*_Final.pds</b>, and it is used exactly as you wrote it.
+    </p>
+
+    <p>
+        <b>Keep the colours in a captured file.</b> Colour normally disappears the moment output is redirected, because
+        it is a property of the console rather than part of what the program writes. <b>--colour always</b> writes it
+        into the output itself:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool *.dmsm --report --colour always &gt; report.txt</b></div>
+
+    <p>
+        Naming the file after the option instead sidesteps redirection altogether, and is the only way to get the report
+        <em>without</em> the banner and the run summary wrapped around it.
+    </p>
+
+    <p>
+        <b>Be asked about anything still missing</b>, and have the answers used in the project that is written:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" "Christmas2004" --find</b></div>
+
+    <p>
+        <b>Use a different rules file for a particular job.</b> The one beside the program is only the default; naming
+        another overrides it, which is what you want when a batch of projects came off a different machine with its own
+        folder history:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" --rules "D:\OldLaptopRules.json"</b></div>
+
+    <p>
+        A <b>folder</b> can be named instead of a file, in which case a <b>MediaPathRules_&lt;machine&gt;_&lt;user&gt;.json</b>
+        inside it is preferred over a plain <b>MediaPathRules.json</b> &mdash; so one folder can hold the rules for several
+        machines and each finds its own.
+    </p>
+
+    <p>
+        There are a few more: <b>--json</b> writes a complete description of the project for inspection;
+        <b>--transitions</b> supplies your own effect mapping in place of the built-in one; and <b>--no-titles</b> converts
+        without titles, which is the quickest way to find out whether a title is behind a problem opening the result.
+        <b>--help</b> explains them all.
+    </p>
+
+    <p>
+        A command line it cannot make sense of is <b>refused rather than partly obeyed</b>. A mistyped option, a missing
+        value, an option given twice &mdash; each stops the run and says why, with a suggestion where there is an obvious
+        one:
+    </p>
+
+    <div class="cli-block">'--repot' is not an option. Did you mean '--report'?</div>
+
+    <p>
+        Paths in the output are shortened using <b>%ONEDRIVE%</b>, <b>%ProgramFiles%</b> and the like in place of real folder
+        names. That is partly for readability and partly for privacy: it keeps your account name out of a file you might
+        well end up sending to somebody when asking about an awkward project.
+    </p>
+    <hr>
+
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <h3>Five Source Formats</h3>
+            <p>VideoWave .dmsm and .dmss, Roxio disc projects .dmsd, Movie Maker 2 .MSWMM, Live Movie Maker .wlmp, and PowerDirector .pds.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Whole Discs, Played Through</h3>
+            <p>A disc project becomes one film with its titles end to end, as pressing "play all" would have given you.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Relink, Don't Rebuild</h3>
+            <p>An existing PowerDirector project gets new paths and nothing else &mdash; proved byte-for-byte, so no effect or grade is lost.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Detected by Content</h3>
+            <p>The format is worked out by looking inside the file, because extensions in a twenty-year-old collection lie.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Media Path Rules</h3>
+            <p>Describe how your folders moved once, keep the file beside the program, and it is found automatically every time.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Search by Name</h3>
+            <p>Files tidied into subfolders rather than moved wholesale are found by name in folders you nominate.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Ask Me Where It Went</h3>
+            <p>Name one folder and it answers for every missing file it can, listing each one it finds without asking again.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Rules It Writes For You</h3>
+            <p>What you find once is offered back to your rules file as the fewest rules that explain it, each checked against every other answer.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Whole Folders At Once</h3>
+            <p>Wildcards in the source, the destination and the description, so one command converts a shelf of projects.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Frame-Accurate Timing</h3>
+            <p>Every clip boundary lands on a whole frame at the project's own rate, whether that is 25, 29.97 or something else.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Photographs Not Stretched</h3>
+            <p>Portrait pictures are letterboxed, measured from the file itself, with camera rotation honoured.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Sound and Fades</h3>
+            <p>Clip soundtracks and separate music, with volume, fades and any envelope drawn by hand.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Transitions Mapped</h3>
+            <p>Matched to their nearest equivalent, with a cross-fade for anything unrecognised &mdash; and it says which.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Pan and Zoom</h3>
+            <p>Slow moves across photographs are rewritten as PowerDirector camera moves, ready to fine-tune.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Titles and Credits</h3>
+            <p>The words, line breaks, timing, placing and animation &mdash; so the text is there to adjust rather than retype.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Timeline Chart</h3>
+            <p>See the shape of a production before converting it &mdash; continued over further sets of rows, like a score, when one will not hold it.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Reports As Web Pages</h3>
+            <p>Name a report <b>.htm</b> and you get a coloured page rather than console text &mdash; ready to open, keep or send.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>A Shelf At A Glance</h3>
+            <p><b>--report</b> puts every project in one table with what it cannot find, worst first &mdash; so you can see which are ready to open.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Colour That Means Something</h3>
+            <p>Two greens: one for a file that was where it should be, a brighter one for a file only a rule found.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Told What You Don't Need</h3>
+            <p>What the film plays is listed first and apart; material sitting unused in "My Media" follows in grey, and is never asked about.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3>Honest Reporting</h3>
+            <p>Every run ends by naming what did not make the journey &mdash; or saying plainly that nothing did.</p>
+        </div>
+    </div>
+    <hr>
+
+    <h2 id="Installation">Availability</h2>
+
+    <div class="download-box">
+        <h3>KOProjector</h3>
+        <p>
+            KOProjector is <b>experimental and not yet released</b>. It converts real projects successfully &mdash;
+            productions from 2003, 2004, 2005 and 2018 have all been converted and opened in PowerDirector&nbsp;24 &mdash;
+            but it is a command-line tool aimed at a fairly specific problem, and it is still learning new things about
+            these formats as it meets more of them.
+        </p>
+        <p>
+            The collection it has been built against runs to a little over <b>seventy projects</b> in five formats,
+            twenty years of family films and community productions, and roughly two thousand pieces of source material
+            scattered across folders that have been renamed, reorganised and moved into the cloud several times over.
+            Nearly all of it is now found automatically.
+        </p>
+        <p>
+            If you have a shelf of old VideoWave or Movie Maker projects you would like to rescue, do
+            <a href="index.htm#contact_info">get in touch</a> &mdash; knowing which formats and which vintages people
+            actually have is exactly what decides what gets built next.
+        </p>
+        <p>Requires Windows 10 or later, and CyberLink PowerDirector to open what it produces.</p>
+    </div>
+
+    <p style="font-size:9pt; color:#666;">
+        KOProjector is free software.
+        <br><a href="index.htm">&#8592; Back to KLO Software</a>
+    </p>
+    <script src="KLODarkModeSwitch.js" defer></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Only run if opened locally
+            if (window.location.protocol === 'file:') {
+                const baseWebUrl = "https://karaottewell.github.io/KLO-Software/";
+
+                // Show the "this is a local copy, see the online version" notice - it stays
+                // hidden (via CSS) when the page is served normally, since it would be
+                // redundant/confusing on the live site itself.
+                document.querySelectorAll('.local-copy-notice').forEach(el => {
+                    el.style.display = 'block';
+                });
+
+                // Grab every single link on the page
+                document.querySelectorAll('a').forEach(link => {
+                    const href = link.getAttribute('href');
+
+                    // Rewrite only genuine relative links: skip anything with its own scheme (http://,
+                    // https://, ms-windows-store:// and so on) and in-page anchor links (#)
+                    if (href && !href.includes('://') && !href.startsWith('#')) {
+
+                        // Clean up any leading dot-slashes if you use them (e.g., "./index.htm" -> "index.htm")
+                        const cleanHref = href.replace(/^\.\//, '');
+
+                        // Rewrite the link to point to the live site
+                        link.href = baseWebUrl + cleanHref;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

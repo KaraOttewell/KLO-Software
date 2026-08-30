@@ -97,12 +97,18 @@
 
     <ul>
         <li>
-            <b>--prefix</b> renames your photos to <em>&lt;prefix&gt;_YYYYMMDD_HHMMSS&lt;suffix&gt;.&lt;ext&gt;</em>,
+            <b>--prefix</b> renames your photos to <em>&lt;prefix&gt;YYYYMMDD_HHMMSS&lt;suffix&gt;.&lt;ext&gt;</em>,
             keeping the extension.
         </li>
         <li>
-            The prefix defaults to <b>WP</b>, but you can change it. It may be nothing at all, so names just start with
-            the year: <em>20190704_112233.jpg</em>.
+            The prefix defaults to <b>WP_</b>, but you can change it. Nothing is put in between it and the date, so it
+            ends however you write it: <em>--prefix=IMG</em> gives <em>IMG20190704_112233.jpg</em> and
+            <em>--prefix=IMG_</em> gives <em>IMG_20190704_112233.jpg</em>. It may be nothing at all, so names just
+            start with the year: <em>20190704_112233.jpg</em>.
+        </li>
+        <li>
+            Or the date can go on the <b>end</b> of the name a picture already has, which is what a box of scans wants
+            &mdash; see <a href="#KeepTheName">Keeping the Name</a>.
         </li>
         <li>
             The pictures can optionally be moved into <b>YYYY\MM</b> folders, into a folder you name, or just left in
@@ -140,6 +146,93 @@
         the date inside each one &mdash; note the <b>.MOV</b> clip, whose date came from its QuickTime tags. The last
         line is the command that would put it all back again.
     </p>
+    <hr>
+
+    <h2 id="KeepTheName">Keeping the Name</h2>
+
+    <p>
+        Some pictures are worth more than their date. A box of scans called <em>UncleJoeCirca1945.jpg</em>,
+        <em>WeddingDay.jpg</em>, <em>TheOldHouse.jpg</em> should not all become <em>WP_20220126_112736.jpg</em> and lose
+        the only thing that says what they are.
+    </p>
+
+    <p>
+        A bare <b>--suffix</b>, or <b>--suffix=auto</b>, keeps the name and puts the date and time after it:
+    </p>
+
+    <div class="cli-block">snapdragger --suffix=auto *.jpg</div>
+
+    <div class="cli-block">UncleJoeCirca1945.jpg  &#8594;  UncleJoeCirca1945_20220126_112736.jpg</div>
+
+    <p>
+        The pictures still sort by date within each name, the date is still there in the name, and nobody has to guess
+        what the photograph is. It asks for a rename by itself, so there is no need to add <b>--prefix</b> as well
+        &mdash; and it <b>suppresses the prefix</b>, the default <em>WP_</em> included.
+    </p>
+
+    <h3>Text after the date</h3>
+
+    <p>Anything after a comma follows the timestamp:</p>
+
+    <div class="cli-block">snapdragger --suffix=auto,_iOS *.jpg</div>
+
+    <div class="cli-block">UncleJoeCirca1945.jpg  &#8594;  UncleJoeCirca1945_20220126_112736_iOS.jpg</div>
+
+    <h3>A prefix as well</h3>
+
+    <p>
+        Give <b>--prefix</b> too and it contributes only its letters, in front of the name being kept. Nothing is put in
+        between, so the separator is yours to write:
+    </p>
+
+    <div class="cli-block">--suffix=auto                       UncleJoeCirca1945_20220126_112736.jpg
+--prefix=IMG  --suffix=auto         IMGUncleJoeCirca1945_20220126_112736.jpg
+--prefix=IMG_ --suffix=auto         IMG_UncleJoeCirca1945_20220126_112736.jpg
+--prefix=IMG_ --suffix=auto,_iOS    IMG_UncleJoeCirca1945_20220126_112736_iOS.jpg</div>
+
+    <h3>Or no date at all</h3>
+
+    <p>
+        <b>--suffix=keep</b> is the same idea with the date left off entirely, for names already worth keeping where a
+        date would only get in the way:
+    </p>
+
+    <div class="cli-block">snapdragger --prefix=IMG_ --suffix=keep *.jpg</div>
+
+    <div class="cli-block">UncleJoeCirca1945.jpg  &#8594;  IMG_UncleJoeCirca1945.jpg</div>
+
+    <div class="cli-block">--prefix=IMG_  --suffix=keep            IMG_UncleJoeCirca1945.jpg
+--prefix=Scan- --suffix=keep            Scan-UncleJoeCirca1945.jpg
+--prefix=IMG_  --suffix=keep,_scanned   IMG_UncleJoeCirca1945_scanned.jpg
+--suffix=keep,_iOS                      UncleJoeCirca1945_iOS.jpg</div>
+
+    <p>
+        A date <b>already</b> in the name is part of the name, so <b>keep</b> leaves it there &mdash;
+        <em>UncleJoe_20220126_112736.jpg</em> becomes <em>IMG_UncleJoe_20220126_112736.jpg</em>. Only <b>auto</b>
+        replaces an old date, and only because it is about to add a new one.
+    </p>
+
+    <p>
+        With no date there is nothing making names unique, so two files that would land on the same name are told apart
+        by <em>_1</em>, <em>_2</em> and so on, exactly as they are anywhere else. The run writes its log either way, so
+        <b>--revert</b> puts it all back just as it would for any other rename.
+    </p>
+
+    <h3>Running it again</h3>
+
+    <p>
+        The date goes after a name that is already there, so a second run has to be careful not to add a second date.
+        It takes the old one off first &mdash; along with anything that went after it &mdash; and puts the new one in its
+        place. Run it twice over the same folder and the second run reports every file as <b>already correctly named</b>
+        and changes nothing. A prefix already on the front is not put there twice either.
+    </p>
+
+    <div class="note">
+        Worth knowing: a name that <b>ends</b> in something shaped like a date is treated as one, so
+        <em>Holiday_19450612_120000.jpg</em> is re-stamped with the date inside the file. A date with something else
+        after it is not, because no run would have written that &mdash; <em>Scan_20220126_112736_Uncle Joe.jpg</em>
+        keeps all of its name. Use <b>--dry-run</b> first on a folder of names you are unsure about.
+    </div>
     <hr>
 
     <h2 id="ContactSheet">The Contact Sheet</h2>
@@ -473,6 +566,129 @@ index.html</div>
     </p>
     <hr>
 
+    <h2 id="Duplicates">Copies You Already Have</h2>
+
+    <p>
+        You come across an older <em>Old Family Pictures</em> on a drive somewhere. You already have those photographs,
+        filed properly, and what you want is that older folder emptied of everything you have twice.
+    </p>
+
+    <div class="cli-block">snapdragger --dedupe-from="Old Family Pictures" *.jpg</div>
+
+    <p>
+        <b>--dedupe-from</b> names the folder that copies are deleted <b>from</b>. That folder and everything below it
+        is compared against the pictures you are working on, and <b>only copies in that folder are ever deleted</b> &mdash;
+        what you are working on is what is kept. So there is never a question of which copy survives: the one you named
+        the folder to get rid of is the one that goes.
+    </p>
+
+    <p>
+        Files are compared in full, not by a checksum, so &ldquo;identical&rdquo; means identical rather than very
+        probably identical.
+    </p>
+
+    <h3>You see the whole list before anything goes</h3>
+
+    <p>
+        Everything found is listed first &mdash; folder by folder, then set by set, saying of every copy whether it is
+        being kept or deleted &mdash; and only then are you asked what to do about it:
+    </p>
+
+    <div class="cli-block">Deleting duplicates from : C:\Photos\Old Family Pictures
+Keeping the copies in     : C:\Photos\2004
+1208 files there to compare with the 412 here.
+
+142 files could go, freeing 1.404 GB:
+    .                                           86 files    890.1 MB
+    Scans                                       41 files    410.2 MB
+    backup                                      15 files    120.4 MB
+
+    3 identical, 4.21 MB each:
+      keep    WP_20040112_143022.jpg
+      delete  DSC00123.JPG
+      delete  backup\DSC00123.JPG
+
+    ... and 122 more sets. Use --dry-run to read the lot.
+
+Delete them? [A]ll / [F]older by folder / [O]ne by one / [N]othing :</div>
+
+    <p>
+        <b>A</b> deletes the lot. <b>F</b> asks once for each folder, so you can nominate a whole folder at a time.
+        <b>O</b> asks about each file in turn, where <b>Y</b> and <b>N</b> answer that one, <b>A</b> takes all the rest,
+        <b>F</b> takes the rest in that folder, and <b>Q</b> stops asking and keeps everything left. <b>N</b> deletes
+        nothing at all.
+    </p>
+
+    <h3>What it will not do</h3>
+
+    <p>
+        A picture the run is working on is <b>never</b> offered, whatever you answer &mdash; even where the folder you
+        named turns out to be the parent of the folder you are working in. Those show up as <em>left</em>, which is a
+        file that is a duplicate, is inside the folder you named, and is still not going anywhere:
+    </p>
+
+    <div class="cli-block">    3 identical, 4.21 MB each:
+      keep    WP_20040112_143022.jpg
+      left    WP_20040112_143022_copy.jpg
+      delete  scans\DSC00123.JPG</div>
+
+    <p>
+        Nor will it touch a set of copies that exists <b>only</b> in the folder you named &mdash; two scans of the same
+        photograph over there, and nothing here. Deleting one of those would lose the picture rather than tidy it away,
+        so they are counted and reported instead:
+    </p>
+
+    <div class="cli-block">    23 sets of copies over there with nothing here to keep -
+    left alone, because this run has those pictures nowhere else.</div>
+
+    <p>
+        To thin those out as well, point a run at that folder on its own.
+    </p>
+
+    <h3>Tidying one folder, and choosing what to keep</h3>
+
+    <p>
+        Leave the folder off and <b>--dedupe-from</b> means the folder you are working in. Every copy there is then a
+        candidate, so which one survives is a real question &mdash; and you are asked it:
+    </p>
+
+    <div class="cli-block">3 identical files, 4.21 MB each:
+    [1] DSC00123.jpg
+    [2] scan_of_the_same.jpg
+    [3] WP_20040112_143022.jpg
+    Keep which? [1]-[3], [Enter] keeps 1 / [S]kip this set / [Q]uit :</div>
+
+    <p>
+        Anything that is not one of the numbers offered leaves the whole set alone. A mistyped answer must never be the
+        thing that deletes a picture.
+    </p>
+
+    <h3>What went</h3>
+
+    <p>
+        Deleted files go to the <b>Recycle Bin</b>, and a run that deleted anything writes a plain-text record beside
+        itself naming each file that went and the copy kept in its place:
+    </p>
+
+    <div class="cli-block">SnapDragger deleted duplicates 1
+# These went to the Recycle Bin. --revert cannot put them back;
+# restore them from there if you want them.
+
+DELETED C:\Photos\Old Family Pictures\DSC00123.JPG
+KEPT    C:\Photos\2004\01\WP_20040112_143022.jpg</div>
+
+    <p>
+        That is a record rather than an undo log. <b>--revert</b> puts back renames and moves; the Recycle Bin is what
+        puts back a deletion. And nothing is deleted at all on a <b>--dry-run</b>, which prints that same list and stops,
+        nor when the output is redirected, since then there is nobody to ask.
+    </p>
+
+    <div class="note">
+        <b>--dedupe</b> is still accepted as the old name for this option. The short form <b>-d</b> is the flag on its
+        own; to name a folder, use the spelled-out <b>--dedupe-from=folder</b>.
+    </div>
+    <hr>
+
     <h2 id="Safety">Nothing Happens That You Did Not Ask For</h2>
 
     <ul>
@@ -507,13 +723,19 @@ index.html</div>
         or renames anything writes a plain-text log beside the files and finishes by telling you how to use it:
     </p>
 
-    <div class="cli-block">To undo this run: snapdragger --revert snapdragger_log_20260728_133709.txt</div>
+    <div class="cli-block">To undo this run: snapdragger --revert snapdragger_log_20260728_133709_312.txt</div>
 
     <p>
         Undoing puts every file back under its old name, removes the thumbnails that run created, and takes away any
         folder it emptied. A file already sitting where one belongs is left alone rather than written over, and reported.
         If you use <b>--dry-run</b> first, that will <b>show everything that would be done but without changing anything</b>,
         so that is a safety mechanism too.
+    </p>
+
+    <p>
+        The log is named for the moment the run started, down to the millisecond, and a run <b>never writes over a log
+        that is already there</b> &mdash; where the name is somehow taken it steps on to the next one and tells you that
+        name instead. What would otherwise be lost is an earlier run's only way back.
     </p>
 
     <div class="note">
@@ -746,7 +968,8 @@ HTML table would be written to index.htm
     </p>
 
     <div class="cli-block">snapdragger [--list] [--info] [--timesource=source] [--prefix[=text]]
-            [--suffix=text] [--folder=name] [--dedupe] [--dry-run]
+            [--suffix[=auto|keep[,text]]] [--folder=name] [--dry-run]
+            [--dedupe-from[=folder]]
             [--first=n] [--small[=pixels]] [--html=file]
             [--url-prefix=text] [--thumbnails=when]
             [--label=date|name] [--scanfolders[=how]] [--revert=log]
@@ -785,21 +1008,31 @@ HTML table would be written to index.htm
 
     <h3>Renaming and filing</h3>
     <ul>
-        <li><b>--prefix[=text]</b>, <b>-r</b> &mdash; rename to <em>&lt;prefix&gt;_YYYYMMDD_HHMMSS</em>, keeping the
-            extension. Defaults to <b>WP</b>. The short form takes its prefix attached: <em>-rIMG</em>.</li>
-        <li><b>--suffix=text</b> &mdash; text to keep on the end of the name, after the timestamp, e.g.
-            <em>--suffix=_iOS</em> gives <em>WP_20190704_112233_iOS.jpg</em>.</li>
+        <li><b>--prefix[=text]</b>, <b>-r</b> &mdash; rename to <em>&lt;prefix&gt;YYYYMMDD_HHMMSS</em>, keeping the
+            extension. Nothing is put in between, so the prefix ends however you write it: <em>--prefix=IMG</em> gives
+            <em>IMG20190704_112233.jpg</em> and <em>--prefix=IMG_</em> gives <em>IMG_20190704_112233.jpg</em>. Defaults
+            to <b>WP_</b>. The short form takes its prefix attached: <em>-rIMG</em>.</li>
+        <li><b>--suffix[=auto[,text]]</b> &mdash; text to keep on the end of the name, after the timestamp, e.g.
+            <em>--suffix=_iOS</em> gives <em>WP_20190704_112233_iOS.jpg</em>. Setting one implies renaming,
+            exactly as <b>--prefix</b> does. A bare <b>--suffix</b>, or
+            <b>--suffix=auto</b>, instead keeps the name the file already has and puts the timestamp on the
+            <b>end</b> of it; <b>--suffix=keep</b> keeps the name and adds no timestamp at all. See
+            <a href="#KeepTheName">Keeping the Name</a>.</li>
         <li><b>--folder=name</b> &mdash; move renamed files into a subfolder, which implies renaming. Either a folder
             name, or the word <b>auto</b> to work it out from each file's date. Only the exact word <em>auto</em> means
             the date tree, so any other name is taken literally.</li>
         <li><b>--small[=pixels]</b> &mdash; add <em>_Small</em> after the timestamp for reduced-size copies. An image
             counts as reduced when its <b>shorter</b> side is under 1024 pixels; give another size as
             <em>--small=800</em>.</li>
-        <li><b>--dedupe</b>, <b>-d</b> &mdash; find files whose content is <b>byte-for-byte identical</b> and offer to
-            delete the copies, keeping whichever was found first. <b>Y</b> deletes it, <b>N</b> keeps it, <b>A</b>
-            deletes it and every later one without asking again. Deletions go to the <b>Recycle Bin</b>, and never
-            happen on a dry run, nor when the output is redirected, since then there is nobody to ask. Files are
-            compared in full, not by checksum, so &ldquo;identical&rdquo; means identical.</li>
+        <li><b>--dedupe-from[=folder]</b>, <b>-d</b> &mdash; find files whose content is
+            <b>byte-for-byte identical</b> and offer to delete the copies <b>in the folder named</b>, which is read
+            along with everything below it. Only copies in that folder are ever deleted &mdash; what you are working on
+            is what is kept. With no folder it means the folder you are working in, and you choose which copy of each
+            set to keep. Everything found is listed before anything goes. Deletions go to the <b>Recycle Bin</b> and are
+            recorded in a <em>snapdragger_deleted_</em> file; they never happen on a dry run, nor when the output is
+            redirected, since then there is nobody to ask. Files are compared in full, not by checksum, so
+            &ldquo;identical&rdquo; means identical. Once spelled <b>--dedupe</b>, which still works. See
+            <a href="#Duplicates">Copies You Already Have</a>.</li>
     </ul>
 
     <h3>The HTML contact sheet</h3>
@@ -846,19 +1079,25 @@ HTML table would be written to index.htm
     <div class="cli-block">snapdragger --list *.jpg</div>
 
     <p>Rename by the date inside each file, with an <em>IMG</em> prefix, and file everything into the YYYY\MM tree:</p>
-    <div class="cli-block">snapdragger --prefix=IMG --folder=auto *.jp*</div>
+    <div class="cli-block">snapdragger --prefix=IMG_ --folder=auto *.jp*</div>
 
     <p>See exactly what that would do, without touching anything:</p>
-    <div class="cli-block">snapdragger --prefix=IMG --folder=auto --dry-run *.jp*</div>
+    <div class="cli-block">snapdragger --prefix=IMG_ --folder=auto --dry-run *.jp*</div>
 
     <p>Try it on just the first ten files before committing to the lot:</p>
-    <div class="cli-block">snapdragger --prefix=IMG --first=10 *.jp*</div>
+    <div class="cli-block">snapdragger --prefix=IMG_ --first=10 *.jp*</div>
 
     <p>
         Rename a folder holding both originals and reduced copies, keeping the two apart rather than letting them
         collide:
     </p>
     <div class="cli-block">snapdragger -r --small *.jpg</div>
+
+    <p>Keep the name a scanned photograph already has and put the date on the end of it:</p>
+    <div class="cli-block">snapdragger --suffix=auto *.jpg</div>
+
+    <p>Put a prefix on a folder of scans and keep their names as they are, with no date added:</p>
+    <div class="cli-block">snapdragger --prefix=IMG_ --suffix=keep *.jpg</div>
 
     <p>Start the name with the year rather than a prefix, and keep the <em>_iOS</em> that the phone put on the end:</p>
     <div class="cli-block">snapdragger --prefix= --suffix=_iOS *.MOV</div>
@@ -881,6 +1120,9 @@ HTML table would be written to index.htm
     <p>Scan one folder rather than the current one, and open the page when it is built:</p>
     <div class="cli-block">snapdragger --scanfolders "Holiday Pictures" --html=holiday.htm --open</div>
 
+    <p>Throw away the copies in an older folder of the same pictures, keeping the ones here:</p>
+    <div class="cli-block">snapdragger --dedupe-from="Old Family Pictures" *.jpg</div>
+
     <p>Capture a run to a file and keep the colours in it:</p>
     <div class="cli-block">snapdragger --color=always --list *.jpg &gt; run.txt 2&gt;&amp;1</div>
     <hr>
@@ -894,7 +1136,8 @@ HTML table would be written to index.htm
 
         <div class="feature-item">
             <h3>Sortable Names</h3>
-            <p>Renames to <em>&lt;prefix&gt;_YYYYMMDD_HHMMSS</em>, so a folder listing is a timeline.</p>
+            <p>Renames to <em>&lt;prefix&gt;YYYYMMDD_HHMMSS</em>, so a folder listing is a timeline &mdash; or keeps
+               the name a scan already has and puts the date on the end.</p>
         </div>
 
         <div class="feature-item">
@@ -934,7 +1177,7 @@ HTML table would be written to index.htm
 
         <div class="feature-item">
             <h3>Find Duplicates</h3>
-            <p>Compares files in full, not by checksum, and offers to send the copies to the Recycle Bin.</p>
+            <p>Point it at an older folder of the same pictures and it deletes only the copies there, keeping yours.</p>
         </div>
 
         <div class="feature-item">
