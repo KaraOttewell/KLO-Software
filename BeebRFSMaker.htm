@@ -44,11 +44,51 @@
 <p>The <b>Compressed / Uncompressed</b> toggle chooses which RFS format to build. Compressed is the usual choice, since it
     fits far more into the same 16&nbsp;KB; uncompressed produces a plain RFS ROM with no decompressor stub.
 </p>
+
+<p>The same six files make the point. As they stand they amount to 14,163 bytes, and a standard ROM built from them fills
+14,709 of the 16&nbsp;KB &#8212; 89%, with barely room for anything else. Compressed, the same content comes to 10,856 bytes
+and the finished image occupies 12,819, or 78%, leaving space for another file or two. In both cases the ROM used is larger
+than the content total, because every file carries block headers and checksums, and a compressed ROM additionally carries
+the decompressor stub and its dictionary.</p>
+
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 02.png" alt="Six files packed as a standard uncompressed RFS ROM, filling 89% of the ROM">
+<p class="screenshot-caption">Six files as a standard RFS ROM &#8212; 14,709 bytes used, 89% of the 16&nbsp;KB</p>
+
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 10.png" alt="The same six files packed as a compressed RFS ROM, filling 78% of the ROM">
+<p class="screenshot-caption">The same six files compressed &#8212; 12,819 bytes used, 78%. The <b>L</b> in the file list marks a locked file, and <b>(*)</b> a file edited but not yet applied</p>
 <div style="clear:both;"></div>
 
 <p class="local-copy-notice">
     The most up-to-date version of this information will always be the <a href="BeebRFSMaker.htm">online version</a>.
 </p>
+<hr>
+
+<h2 id="rom_full">When the ROM is full</h2>
+
+<p>A 16&nbsp;KB ROM holds only so much, and it is easy to add one file too many. When that happens the app says so
+rather than leaving you to work it out: a <b>ROM Full</b> message gives the size of the ROM and how far over it the
+files went, and the same wording stays on the status line at the bottom of the window in orange until the next
+successful build.</p>
+
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 05.png" alt="BeebRFSMaker ROM Full message on a compressed ROM, with the overflow also shown in orange on the status line">
+<p class="screenshot-caption">Too much content for a 16&nbsp;KB compressed ROM &#8212; the shortfall is given in bytes, in decimal and hex</p>
+
+<p>A standard, uncompressed ROM words it slightly differently, as <i>at least</i> so many bytes. Packing a compressed
+ROM works out the whole layout before it discovers the overflow, so the figure is the exact total; packing an
+uncompressed one stops at the first block that will not fit, so what it can honestly report is a lower bound. Either
+way it tells you the order of the problem &#8212; whether you are a couple of hundred bytes over or several thousand.</p>
+
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 04.png" alt="BeebRFSMaker ROM Full message on a standard uncompressed ROM, reporting a lower bound">
+<p class="screenshot-caption">The same situation on a standard RFS ROM, where the shortfall is reported as a minimum</p>
+
+<p>Nothing is lost. The ROM image you had before the change is kept and is still what the ROM Image pane shows, and the
+<b>Save RFS ROM</b> button stays disabled so a ROM that does not match the file list can never be written out. Remove a
+file, shorten one, or switch from uncompressed to compressed, and the image is rebuilt around what is left.</p>
+
+<p>The status line is worth watching before you get that far. It reports the total content size and how much of the ROM
+the built image actually occupies, as a byte count and a percentage &#8212; the ROM header, and for compressed ROMs the
+decompressor stub and dictionary, take up room that the content total alone does not account for.</p>
+
 <hr>
 
 <h2 id="inf_sidecar_file">The <code>.inf</code> sidecar file format</h2>
@@ -60,7 +100,7 @@ and tools in the BBC Micro ecosystem.</p>
 
 <p>Each <code>.inf</code> file is a single line of plain text with the following fields, separated by whitespace:</p>
 
-<pre class="bbc">$.FILENAME  <span class="yl">LLLLLLLL</span>  <span class="wh">EEEEEEEE</span>  <span class="num">SSSSSS</span></pre>
+<pre class="bbc">$.FILENAME  <span class="yl">LLLLLLLL</span>  <span class="wh">EEEEEEEE</span>  <span class="num">SSSSSS</span>  <span class="dg">Locked</span></pre>
 
 <p>Where:</p>
 <ul style="line-height:1.8">
@@ -68,6 +108,7 @@ and tools in the BBC Micro ecosystem.</p>
     <li><span class="yl" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">LLLLLLLL</span> &mdash; the load address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
     <li><span class="wh" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">EEEEEEEE</span> &mdash; the execution address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
     <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSS</span> &mdash; the file length in bytes, in hex</li>
+    <li><span class="dg" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">Locked</span> &mdash; optional. Present only when the file is locked, and absent otherwise</li>
 </ul>
 
 <p>Both addresses are <b>written</b> as eight hex digits, so a full 32-bit address is stated outright. Sidecar files are
@@ -81,9 +122,21 @@ The <b>execution address</b> is the address to jump to if the file is run with <
 For non-executable files such as data files these two addresses are often identical. Addresses are stored as 32-bit values to
 accommodate the Master 128&#8217;s extended address space, though on a Model B only the lower 16&nbsp;bits are significant.</p>
 
-<p>Example &mdash; a BBC BASIC program called <code>GAME</code>:</p>
+<p>The <b>lock</b> field marks a file as protected. A locked file can be <code>*RUN</code> on a BBC Micro but not
+<code>*LOAD</code>ed &#8212; an attempt to load it answers with <code>Locked</code> &#8212; which was the usual way of
+discouraging casual copying in the cassette era. BeebRFSMaker reads the field when packing and sets the protection bit in
+the ROM image, so the BBC treats the file as locked, and a locked file is shown with an <b>L</b> after its size in the
+Beeb file list. Extracting puts the lock back into the <code>.inf</code> file it writes.</p>
 
-<pre class="bbc">$.GAME  <span class="yl">00001900</span>  <span class="wh">00008023</span>  <span class="num">003A4F</span></pre>
+<p>Two spellings are in circulation: the full word <code>Locked</code>, and the single letter <code>L</code> that some
+tools write. Both are accepted when reading. <code>Locked</code> is always what gets written, since it is the form every
+reader of the format understands. The field sits after the length, but the length itself is optional in the wider
+convention, so it is recognised wherever it appears rather than by counting along the line.</p>
+
+<p>Example &mdash; a BBC BASIC program called <code>GAME</code>, and a locked machine code file:</p>
+
+<pre class="bbc">$.GAME  <span class="yl">00001900</span>  <span class="wh">00008023</span>  <span class="num">003A4F</span>
+$.DEFENMC  <span class="yl">00001900</span>  <span class="wh">00000E00</span>  <span class="num">002300</span>  <span class="dg">Locked</span></pre>
 
 <img src="BeebRFSMaker/BeebRFSMaker Screenshot 07.png" alt="BeebRFSMaker file drop area and file details" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
 <img src="BeebRFSMaker/BeebRFSMaker Screenshot 08.png" alt="BeebRFSMaker ROM Image Detected dialog offering to extract files" style="float: right; margin-left: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 35%;">
