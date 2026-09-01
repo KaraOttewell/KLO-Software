@@ -31,6 +31,21 @@ Available on the **Microsoft Store**.
 
 ---
 
+## Getting the source
+
+This repository holds the site itself, which GitHub Pages serves from the pages in the repository
+root:
+
+```
+git clone https://github.com/KaraOttewell/KLO-Software.git
+```
+
+The tools themselves are distributed as finished builds — from the Microsoft Store, or as an MSI
+installer in the case of BeebRFSTool — and their source repositories are private, so there is
+nothing to clone for those. Follow the links above for each tool.
+
+---
+
 ## Contact
 
 My PGP public key is available on the [Hockeypuck OpenPGP keyserver](https://keyserver.ubuntu.com/) or [keys.openpgp.org](https://keys.openpgp.org/) under key ID `6D1A2D5536CD052E50B96A8F595E7CC0A343AEAA`. My email address can be obtained from there.

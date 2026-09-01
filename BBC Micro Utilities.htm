@@ -28,7 +28,7 @@ files along with "<b>PRINT#</b>"-type BBC data files, so I wrote them as console
 The utilities are:</p>
 
 <ul>
-    <li><b>BBCBasicToText</b> — display a tokenised, binary BBC Micro BASIC file as <b style="color:green">plaintext</b>, <b style="color:darkred">HTML</b>, or <b style="color:darkcyan">BBCode</b>.</li>
+    <li><b>BBCBasicToText</b> — display a tokenised, binary BBC Micro BASIC file as <b style="color:green">plaintext</b>, <b style="color:darkred">HTML</b>, or <b style="color:darkcyan">BBCode</b>, and with <code>--tokenize</code> turn a plain text listing back into a program a BBC Micro will run.</li>
     <li><b>BBCDataFileToText</b> — show BBC <code>PRINT#</code> type data files as plaintext, HTML, or BBCode.</li>
     <li><b>BBCReadDiskImage</b> — display <code>*CAT</code>-style output of <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> disk images, with the ability to export files individually, import files back in, delete files, and dump sectors.</li>
 </ul>
@@ -126,6 +126,57 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 <span class="yl">[Snip rest of "Welcome" BASIC program]</span>
 </pre>
 
+<h3>Going the other way: <code>--tokenize</code></h3>
+
+<p>The same tool converts back. <code>--tokenize</code> reads a plain text listing and writes a tokenised
+program that a BBC Micro will run, together with the matching <code>.INF</code> file, so a program can be
+listed out, edited in any text editor, and put back on a disk image:</p>
+
+<pre><code>BBCBasicToText MyProg.bas MyProg.bbc --tokenize
+BBCReadDiskImage --import=MyProg.bbc MyDisc.ssd</code></pre>
+
+<p>The program is written as a <code>.bbc</code> file so that it is obvious on the PC what it is, while the
+name recorded inside the <code>.INF</code> leaves that off &mdash; <code>--import</code> takes the name from
+the <code>.INF</code> in preference to the host file name, so it arrives on the BBC as simply
+<b>MyProg</b>.</p>
+
+<h3>A whole folder of listings onto one disk</h3>
+
+<p>Both tools take wildcards, so a directory of plain text listings becomes a disk image ready for an
+emulator or a real machine in two commands:</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext *.bas --tokenize</span>
+<span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcreaddiskimage BasicTest.ssd --import=*.bbc</span></pre>
+
+<p>The first writes a <code>.bbc</code> and a <code>.INF</code> beside each listing. The second creates the
+image &mdash; it does not have to exist already &mdash; and imports them all, each taking its BBC name from
+its <code>.INF</code>. Answering <b>A</b> at the first overwrite prompt settles the rest of the run.</p>
+
+<p>Lines keep the numbers they have; a listing with none is numbered in tens. A listing that wraps one BASIC
+line over several indented text lines, each part ending with the <code>:</code> that separates statements, is
+folded back into the single line it came from.</p>
+
+<p><code>--load=</code> and <code>--exec=</code> set the addresses written to the <code>.INF</code>, and
+<code>--append=</code> places binary data after the end of the program &mdash; optionally at a fixed address,
+as <code>--append=title@&amp;5C00</code>. That is how a game kept a title screen or its graphics in the same
+file as the BASIC that displayed them.</p>
+
+<h3>Making a program smaller: <code>--crunch</code></h3>
+
+<p>A Model B does not leave much room once the screen has taken its share, so <code>--crunch</code> makes a
+tokenised program smaller without altering what it does. On its own it removes only the spaces that make a
+listing easier to read, which is always safe; <code>--crunch=all</code> also drops <code>REM</code> lines and
+joins lines together, or name what you want with <code>--crunch=spaces,rems,lines</code>.</p>
+
+<pre><code>BBCBasicToText Yahtzee.bbc Yahtzee_small.bbc --crunch=all</code></pre>
+
+<p>It knows when it must not. A program carrying data after the end of the BASIC, or hiding machine code in a
+<code>REM</code>, is refused outright and left alone: both are reached by absolute address, so shortening any
+line anywhere would move them. Joining lines is declined wherever it would change the meaning &mdash; after an
+<code>IF</code>, whose <code>THEN</code> governs the rest of the line; onto a line whose <code>*</code> command
+swallows what follows; before a <code>DATA</code> line, which <code>READ</code> only finds at the start of a
+line; and to any line that a <code>GOTO</code> or <code>GOSUB</code> refers to by number.</p>
+
 <hr>
 
 <h2>BBCDataFileToText</h2>
@@ -222,6 +273,18 @@ Each side is compacted as it is written, so space left by deleted files is recla
 
 <pre class="console"><span class="prompt">C:\...\MakeRFS&gt;</span> <span class="cmd">bbcreaddiskimage NEWDISK.ssd --import=0_$.MYPROG,C:\Beeb\Screens\*</span></pre>
 
+<p>The import specification takes wildcards too, so a folder of programs goes onto a new disk in one
+command. Here eleven <code>.bbc</code> files &mdash; the output of <code>bbcbasictotext *.bas --tokenize</code>
+&mdash; are imported into an image that did not exist until this command created it, each taking its BBC name
+from its <code>.INF</code>:</p>
+
+<img src="BBC Micro Utilities/Screenshot_BBCReadDiskImageImportExample.png" class="screenshot" alt="BBCReadDiskImage creating BasicTest2.ssd and importing eleven .bbc programs into it, showing the resulting catalogue and a line for each file imported">
+
+<p>Note that the names are shortened to the seven characters DFS allows, so
+<code>CopyToSidewaysRAM.bbc</code> becomes <code>CopyToS</code> and <code>PrimeNumberSieve.bbc</code> becomes
+<code>PrimeNu</code>. Give a file the BBC name you want in its <code>.INF</code> if the shortened form would
+be ambiguous.</p>
+
 <p>Each file's BBC name, directory and side are worked out from, in increasing order of precedence: the default of
 <code>$</code> on side 0; the host file name in the <code>0_$.NAME</code> form that <code>--export</code> writes
 (drive 0 is side 0, drive 2 is side 1); a matching <code>.INF</code> file, which also supplies the load and execution
@@ -229,6 +292,16 @@ addresses and the lock flag; and finally <code>--directory</code> and <code>--si
 seven characters DFS allows. A name shaped like the convention but starting with something that is not a drive &mdash;
 <code>1_T.RFSROM</code> when <code>2_T.RFSROM</code> was meant &mdash; is queried rather than quietly imported under an
 odd name.</p>
+
+<p>A <code>!BOOT</code> file whose <code>.INF</code> records a boot option, as <code>OPT4=3</code> or
+<code>BOOT=3</code>, sets that option on the disk just as <code>*OPT 4,3</code> would. That is what lets a disk
+which starts itself on <b>SHIFT-BREAK</b> be built entirely from ordinary files on the PC. A side with no
+<code>!BOOT</code> keeps whatever option it already had.</p>
+
+<p>The <code>.INF</code> files themselves are read and written to the full published format: the
+<code>CRC=</code>, <code>NEXT</code>, <code>OPT4=</code>, <code>BOOT=</code>, <code>ATTR=</code>,
+<code>TYPE=</code> and <code>TAPE</code> fields are all understood, and any field the tools do not recognise is
+kept and written back out rather than quietly dropped, so nothing another tool recorded is lost.</p>
 
 <h3>Deleting files from an image</h3>
 
@@ -342,6 +415,24 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
     <div class="feature-item">
         <h3>BBCBasicToText</h3>
         <p>Display a tokenised, binary BBC Micro BASIC file as text, HTML, or bbcode.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Writing BASIC back</h3>
+        <p><code>--tokenize</code> turns a plain text listing into a tokenised program with its
+        <code>.INF</code>, ready to import into a disk image &mdash; so a program can be listed out, edited
+        on the PC, and put back. <code>--append=</code> places graphics or a title screen after the program,
+        at a fixed address if one is wanted.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Crunching</h3>
+        <p><code>--crunch</code> makes a program smaller without altering what it does, and refuses outright
+        where it cannot be safe &mdash; a program carrying data past its end, or machine code hidden in a
+        <code>REM</code>, is left untouched.</p>
+    </div>
+    <div class="feature-item">
+        <h3>Bootable disks</h3>
+        <p>A <code>!BOOT</code> file whose <code>.INF</code> records <code>OPT4=</code> sets the disk's boot
+        option, so a disk that starts itself on SHIFT-BREAK can be built from loose files on the PC.</p>
     </div>
     <div class="feature-item">
         <h3>BBCDataFileToText</h3>
