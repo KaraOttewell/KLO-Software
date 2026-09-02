@@ -410,6 +410,104 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
 </div>
 
 <hr>
+
+<h2 id="syntax-colouring">Optional - BBC BASIC syntax colouring in Visual Studio and VS Code</h2>
+
+<p>A listing taken off a disk image is only text, so any editor will open it, but none of them knows what BBC
+BASIC is. <b>BBCBASICforVisualStudio.zip</b> is a TextMate grammar that teaches Visual Studio, and it colours a listing the
+same way <b>BBCBasicToText</b> prints one: line numbers &mdash; and the line a <code>GOTO</code> refers to
+&mdash; in green, keywords in cyan, strings in magenta, the text of a <code>REM</code> in yellow and of a
+<code>DATA</code> statement in blue. Everything else is left alone, as the tool leaves it.</p>
+
+<img src="BBC Micro Utilities/Screenshot_BBCBasicVisualStudioThemeExample.png" class="screenshot" alt="A BBC BASIC listing open in Visual Studio, with line numbers in green, keywords in cyan, strings in magenta and the text after REM in yellow">
+
+<p><a href="BBC Micro Utilities/BBCBASICforVisualStudio.zip">Download BBCBASICforVisualStudio.zip</a> (5 KB). Visual Studio looks for a
+grammar like this in a <code>.vs</code> folder in your user profile. If you do not already have one, create it
+from a Command Prompt:</p>
+
+<pre class="console"><span class="prompt">C:\&gt;</span> <span class="cmd">cd %USERPROFILE%</span>
+<span class="prompt">C:\Users\You&gt;</span> <span class="cmd">mkdir .vs</span></pre>
+
+<p>Then unpack <code>BBCBASICforVisualStudio.zip</code> into that <code>.vs</code> folder, so that you end up with:</p>
+
+<pre class="console">%USERPROFILE%\
+    .vs\
+        Extensions\
+            BBCBASIC\
+                Syntaxes\
+                    BBCBASIC.json
+                    BBCBASIC.tmTheme
+                    BBCBASIC_for_dark_theme.tmTheme
+                    BBCBASIC_for_light_theme.tmTheme</pre>
+
+<h3>Choosing the colours for your theme</h3>
+
+<p>Only <code>BBCBASIC.tmTheme</code> is ever read &mdash; Visual Studio finds a theme by the name of the
+grammar sitting beside it. The other two are copies to pick from. As it comes it holds the colours for a
+<b>dark</b> theme, which is what the screenshot above shows. If you use a <b>light</b> Visual Studio theme,
+put the other one in its place:</p>
+
+<pre class="console"><span class="prompt">C:\&gt;</span> <span class="cmd">cd %USERPROFILE%\.vs\Extensions\BBCBASIC\Syntaxes</span>
+<span class="prompt">...\Syntaxes&gt;</span> <span class="cmd">copy /y BBCBASIC_for_light_theme.tmTheme BBCBASIC.tmTheme</span></pre>
+
+<p>The light version keeps the same colours, taken from the darker end of the same sixteen the tools draw
+from, so that they can be read against a white page. Either way, <b>restart Visual Studio</b> afterwards: it
+reads that folder once, at startup, so nothing changes until you do.</p>
+
+<h3>What to call your listings</h3>
+
+<p>Use <b><code>.bbcbas</code></b>. That is the extension to prefer, and <code>.bbcbasic</code> and
+<code>.beeb</code> work as well. <b>Do not use <code>.bas</code></b>: Visual Studio gives that extension to
+Visual Basic, along with <code>.cls</code>, <code>.frm</code> and the rest of the VB6 family, and a language
+service always takes precedence over a grammar like this one. A listing named <code>.bas</code> will simply
+not be coloured.</p>
+
+<p>To produce one, give <b>BBCBasicToText</b> the name you want:</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext CONTOUR.bbc CONTOUR.bbcbas</span></pre>
+
+<p>Edit it in Visual Studio, then write it back with <code>--tokenize</code>, which produces
+<code>CONTOUR.bbc</code> and its <code>.INF</code> ready to import into a disk image:</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext CONTOUR.bbcbas --tokenize</span></pre>
+
+<p>Add <code>--noindent</code> to the first command if you want to go out and back without the program
+changing at all. The listing is auto-indented by default, which makes it easier to read but adds real spaces
+to the program when it is tokenised again; without it, the file that comes back is identical to the one you
+started with, byte for byte.</p>
+
+<h3>Visual Studio Code</h3>
+
+<p>The same colouring works in <b>Visual Studio Code</b>, from the same grammar &mdash; a TextMate grammar is
+a TextMate grammar. What differs is how each editor is told about it. Visual Studio finds one by where the
+file sits; Visual Studio Code has no such convention, so the grammar has to introduce itself in a
+<code>package.json</code>, which is what makes it an extension.</p>
+
+<p><a href="BBC Micro Utilities/BBCBASICforVSCode.zip">Download BBCBASICforVSCode.zip</a> (4 KB) and unpack it
+into your extensions folder, so that you end up with:</p>
+
+<pre class="console">%USERPROFILE%\
+    .vscode\
+        extensions\
+            kocode.bbcbasic-1.0.0\
+                package.json
+                language-configuration.json
+                syntaxes\
+                    BBCBASIC.tmLanguage.json</pre>
+
+<p>An extension may not set the colour of anything &mdash; only a theme may &mdash; so the colours go into
+your own settings instead. The <code>AddToSettings.jsonc</code> file in the .zip holds the block to paste:
+open <b>File</b>, <b>Preferences</b>, <b>Settings</b>, then <b>Open Settings (JSON)</b>, and paste it in. Every
+scope it names ends in <code>.bbcbasic</code>, so nothing else you edit is affected. Restart Visual Studio
+Code, or run <b>Developer: Reload Window</b>, and a <code>.bbcbas</code> file will be coloured.</p>
+
+<p>Two things are easier here than in Visual Studio. <code>.bas</code> works, Visual Studio Code having no
+Visual Basic language service to claim it. And because the colours live in a setting rather than in a file
+beside the grammar, both sets can be kept: give the block a
+<code>"[*Light*]"</code> or <code>"[*Dark*]"</code> heading and Visual Studio Code will follow whichever theme
+you are in, which is something Visual Studio cannot be asked to do.</p>
+
+<hr>
 <h2>Features</h2>
 <div class="feature-grid">
     <div class="feature-item">
@@ -478,6 +576,19 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
             </ul>
         </p>
         <p>Requires Windows 10 (build 1809) or later, or Windows 11.</p>
+    </div>
+
+    <div class="download-box">
+        <h3>BBC BASIC syntax colouring</h3>
+        <p>
+            Colours a BBC BASIC listing in your editor the way <b>BBCBasicToText</b> prints one. Neither is
+            needed to use the tools themselves &mdash; see
+            <a href="#syntax-colouring">the section above</a> for what to do with them.
+            <ul>
+                <li><a href="BBC Micro Utilities/BBCBASICforVisualStudio.zip">BBCBASICforVisualStudio.zip</a> &mdash; for Visual Studio</li>
+                <li><a href="BBC Micro Utilities/BBCBASICforVSCode.zip">BBCBASICforVSCode.zip</a> &mdash; for Visual Studio Code</li>
+            </ul>
+        </p>
     </div>
 
 <p>You can find my contact details via my PGP key on the <a href="index.htm">KLO Software page</a>.</p>
