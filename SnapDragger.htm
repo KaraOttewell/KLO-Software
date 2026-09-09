@@ -11,7 +11,7 @@
     <div id="theme-toggle-icon" title="Change theme">🖥️</div>
     <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-    <h1>SnapDragger</h1>
+    <h1 id="SnapDragger">SnapDragger</h1>
     <p class="subtitle">
         Tidy up a folder of photographs and video clips from the command line. SnapDragger reads the date each picture
         was <b>actually taken</b> from inside the file, renames everything to sortable timestamped names, files them into
@@ -34,7 +34,7 @@
     </p>
     <hr>
 
-    <h2>Overview</h2>
+    <h2 id="Overview">Overview</h2>
 
     <p>
         SnapDragger turns a folder full of photo files with names like <em>DSC00123.JPG</em> or <em>IMG_4471.HEIC</em>
@@ -170,7 +170,7 @@
         &mdash; and it <b>suppresses the prefix</b>, the default <em>WP_</em> included.
     </p>
 
-    <h3>Text after the date</h3>
+    <h3 id="TextAfterTheDate">Text after the date</h3>
 
     <p>Anything after a comma follows the timestamp:</p>
 
@@ -178,7 +178,7 @@
 
     <div class="cli-block">UncleJoeCirca1945.jpg  &#8594;  UncleJoeCirca1945_20220126_112736_iOS.jpg</div>
 
-    <h3>A prefix as well</h3>
+    <h3 id="PrefixAsWell">A prefix as well</h3>
 
     <p>
         Give <b>--prefix</b> too and it contributes only its letters, in front of the name being kept. Nothing is put in
@@ -190,7 +190,7 @@
 --prefix=IMG_ --suffix=auto         IMG_UncleJoeCirca1945_20220126_112736.jpg
 --prefix=IMG_ --suffix=auto,_iOS    IMG_UncleJoeCirca1945_20220126_112736_iOS.jpg</div>
 
-    <h3>Or no date at all</h3>
+    <h3 id="NoDateAtAll">Or no date at all</h3>
 
     <p>
         <b>--suffix=keep</b> is the same idea with the date left off entirely, for names already worth keeping where a
@@ -218,7 +218,7 @@
         <b>--revert</b> puts it all back just as it would for any other rename.
     </p>
 
-    <h3>Running it again</h3>
+    <h3 id="RunningItAgain">Running it again</h3>
 
     <p>
         The date goes after a name that is already there, so a second run has to be careful not to add a second date.
@@ -363,7 +363,7 @@
         <b>51 of 145</b>.
     </p>
 
-    <h4>Formats a browser cannot show</h4>
+    <h4 id="UnviewableFormats">Formats a browser cannot show</h4>
 
     <p>
         Other than Safari, most browsers cannot display HEIC, although the thumbnail works because
@@ -587,7 +587,7 @@ index.html</div>
         probably identical.
     </p>
 
-    <h3>You see the whole list before anything goes</h3>
+    <h3 id="DuplicateListFirst">You see the whole list before anything goes</h3>
 
     <p>
         Everything found is listed first &mdash; folder by folder, then set by set, saying of every copy whether it is
@@ -619,7 +619,7 @@ Delete them? [A]ll / [F]older by folder / [O]ne by one / [N]othing :</div>
         nothing at all.
     </p>
 
-    <h3>What it will not do</h3>
+    <h3 id="DuplicateLimits">What it will not do</h3>
 
     <p>
         A picture the run is working on is <b>never</b> offered, whatever you answer &mdash; even where the folder you
@@ -645,7 +645,7 @@ Delete them? [A]ll / [F]older by folder / [O]ne by one / [N]othing :</div>
         To thin those out as well, point a run at that folder on its own.
     </p>
 
-    <h3>Tidying one folder, and choosing what to keep</h3>
+    <h3 id="TidyingOneFolder">Tidying one folder, and choosing what to keep</h3>
 
     <p>
         Leave the folder off and <b>--dedupe-from</b> means the folder you are working in. Every copy there is then a
@@ -663,7 +663,7 @@ Delete them? [A]ll / [F]older by folder / [O]ne by one / [N]othing :</div>
         thing that deletes a picture.
     </p>
 
-    <h3>What went</h3>
+    <h3 id="WhatWent">What went</h3>
 
     <p>
         Deleted files go to the <b>Recycle Bin</b>, and a run that deleted anything writes a plain-text record beside
@@ -975,7 +975,7 @@ HTML table would be written to index.htm
             [--label=date|name] [--scanfolders[=how]] [--revert=log]
             [--color=when] [--help] [wildcard_in]</div>
 
-    <h3>Choosing files and reporting</h3>
+    <h3 id="OptionsChoosingFiles">Choosing files and reporting</h3>
     <ul>
         <li><b>wildcard_in</b> &mdash; input files, e.g. <em>DSC*.JPG</em>. Pictures <em>.jpg .jpeg .heic .avif .png</em>
             and movies <em>.mpg .mov .mp4 .m4v .wmv .asf .avi</em> are dealt with; anything else is passed over.</li>
@@ -991,7 +991,7 @@ HTML table would be written to index.htm
         <li><b>--help</b>, <b>-h</b>, <b>-?</b> &mdash; show the built-in help.</li>
     </ul>
 
-    <h3>Where the date comes from</h3>
+    <h3 id="OptionsDateSource">Where the date comes from</h3>
     <ul>
         <li>
             <b>--timesource=</b>, <b>-t</b> &mdash; one of <b>auto</b> (the date inside the file, falling back to a file
@@ -1006,7 +1006,7 @@ HTML table would be written to index.htm
         &mdash; so <b>created</b> may not survive a second run. <b>auto</b> falls back to <b>modified</b>.
     </div>
 
-    <h3>Renaming and filing</h3>
+    <h3 id="OptionsRenaming">Renaming and filing</h3>
     <ul>
         <li><b>--prefix[=text]</b>, <b>-r</b> &mdash; rename to <em>&lt;prefix&gt;YYYYMMDD_HHMMSS</em>, keeping the
             extension. Nothing is put in between, so the prefix ends however you write it: <em>--prefix=IMG</em> gives
@@ -1035,7 +1035,7 @@ HTML table would be written to index.htm
             <a href="#Duplicates">Copies You Already Have</a>.</li>
     </ul>
 
-    <h3>The HTML contact sheet</h3>
+    <h3 id="OptionsContactSheet">The HTML contact sheet</h3>
     <ul>
         <li><b>--html=file</b>, <b>-o</b> &mdash; write the contact sheet to this file. Without it no HTML is kept. A
             <b>*</b> in the name asks for one page per subfolder rather than one page for the lot, and an index to open
@@ -1053,7 +1053,7 @@ HTML table would be written to index.htm
             <a href="#NamingAFolder">Naming a Folder</a>.</li>
     </ul>
 
-    <h3>Colour</h3>
+    <h3 id="OptionsColour">Colour</h3>
     <ul>
         <li><b>--color=auto|always|never</b> &mdash; <b>auto</b> (the default) colours a console and writes plain text
             when the output is redirected; <b>always</b> writes the colour into the output as ANSI escape sequences, so
@@ -1061,7 +1061,7 @@ HTML table would be written to index.htm
             <em>auto</em> and <em>always</em> share a letter, so shorten them to <em>au</em> and <em>al</em>.</li>
     </ul>
 
-    <h3>Putting a run back</h3>
+    <h3 id="OptionsUndo">Putting a run back</h3>
     <ul>
         <li><b>--revert=log</b> &mdash; undo an earlier run using the log it wrote. Nothing else on the command line is
             used, except <b>--dry-run</b>; anything else you give is listed and you are asked whether to carry on.</li>
@@ -1127,106 +1127,106 @@ HTML table would be written to index.htm
     <div class="cli-block">snapdragger --color=always --list *.jpg &gt; run.txt 2&gt;&amp;1</div>
     <hr>
 
-    <h2>Features</h2>
+    <h2 id="Features">Features</h2>
     <div class="feature-grid">
         <div class="feature-item">
-            <h3>The Real Capture Date</h3>
+            <h3 id="FeatureCaptureDate">The Real Capture Date</h3>
             <p>Read from inside JPEG, HEIC, AVIF, MOV, MP4, M4V, WMV and AVI files, not from the timestamp Windows shows.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Sortable Names</h3>
+            <h3 id="FeatureSortableNames">Sortable Names</h3>
             <p>Renames to <em>&lt;prefix&gt;YYYYMMDD_HHMMSS</em>, so a folder listing is a timeline &mdash; or keeps
                the name a scan already has and puts the date on the end.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Year and Month Folders</h3>
+            <h3 id="FeatureYearMonthFolders">Year and Month Folders</h3>
             <p>Files everything into a YYYY\MM tree, optionally underneath a folder of your own choosing.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Monthly Contact Sheet</h3>
+            <h3 id="FeatureMonthlyContactSheet">Monthly Contact Sheet</h3>
             <p>An HTML page with one table per month, in date order, each thumbnail linking to the picture itself.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Incremental Rebuild</h3>
+            <h3 id="FeatureIncrementalRebuild">Incremental Rebuild</h3>
             <p>Add more photographs later and only the affected months are rebuilt; the rest of the page is untouched.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Orientation Honoured</h3>
+            <h3 id="FeatureOrientation">Orientation Honoured</h3>
             <p>Pictures taken sideways are shown the right way up, and each thumbnail is sized to its own picture's shape.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Holiday Timezones</h3>
+            <h3 id="FeatureHolidayTimezones">Holiday Timezones</h3>
             <p>Works out a video's offset from UTC per recording, so a trip abroad no longer comes out hours wrong.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Preview Anything</h3>
+            <h3 id="FeaturePreviewAnything">Preview Anything</h3>
             <p><em>--dry-run</em> shows exactly what would happen, clash suffixes and all, without touching a thing.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Undo a Run</h3>
+            <h3 id="FeatureUndo">Undo a Run</h3>
             <p>Every run that moves anything writes a log, and <em>--revert</em> puts every file back where it came from.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Find Duplicates</h3>
+            <h3 id="FeatureFindDuplicates">Find Duplicates</h3>
             <p>Point it at an older folder of the same pictures and it deletes only the copies there, keeping yours.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Read-Only Mode</h3>
+            <h3 id="FeatureReadOnlyMode">Read-Only Mode</h3>
             <p><em>--list</em> reports on a folder and changes nothing &mdash; and says so if an option would.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Readable Output</h3>
+            <h3 id="FeatureReadableOutput">Readable Output</h3>
             <p>Colour-coded lines telling you where each date came from and what took the picture, in lined-up columns.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Look Inside a File</h3>
+            <h3 id="FeatureLookInside">Look Inside a File</h3>
             <p><em>--info</em> shows every date, setting and tag a photograph carries, and where it was taken.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Colour You Can Keep</h3>
+            <h3 id="FeatureKeepColour">Colour You Can Keep</h3>
             <p><em>--color=always</em> puts the colour into the output itself, so a run captured to a file stays coloured.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Grouped By Folder</h3>
+            <h3 id="FeatureGroupedByFolder">Grouped By Folder</h3>
             <p><em>--scanfolders</em> gives every folder its own table, named for it &mdash; or a table per month, as you prefer.</p>
         </div>
 
         <div class="feature-item">
-            <h3>A Page Per Folder</h3>
+            <h3 id="FeaturePagePerFolder">A Page Per Folder</h3>
             <p><em>--html=*.html</em> splits a big library into one page per subfolder, with an index showing each one's first picture.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Slideshow</h3>
+            <h3 id="FeatureSlideshow">Slideshow</h3>
             <p>Press S in the viewer and it runs itself, four seconds a picture, letting each movie play out in full.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Flick Through Them</h3>
+            <h3 id="FeatureFlickThrough">Flick Through Them</h3>
             <p>Click a thumbnail and page along the month with the arrow keys, without ever leaving the contact sheet.</p>
         </div>
 
         <div class="feature-item">
-            <h3>A Page That Travels</h3>
+            <h3 id="FeaturePortablePage">A Page That Travels</h3>
             <p>The contact sheet carries its own styling and a light and dark switch, so it works wherever you put it.</p>
         </div>
 
         <div class="feature-item">
-            <h3>Names In Any Language</h3>
+            <h3 id="FeatureUnicodeNames">Names In Any Language</h3>
             <p>UTF-8 throughout, so accents and non-Latin scripts in file names are handled rather than mangled.</p>
         </div>
     </div>
@@ -1235,7 +1235,7 @@ HTML table would be written to index.htm
     <h2 id="Download">Download and Install</h2>
 
     <div class="download-box">
-        <h3>SnapDragger</h3>
+        <h3 id="DownloadSnapDragger">SnapDragger</h3>
         <p>
             The app can be installed from:
             <ul>
@@ -1254,7 +1254,7 @@ HTML table would be written to index.htm
             Command Prompt, PowerShell or Windows Terminal.</p>
     </div>
 
-    <h3>Optional: thumbnail tools</h3>
+    <h3 id="DownloadThumbnailTools">Optional: thumbnail tools</h3>
 
     <p>
         SnapDragger does everything except making thumbnails without any help. For thumbnails it uses two free tools,

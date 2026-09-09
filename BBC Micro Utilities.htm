@@ -11,7 +11,7 @@
 <div id="theme-toggle-icon" title="Change theme">🖥️</div>
 <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-<h1>BeebFileUtilities</h1>
+<h1 id="beebfileutilities">BeebFileUtilities</h1>
 <p class="subtitle">Command-line tools for viewing BBC Micro files and disk images</p>
 
 <span class="badge">Windows</span>
@@ -37,7 +37,7 @@ The utilities are:</p>
 </p>
 <hr>
 
-<h2>BBCBasicToText</h2>
+<h2 id="bbcbasictotext">BBCBasicToText</h2>
 
 <p>This utility displays a tokenized, binary BBC Micro BASIC file as text, HTML, or BBCode for bulletin board posts.
 If there is "hidden data" after the BASIC program, that will be displayed in hex, as will control characters.</p>
@@ -126,7 +126,7 @@ Output: C:\...\WelcomeDiskFiles\0_W.WELCOME.bbcode</span></pre>
 <span class="yl">[Snip rest of "Welcome" BASIC program]</span>
 </pre>
 
-<h3>Going the other way: <code>--tokenize</code></h3>
+<h3 id="tokenize">Going the other way: <code>--tokenize</code></h3>
 
 <p>The same tool converts back. <code>--tokenize</code> reads a plain text listing and writes a tokenised
 program that a BBC Micro will run, together with the matching <code>.INF</code> file, so a program can be
@@ -140,7 +140,62 @@ name recorded inside the <code>.INF</code> leaves that off &mdash; <code>--impor
 the <code>.INF</code> in preference to the host file name, so it arrives on the BBC as simply
 <b>MyProg</b>.</p>
 
-<h3>A whole folder of listings onto one disk</h3>
+<h3 id="round_trip">Getting exactly the same program back</h3>
+
+<p>A listing and the program it came from are meant to be interchangeable, and they are &mdash; with one thing to
+know. The listing is indented by two characters per level of <code>FOR</code>, <code>REPEAT</code>,
+<code>WHILE</code> or <code>CASE</code>, which is what makes it readable, but those spaces are then part of the
+text. Tokenise that and the program carries them, list it again and it is indented on top of its own indentation,
+a little further out each time round. <code>--noindent</code> is the answer: leave the indenting off and the text
+is what the program actually holds, so it goes back byte for byte identical.</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext MyProg.bbc MyProg.txt --noindent</span>
+<span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext MyProg.txt MyProg.bbc --tokenize</span></pre>
+
+<p>The other half of that is what does <b>not</b> go into the file. The running commentary &mdash; which file is
+being processed, how it went, where the output landed, the count at the end &mdash; goes to the console only, so
+what you are left with is the listing and nothing but the listing. Redirect the output somewhere and you still see
+the progress on screen, because it was never part of the file to begin with.</p>
+
+<p>That is peculiar to <b>BBCBasicToText</b>, and only because a listing has to be readable back in.
+<b>BBCDataFileToText</b> and <b>BBCReadDiskImage</b> put those lines in their output files as they always have: a
+data file listing and a disk image report are there to be read by a person, never fed back to anything, and in a
+file covering several of them the progress lines are what says where one ends and the next begins.</p>
+
+<h3 id="naming_output">Naming what comes out</h3>
+
+<p>Give a wildcard as the destination and each input file gets its own output, named after it. The extension you
+type is the one you get, so <code>*.bbcbas</code> means <i>the same names, called <code>.bbcbas</code></i> &mdash;
+handy if you have taught your editor to open that.</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext *.bbc *.bbcbas</span></pre>
+
+<p>Name a <b>single</b> file instead and every listing goes into that one file, one after another &mdash;
+<code>*.bbc all.htm</code> gives you the whole folder on one page. Each listing is headed with its file name as a
+<code>REM</code>, after a blank line, so it is clear where one program ends and the next begins:</p>
+
+<pre class="console">REM A.bbc
+   10 REM First program
+   20 PRINT "A"
+   30 END
+
+REM B.bbc
+   10 REM Second program
+   20 FOR I%=1 TO 3
+   30     PRINT I%
+   40 NEXT I%</pre>
+
+<p>Only one program going into one file is left exactly as it always was, with no heading, so nothing that
+round-trips through <code>--tokenize</code> is disturbed.</p>
+
+<p>Only the extension the input specification named is taken off, which matters for files exported from a disk
+image. <code>0_$.MYPROG</code> has no extension at all &mdash; <code>.MYPROG</code> is the BBC name &mdash; so a
+run over <code>*.*</code> keeps the whole name and simply adds to it, rather than collapsing every file in a
+directory onto <code>0_$</code>. And should a wildcard ask for a file to be its own output, as
+<code>*.bbc *.bbcbas</code> would if you typed <code>*.bbc</code> twice, it says so and writes elsewhere instead
+of destroying what it is reading.</p>
+
+<h3 id="folder_to_disk_image">A whole folder of listings onto one disk</h3>
 
 <p>Both tools take wildcards, so a directory of plain text listings becomes a disk image ready for an
 emulator or a real machine in two commands:</p>
@@ -161,7 +216,7 @@ folded back into the single line it came from.</p>
 as <code>--append=title@&amp;5C00</code>. That is how a game kept a title screen or its graphics in the same
 file as the BASIC that displayed them.</p>
 
-<h3>Making a program smaller: <code>--crunch</code></h3>
+<h3 id="crunch">Making a program smaller: <code>--crunch</code></h3>
 
 <p>A Model B does not leave much room once the screen has taken its share, so <code>--crunch</code> makes a
 tokenised program smaller without altering what it does. On its own it removes only the spaces that make a
@@ -179,7 +234,7 @@ line; and to any line that a <code>GOTO</code> or <code>GOSUB</code> refers to b
 
 <hr>
 
-<h2>BBCDataFileToText</h2>
+<h2 id="bbcdatafiletotext">BBCDataFileToText</h2>
 
 <p>Show BBC <code>PRINT#</code>-type data files as text, HTML, or BBCode, with hex and ASCII dump options.</p>
 
@@ -212,7 +267,7 @@ BBCDataFileToText found and processed 1 file, ignored 0, excluded 0, produced re
 <img src="BBC Micro Utilities/Screenshot_BBCDataFileToTextAsHexDumper.png" class="screenshot" alt="BBCDataFileToText dumping in hex" style="max-width: 66%;">
 <hr>
 
-<h2>BBCReadDiskImage</h2>
+<h2 id="bbcreaddiskimage">BBCReadDiskImage</h2>
 
 <p>Display <code>*CAT</code>-style output of <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> disk images, with
 the ability to export files individually, import files back into an image, delete files from one, and dump raw
@@ -220,7 +275,7 @@ sectors.</p>
 
 <img src="BBC Micro Utilities/Screenshot_BBCReadDiskImageExample.png" class="screenshot" alt="BBCReadDiskImage example output">
 
-<h3>Single-sided, double-sided, and <code>.IMG</code></h3>
+<h3 id="disk_image_formats">Single-sided, double-sided, and <code>.IMG</code></h3>
 
 <p>A <code>.SSD</code> is single-sided and a <code>.DSD</code> double-sided, as their names say, and those are taken at
 their word. A <code>.IMG</code> &mdash; the extension BeebEm and several other tools use &mdash; says nothing either
@@ -237,7 +292,7 @@ why the catalogue has to be consulted. The run reports which it settled on and w
 format, such as an ADFS or DOS disk from a Master 512, has its own idea of what belongs at the start of a disk. Neither
 is something this tool can read.</p>
 
-<h3>Naming files on the disk</h3>
+<h3 id="naming_files_on_disk">Naming files on the disk</h3>
 
 <p>The patterns given to <code>--export</code>, <code>--search</code> and <code>--delete</code> are written the way a
 file specification is written on the BBC itself, and they cover the <b>whole</b> name. A pattern that does not say
@@ -256,7 +311,7 @@ names, since that is what stands in for <code>*DIR</code> here.</p>
 </tbody>
 </table>
 
-<h3>Where exported files go</h3>
+<h3 id="export_location">Where exported files go</h3>
 
 <p>Name a <b>folder</b> as the destination and the exported files are written there, with the report of the run going
 to the console. A name ending in <code>\</code> is taken as a folder even if it is not there yet, and is created.
@@ -265,7 +320,58 @@ Name a <b>file</b> instead and the report goes into it, with the exported files 
 
 <pre class="console"><span class="prompt">C:\...\MakeRFS&gt;</span> <span class="cmd">bbcreaddiskimage MakeRFSROM.dsd --export=*.RFSRom .\Output\</span></pre>
 
-<h3>Importing files into an image</h3>
+<h3 id="exported_names">Exported names, minus the decoration</h3>
+
+<p>Don't like the <code>0_$.</code> prefix? Help is at hand: <code>--undecorated</code> leaves off the drive and
+directory and writes each file under its BBC name alone, so <code>:0.$.MYPROG</code> arrives as plain
+<code>MYPROG</code>. Nothing is thrown away in the process &mdash; the <code>.INF</code> file beside it still records
+where the file came from, so <code>--import</code> knows to put it back into <code>$</code> on side 0.</p>
+
+<p>It still protects you from PC name clashes, too. A disk is perfectly entitled to hold both <code>$.PROG</code> and
+<code>R.PROG</code>, and with the directories gone both of them would like to be called <code>PROG</code>. Rather than
+let the second quietly flatten the first, the overwrite prompt offers a <b>Rename</b> answer, which parks the newcomer
+beside its namesake as <code>PROG_1</code> and leaves the original exactly where it was. The <code>.INF</code> file
+still says <code>R.PROG</code>, so the trip back onto a disk image is none the wiser.</p>
+
+<pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcreaddiskimage Welcome.ssd --export=*.* --undecorated .\Output\</span></pre>
+
+<h3 id="export_extensions">Giving exported files an extension</h3>
+
+<p>A BBC file has no extension in the sense this filing system means, which leaves Windows with no idea what to do
+when you double-click one. <code>--extension</code> settles that: name the extension you want and every exported file
+gets it, so <code>--extension=.bbcbas</code> hands them all to whatever you have <code>.bbcbas</code> registered
+against. The dot is optional, and it goes equally well with either naming style &mdash;
+<code>0_$.MYPROG.bbcbas</code> on its own, or <code>MYPROG.bbcbas</code> alongside <code>--undecorated</code>. The
+<code>.INF</code> file is named after the whole thing, so the pair stay together, and a name that has to be renamed
+around a clash keeps its extension on the end, as <code>MYPROG_1.bbcbas</code>.</p>
+
+<p>One file is deliberately left out of it. <code>!BOOT</code> is not a program at all &mdash; it is the plain text a
+disk set to <code>*OPT 4,3</code> hands to <code>*EXEC</code> when you press shift-BREAK &mdash; so handing it to
+whatever you have <code>.bbcbas</code> registered against would be exactly the wrong thing to do. It is exported
+under its own name, and the run tells you as much rather than leaving you to notice:</p>
+
+<pre class="console">Exporting !BOOT without .bbcbas - it is the plain text shift-BREAK runs, not a program</pre>
+
+<pre class="console"><span class="prompt">C:\...\WelcomeDiskFiles&gt;</span> <span class="cmd">bbcreaddiskimage Welcome.ssd --export=*.* --undecorated --extension=.bbcbas .\Output\</span></pre>
+
+<p>The same option earns its keep on the way back in, where it says which extension to take off before the BBC name
+is read out of a host file name. That matters more than it sounds, because of one genuinely ambiguous shape: is
+<code>A.bbcbas</code> the file <code>bbcbas</code> in directory <code>A</code>, or the file <code>A</code> with an
+extension on it? Nothing in the name can tell you &mdash; <code>R.PROG</code> looks exactly the same &mdash; so the
+tool asks, showing both readings and where each would land:</p>
+
+<pre class="console">A.bbcbas could be the file bbcbas in directory A, or the file A with the host extension .bbcbas.
+Taken as it stands it would be imported as :0.A.bbcbas, and as an extension it would be :0.$.A
+Is .bbcbas a host extension to leave off? (Yes/No/All)</pre>
+
+<p>Saying nothing keeps the <code>directory.name</code> reading the convention has always used, and that is also
+what <code>--force</code> and any run without a keyboard do, so nothing you have scripted changes its mind.
+<b>All</b> takes every later name of that shape as carrying an extension. Give <code>--extension</code> on the import
+and the question does not come up at all, which is the tidy way to bring back a folder you exported with it. A file
+with a matching <code>.INF</code> is never in doubt either, since the sidecar names the directory outright &mdash;
+which is why an ordinary round trip through this tool never sees the question.</p>
+
+<h3 id="importing_files">Importing files into an image</h3>
 
 <p>The reverse of exporting. The image named is <b>created first if it does not exist</b> &mdash; give the name in
 full, ending <code>.ssd</code> or <code>.dsd</code>, and you get an empty 80-track image titled after the file name.
@@ -303,7 +409,7 @@ which starts itself on <b>SHIFT-BREAK</b> be built entirely from ordinary files 
 <code>TYPE=</code> and <code>TAPE</code> fields are all understood, and any field the tools do not recognise is
 kept and written back out rather than quietly dropped, so nothing another tool recorded is lost.</p>
 
-<h3>Deleting files from an image</h3>
+<h3 id="deleting_files">Deleting files from an image</h3>
 
 <p>Takes the same patterns as <code>--export</code>, and compacts the side afterwards so the space comes back. Each
 file is confirmed before it goes, unless <code>--force</code> is given, and a <b>locked</b> file is only deleted when
@@ -320,14 +426,14 @@ whole shoebox of discs in one go. Four decades on, your Acorn archive has never 
 
 <hr>
 
-<h2>Viewing long output: <code>--more</code>, <code>--head</code> and <code>--tail</code></h2>
+<h2 id="viewing_long_output">Viewing long output: <code>--more</code>, <code>--head</code> and <code>--tail</code></h2>
 
 <p>A long BASIC listing or a hex dump of a 16&nbsp;KB ROM will scroll off the top of the window before you can read
 any of it. All three utilities understand three options for taking the output a piece at a time. They apply to
 whatever the tool would normally print &mdash; a de-tokenised BASIC listing, a <code>PRINT#</code> data file, a disk
 catalogue, or a hex or ASCII dump.</p>
 
-<h3><code>--more</code> &mdash; a screenful at a time</h3>
+<h3 id="more_option"><code>--more</code> &mdash; a screenful at a time</h3>
 
 <p>This pauses after each screenful and waits for a keypress. <b>Space</b> shows the next page, <b>Enter</b> moves on
 by a single line, <b>A</b> shows all the rest without pausing again, and <b>Q</b> or <b>Escape</b> stops there. The
@@ -349,7 +455,7 @@ quietly does nothing. That makes it safe to leave in a DOSKEY macro permanently:
 
 <div class="indent">doskey hex=BBCDataFileToText --hex --more $*</div>
 
-<h3><code>--head[=n]</code> &mdash; just the beginning</h3>
+<h3 id="head_option"><code>--head[=n]</code> &mdash; just the beginning</h3>
 
 <p>Shows only the first <i>n</i> lines and stops, which is the quickest way to see what a file actually is. Without a
 number it shows 20 lines.</p>
@@ -357,7 +463,7 @@ number it shows 20 lines.</p>
 <img src="BBC Micro Utilities/Screenshot_BBCBasicToText_head_Example.png" class="screenshot" alt="BBCBasicToText showing only the first twenty lines of a BASIC program">
 <p class="screenshot-caption"><code>--head</code> showing the first 20 lines of a teletext editor written in 1983</p>
 
-<h3><code>--tail[=n]</code> &mdash; just the end</h3>
+<h3 id="tail_option"><code>--tail[=n]</code> &mdash; just the end</h3>
 
 <p>Shows only the last <i>n</i> lines, again 20 by default, and says how many lines it passed over to get there. For a
 hex or ASCII dump it seeks straight to the end of the file rather than reading through the whole thing, so
@@ -371,7 +477,56 @@ file, that file still receives everything.</p>
 
 <hr>
 
-<h2>Running the tools</h2>
+<h2 id="inf_sidecar_generation">Making a <code>.INF</code> for a file you already have</h2>
+
+<p>A <code>.INF</code> sidecar records what a Windows file cannot: the BBC name, the load and execution
+addresses, and the length. <code>--tokenize</code> writes one as it creates a <code>.bbc</code>, but a program
+that arrived some other way &mdash; lifted off a disk image, downloaded, or copied from a real machine &mdash;
+usually has none, and without it a tool importing the file has to guess. Naming a <code>.inf</code>
+<b>destination</b> fills that gap. Both <b>BBCBasicToText</b> and <b>BBCDataFileToText</b> understand it, and it
+means the same thing in each, so whichever tool the file is nearest to will do:</p>
+
+<pre class="console"><span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">bbcbasictotext ARRAYLENSUM.bbc ARRAYLENSUM.bbc.INF</span>
+Writing .INF sidecar files only; no listing will be produced.
+BBCBasicToText: C:\LocalOnly\RFS\ARRAYLENSUM.bbc is tokenized BBC BASIC
+<span class="ok">  C:\LocalOnly\RFS\ARRAYLENSUM.bbc.INF  $.ARRAYLE  00FF1900 00FF8023 000029</span></pre>
+
+<p>Nothing had to be said about what the file was. The tool works that out for itself, and the same command
+recognises a data file written by <code>PRINT#</code> just as readily:</p>
+
+<pre class="console"><span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">bbcdatafiletotext NAMES NAMES.INF</span>
+Writing .INF sidecar files only; no dump or decode will be produced.
+BBCDataFileToText: C:\LocalOnly\RFS\NAMES is BBC data file
+<span class="ok">  C:\LocalOnly\RFS\NAMES.INF  $.NAMES    00FF0000 00FF0000 000012</span></pre>
+
+<p>The two differ only in the addresses, and for a reason. A BASIC program is given <code>&amp;FF1900</code>,
+which is <code>PAGE</code> under DFS, and <code>&amp;FF8023</code>, the BASIC entry point, so that it will load
+and run. A data file is never loaded or run &mdash; it is read back through the filing system &mdash; so it has
+no meaningful address of its own and is given zero. The final field is the length in hex, which is the part
+that is tiresome to work out by hand.</p>
+
+<p>A file that is neither is reported and left alone. No <code>.INF</code> is written for it, deliberately: one
+stating a length and a pair of addresses for something that is not a BBC file at all would be believed by the
+next tool along, which is worse than having no <code>.INF</code>:</p>
+
+<pre class="console"><span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">bbcbasictotext SCREEN.bin SCREEN.bin.INF</span>
+BBCBasicToText: C:\LocalOnly\RFS\SCREEN.bin is neither a tokenized BBC BASIC program nor a BBC data file - no .INF written</pre>
+
+<p>Wildcards work, and give one sidecar per input named after that input &mdash; <code>MYPROG.bbc.INF</code>
+beside <code>MYPROG.bbc</code>, which is the same pairing <code>--tokenize</code> produces. A <code>.INF</code>
+describes a single file, so they are never gathered into one:</p>
+
+<pre class="console"><span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">bbcbasictotext *.bbc *.inf</span></pre>
+
+<p>Name one file outright instead and it is taken at its word, which is how to put the <code>.INF</code>
+somewhere other than beside the program. Either way the result is ready for
+<code>BBCReadDiskImage --import</code>, or for
+<a href="BeebRFSTool.htm">BeebRFSTool</a> to pack into a ROM, both of which take the BBC name and the addresses
+from the sidecar in preference to anything they could infer from the Windows file.</p>
+
+<hr>
+
+<h2 id="running_the_tools">Running the tools</h2>
 
 <p>All three utilities run from a Command Prompt or PowerShell. For example, from a Command Prompt:</p>
 <pre class="console"><span class="cmd">
@@ -380,13 +535,20 @@ BBCDataFileToText "%OneDrive%\Documents\BBCMicro\NAMES"
 BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
 </span></pre>
 
+<p>Each tool describes itself with <code>--help</code>. That is a reference list of every option, which is what you
+want when you know the option exists and have forgotten how it is spelled. When you would rather see the thing
+being used, add the word <code>examples</code> and half a dozen worked command lines follow the list, shown in
+green so they stand out from the options above them:</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext --help examples</span></pre>
+
 <p>In PowerShell, use <code>$env:OneDrive</code> in place of <code>%OneDrive%</code>.</p>
 
 <pre class="console"><span class="cmd">BBCReadDiskImage "$env:OneDrive\Documents\BBCMicro\Games.dsd"</span></pre>
 
 <hr>
 
-<h2>Optional - Add DOSKEY shortcuts</h2>
+<h2 id="doskey_shortcuts">Optional - Add DOSKEY shortcuts</h2>
 
 <p>Because typing the full command names is tedious, you can create DOSKEY macros in a command file named <code>cmdsetup.cmd</code>:</p>
 
@@ -411,13 +573,14 @@ BBCReadDiskImage  "%OneDrive%\Documents\BBCMicro\Games.dsd"
 
 <hr>
 
-<h2 id="syntax-colouring">Optional - BBC BASIC syntax colouring in Visual Studio and VS Code</h2>
+<h2 id="syntax-colouring">BBC BASIC syntax colouring in Visual Studio and VS Code and edit on your PC</h2>
 
 <p>A listing taken off a disk image is only text, so any editor will open it, but none of them knows what BBC
 BASIC is. <b>BBCBASICforVisualStudio.zip</b> is a TextMate grammar that teaches Visual Studio, and it colours a listing the
 same way <b>BBCBasicToText</b> prints one: line numbers &mdash; and the line a <code>GOTO</code> refers to
 &mdash; in green, keywords in cyan, strings in magenta, the text of a <code>REM</code> in yellow and of a
-<code>DATA</code> statement in blue. Everything else is left alone, as the tool leaves it.</p>
+<code>DATA</code> statement in blue. Everything else is left alone, as the tool leaves it. If you would like
+to used VS or VS Code to edit your BBC BASIC files then read on.</p>
 
 <img src="BBC Micro Utilities/Screenshot_BBCBasicVisualStudioThemeExample.png" class="screenshot" alt="A BBC BASIC listing open in Visual Studio, with line numbers in green, keywords in cyan, strings in magenta and the text after REM in yellow">
 
@@ -440,7 +603,7 @@ from a Command Prompt:</p>
                     BBCBASIC_for_dark_theme.tmTheme
                     BBCBASIC_for_light_theme.tmTheme</pre>
 
-<h3>Choosing the colours for your theme</h3>
+<h3 id="theme_colours">Choosing the colours for your theme</h3>
 
 <p>Only <code>BBCBASIC.tmTheme</code> is ever read &mdash; Visual Studio finds a theme by the name of the
 grammar sitting beside it. The other two are copies to pick from. As it comes it holds the colours for a
@@ -454,7 +617,7 @@ put the other one in its place:</p>
 from, so that they can be read against a white page. Either way, <b>restart Visual Studio</b> afterwards: it
 reads that folder once, at startup, so nothing changes until you do.</p>
 
-<h3>What to call your listings</h3>
+<h3 id="listing_file_names">What to call your listings</h3>
 
 <p>Use <b><code>.bbcbas</code></b>. That is the extension to prefer, and <code>.bbcbasic</code> and
 <code>.beeb</code> work as well. <b>Do not use <code>.bas</code></b>: Visual Studio gives that extension to
@@ -476,7 +639,7 @@ changing at all. The listing is auto-indented by default, which makes it easier 
 to the program when it is tokenised again; without it, the file that comes back is identical to the one you
 started with, byte for byte.</p>
 
-<h3>Visual Studio Code</h3>
+<h3 id="visual_studio_code">Visual Studio Code</h3>
 
 <p>The same colouring works in <b>Visual Studio Code</b>, from the same grammar &mdash; a TextMate grammar is
 a TextMate grammar. What differs is how each editor is told about it. Visual Studio finds one by where the
@@ -507,60 +670,100 @@ beside the grammar, both sets can be kept: give the block a
 <code>"[*Light*]"</code> or <code>"[*Dark*]"</code> heading and Visual Studio Code will follow whichever theme
 you are in, which is something Visual Studio cannot be asked to do.</p>
 
+<p>If you want to edit your code in one of these editors and then tokenize and add to a disk image using
+a command file such as the following:</p>
+<div style="background:#121314; font-family:Consolas; font-size:10.5pt; line-height:14.25pt; white-space:pre;">
+<span style="color:#FF7B72">REM addbasic.cmd</span>
+<span style="color:#D4D4D4">@</span><span style="color:#FF7B72">echo</span> <span style="color:#FF7B72">off</span>
+<span style="color:#FF7B72">setlocal</span>
+<span style="color:#FF7B72">cd</span> /d <span style="color:#A5D6FF">"</span><span style="color:#79C0FF">%~dp0</span><span style="color:#A5D6FF">"</span>
+<span style="color:#8B949E">:: --- Check arguments ---</span>
+<span style="color:#C586C0">if</span> <span style="color:#A5D6FF">"%~1"</span><span style="color:#D4D4D4">==</span><span style="color:#A5D6FF">""</span> <span style="color:#FFFFFF">(</span>
+    <span style="color:#FF7B72">echo</span> Usage: <span style="color:#FFA657">%~nx0</span> diskimage.ssd textfile.bbcbas
+    <span style="color:#FF7B72">endlocal</span> <span style="color:#D4D4D4">&amp;</span> <span style="color:#C586C0">exit</span> /b <span style="color:#B5CEA8">1</span>
+<span style="color:#FFFFFF">)</span>
+<span style="color:#C586C0">if</span> <span style="color:#A5D6FF">"%~2"</span><span style="color:#D4D4D4">==</span><span style="color:#A5D6FF">""</span> <span style="color:#FFFFFF">(</span>
+    <span style="color:#FF7B72">echo</span> Usage: <span style="color:#FFA657">%~nx0</span> diskimage.ssd textfile.bbcbas
+    <span style="color:#FF7B72">endlocal</span> <span style="color:#D4D4D4">&amp;</span> <span style="color:#C586C0">exit</span> /b <span style="color:#B5CEA8">1</span>
+<span style="color:#FFFFFF">)</span>
+<span style="color:#FF7B72">set</span> <span style="color:#A5D6FF">"DiskImage=%~1"</span>
+<span style="color:#FF7B72">set</span> <span style="color:#A5D6FF">"BasicText=%~2"</span>
+<span style="color:#8B949E">:: --- Tokenize BASIC file ---</span>
+<span style="color:#FFFFFF">BBCBasicToText</span> <span style="color:#A5D6FF">"%BasicText%"</span> <span style="color:#FFFFFF">--tokenize --force</span>
+<span style="color:#C586C0">if</span> <span style="color:#FF7B72">errorlevel</span> <span style="color:#B5CEA8">1</span> <span style="color:#C586C0">goto</span> <span style="color:#FF7B72">failed</span>
+<span style="color:#8B949E">:: --- Compute .bbc output filename ---</span>
+<span style="color:#FF7B72">set</span> <span style="color:#A5D6FF">"BasicTokenized=%~dp2%~n2.bbc"</span>
+<span style="color:#8B949E">:: --- Import into disk image ---</span>
+<span style="color:#FFFFFF">BBCReadDiskImage</span> <span style="color:#A5D6FF">"%DiskImage%"</span> <span style="color:#FFFFFF">--import=</span><span style="color:#A5D6FF">"%BasicTokenized%"</span> <span style="color:#FFFFFF">--force</span>
+<span style="color:#C586C0">if</span> <span style="color:#FF7B72">errorlevel</span> <span style="color:#B5CEA8">1</span> <span style="color:#C586C0">goto</span> <span style="color:#FF7B72">failed</span>
+</div>
+
+<p>then use it like this</p>
+<span style="padding-left: 20px;" class="cmd">addbasic.cmd GamesDisk.ssd BatAndBall.bbcbas</span>
+<br><br>
+<p>If the .ssd does not exist it will be created, and if it does the existing contents will be preserved,
+though any file on it with the same name will be ovewritten.</p>
+
 <hr>
-<h2>Features</h2>
+<h2 id="features">Features</h2>
 <div class="feature-grid">
     <div class="feature-item">
-        <h3>BBCBasicToText</h3>
+        <h3 id="feature_bbcbasictotext">BBCBasicToText</h3>
         <p>Display a tokenised, binary BBC Micro BASIC file as text, HTML, or bbcode.</p>
     </div>
     <div class="feature-item">
-        <h3>Writing BASIC back</h3>
+        <h3 id="feature_writing_basic_back">Writing BASIC back</h3>
         <p><code>--tokenize</code> turns a plain text listing into a tokenised program with its
         <code>.INF</code>, ready to import into a disk image &mdash; so a program can be listed out, edited
         on the PC, and put back. <code>--append=</code> places graphics or a title screen after the program,
         at a fixed address if one is wanted.</p>
     </div>
     <div class="feature-item">
-        <h3>Crunching</h3>
+        <h3 id="feature_crunching">Crunching</h3>
         <p><code>--crunch</code> makes a program smaller without altering what it does, and refuses outright
         where it cannot be safe &mdash; a program carrying data past its end, or machine code hidden in a
         <code>REM</code>, is left untouched.</p>
     </div>
     <div class="feature-item">
-        <h3>Bootable disks</h3>
+        <h3 id="feature_bootable_disks">Bootable disks</h3>
         <p>A <code>!BOOT</code> file whose <code>.INF</code> records <code>OPT4=</code> sets the disk's boot
         option, so a disk that starts itself on SHIFT-BREAK can be built from loose files on the PC.</p>
     </div>
     <div class="feature-item">
-        <h3>BBCDataFileToText</h3>
+        <h3 id="feature_bbcdatafiletotext">BBCDataFileToText</h3>
         <p>Show BBC <code>PRINT#</code> type data files as text, HTML, or bbcode.</p>
     </div>
     <div class="feature-item">
-        <h3>BBCReadDiskImage</h3>
+        <h3 id="feature_bbcreaddiskimage">BBCReadDiskImage</h3>
         <p>Display <code>*CAT</code>-style output of <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> disk images, with the ability to export files individually and dump sectors. A <code>.IMG</code> does not say whether it is single- or double-sided, so that is worked out from the image's own catalogue.</p>
     </div>
     <div class="feature-item">
-        <h3>Editing disk images</h3>
+        <h3 id="feature_editing_disk_images">Editing disk images</h3>
         <p>Import files into a <code>.SSD</code>, <code>.DSD</code> or <code>.IMG</code> image &mdash; creating the image if it does not
         exist &mdash; and delete files from one, with the side compacted so the space is reclaimed.</p>
     </div>
     <div class="feature-item">
-        <h3>Paging and line limits</h3>
+        <h3 id="feature_paging_and_line_limits">Paging and line limits</h3>
         <p>View long listings and dumps a screenful at a time with <code>--more</code>, or take just the start or
         end with <code>--head</code> and <code>--tail</code>.</p>
     </div>
     <div class="feature-item">
-        <h3>DOSKEY shortcuts</h3>
+        <h3 id="feature_sidecars_on_demand">Sidecars on demand</h3>
+        <p>Name a <code>.inf</code> destination and a <code>.INF</code> is written for a program or data file
+        that came without one, the tool working out for itself which it is and refusing anything that is
+        neither.</p>
+    </div>
+    <div class="feature-item">
+        <h3 id="feature_doskey_shortcuts">DOSKEY shortcuts</h3>
         <p>Macros can be added automatically to every new command window.</p>
     </div>
 </div>
 <hr>
 
-<h2>Download</h2>
+<h2 id="download">Download</h2>
 
     <div class="download-box">
-        <h3>BeebFileUtilities</h3>
+        <h3 id="download_beebfileutilities">BeebFileUtilities</h3>
         <p>
             The app can be installed from:
             <ul>
@@ -579,7 +782,7 @@ you are in, which is something Visual Studio cannot be asked to do.</p>
     </div>
 
     <div class="download-box">
-        <h3>BBC BASIC syntax colouring</h3>
+        <h3 id="download_syntax_colouring">BBC BASIC syntax colouring</h3>
         <p>
             Colours a BBC BASIC listing in your editor the way <b>BBCBasicToText</b> prints one. Neither is
             needed to use the tools themselves &mdash; see

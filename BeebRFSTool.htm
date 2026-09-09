@@ -11,7 +11,7 @@
 <div id="theme-toggle-icon" title="Change theme">🖥️</div>
 <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-<h1>BeebRFSTool</h1>
+<h1 id="beebrfstool">BeebRFSTool</h1>
 <p class="subtitle">Command-line tool for packing and extracting BBC Micro ROM Filing System images</p>
 
 <span class="badge">Windows</span>
@@ -38,7 +38,7 @@ installation is required.
 </p>
 <hr>
 
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 
 <pre class="console">
 <span class="prompt">C:\LocalOnly\RFS&gt;</span> <span class="cmd">BeebRFSTool</span>
@@ -65,7 +65,7 @@ Usage:
 
 <hr>
 
-<h2>Example: packing files</h2>
+<h2 id="example_packing">Example: packing files</h2>
 
 <p>Pack a folder of BBC Micro files into a 16&nbsp;KB sideways ROM image. Files with a matching <code>.inf</code>
  <a href="BeebRFSMaker.htm#inf_sidecar_file">sidecar</a> file (a file in the same folder with the same name plus a .inf extension)
@@ -107,7 +107,7 @@ Packing with compression enabled (compressed RFS) to NewRFSCompr.rom.
 
 <hr>
 
-<h2>Example: extracting files</h2>
+<h2 id="example_extracting">Example: extracting files</h2>
 
 <p>Extract all files from an existing RFS ROM image, giving the ROM to read and the folder to write into. The <code>-i</code> flag generates <code>.inf</code> sidecar files alongside each extracted file, preserving the BBC Micro filename, load address, execution address, and file length. Use <code>-l</code> instead to list a ROM's contents without writing anything to disk. Either way the run finishes with a <code>*INFO</code> style catalogue of the files and a one-line summary of the ROM's own header.</p>
 
@@ -172,7 +172,7 @@ in the standard <a href="BeebRFSMaker.htm#inf_sidecar_file">format</a>.
 
 <hr>
 
-<h2>Example: standard, uncompressed ROMs</h2>
+<h2 id="example_uncompressed">Example: standard, uncompressed ROMs</h2>
 
 <p>Adding <code>--uncompressed</code> writes a plain RFS ROM instead of a compressed one. The files are stored
  verbatim, so there is no dictionary, no digraph table and no decompressor stub &#8212; the ROM holds a good deal
@@ -248,55 +248,55 @@ End of ROM marker '+' seen at byte 0x003903 [014595]
 
 <hr>
 
-<h2>Features</h2>
+<h2 id="features">Features</h2>
 
 <div class="feature-grid">
     <div class="feature-item">
-        <h3>Pack files into ROM images</h3>
+        <h3 id="feature_pack">Pack files into ROM images</h3>
         <p>Pack a folder of files into a standard 16&nbsp;KB sideways ROM image, with optional ROM title, catalogue title, copyright, and version string.</p>
     </div>
     <div class="feature-item">
-        <h3>Both RFS formats</h3>
+        <h3 id="feature_both_formats">Both RFS formats</h3>
         <p>Produce either a compressed (CompRFS) ROM or, with <code>--uncompressed</code>, a standard plain RFS ROM &#8212; from the same folder of files.</p>
     </div>
     <div class="feature-item">
-        <h3>Extract from ROM images</h3>
+        <h3 id="feature_extract">Extract from ROM images</h3>
         <p>Extract files from any compatible RFS ROM image, compressed or uncompressed &#8212; the format is detected from the ROM header &#8212; with optional <code>.inf</code> sidecar generation preserving BBC Micro metadata.</p>
     </div>
     <div class="feature-item">
-        <h3>*INFO style catalogue</h3>
+        <h3 id="feature_info_catalogue">*INFO style catalogue</h3>
         <p>Every extract or list run ends with a catalogue of the files &#8212; BBC filename, load and execution
         addresses and length, with the name used on this PC alongside &#8212; and a one-line summary of the ROM
         header, including the type byte spelled out in plain English.</p>
     </div>
     <div class="feature-item">
-        <h3>Compression feedback</h3>
+        <h3 id="feature_compression_feedback">Compression feedback</h3>
         <p>Detailed output shows per-file raw and compressed sizes, dictionary and digraph statistics, and overall ROM utilisation.</p>
     </div>
     <div class="feature-item">
-        <h3>comprom.pl compatible</h3>
+        <h3 id="feature_comprom_compatible">comprom.pl compatible</h3>
         <p>Produces byte-identical ROM images to the original comprom.pl v2.10 Perl script by Greg Cook, requiring no Perl installation.</p>
     </div>
     <div class="feature-item">
-        <h3>Scripting and automation</h3>
+        <h3 id="feature_scripting">Scripting and automation</h3>
         <p>Designed for use in batch files and build pipelines. Error messages are written to standard error and normal output to standard output, and meaningful exit codes are returned.</p>
     </div>
     <div class="feature-item">
-        <h3>.inf sidecar support</h3>
+        <h3 id="feature_inf_sidecar">.inf sidecar support</h3>
         <p>Reads and writes <code>.inf</code> sidecar files in the standard BBC Micro format used by DFS tools, preserving load addresses, execution addresses, and BBC filenames. Addresses are written as eight hex digits, so a host address such as <code>FFFF1900</code> is stated in full; the shorter four- and six-digit forms written by other tools are still read.</p>
     </div>
     <div class="feature-item">
-        <h3>Disk image file names</h3>
+        <h3 id="feature_disk_image_names">Disk image file names</h3>
         <p>A folder of files exported from a <code>.ssd</code> or <code>.dsd</code> disk image packs under the BBC names they had. The drive and directory that <code>0_$.MAKERFS</code> and <code>0_P.MakeRFS</code> carry are stripped off, since a ROM filing system has no directories, and a name never keeps a dot &#8212; which the BBC would read as a directory separator.</p>
     </div>
 </div>
 
 <hr>
 
-<h2>Download and Install</h2>
+<h2 id="download">Download and Install</h2>
 
 <div class="download-box">
-    <h3>BeebRFSTool</h3>
+    <h3 id="download_beebrfstool">BeebRFSTool</h3>
     <p>
         The app can be installed from:
         <ul>
@@ -313,7 +313,7 @@ End of ROM marker '+' seen at byte 0x003903 [014595]
 
 <hr>
 
-<h2>Compatibility</h2>
+<h2 id="compatibility">Compatibility</h2>
 
 <p>BeebRFSTool handles both the <b>Compressed ROM Filing System v2.10</b> format and <b>standard, uncompressed RFS</b>. ROM images it produces can be used with:</p>
 

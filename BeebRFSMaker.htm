@@ -11,7 +11,7 @@
 <div id="theme-toggle-icon" title="Change theme">🖥️</div>
 <a class="back-link" href="index.htm">&#8592; Back to KLO Software</a>
 
-<h1>BeebRFSMaker</h1>
+<h1 id="beebrfsmaker">BeebRFSMaker</h1>
 <p class="subtitle">ROM Filing System packer and extractor to let your Windows PC make RFS ROM images for the BBC Micro</p>
 
 <span class="badge">Windows</span>
@@ -219,7 +219,7 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
 
 <hr>
 
-<h2>"Burning" an EEPROM</h2>
+<h2 id="burning_an_eeprom">"Burning" an EEPROM</h2>
 <p>Rather than using old-style, UV-erasable EPROMs, I bought five compatible
 <a href="https://www.amazon.com/dp/B0GG12YGGC" target="_blank">AT28C256-15PU EEPROMs</a> for around $11 on Amazon. The "256"
 in the part number refers to its 256&nbsp;Kbit capacity (32&nbsp;KB), and the "-15" indicates a 150&nbsp;ns access time. I use the
@@ -230,7 +230,7 @@ are second-hand; one arrived missing a leg and was discarded, but the rest all w
 the EEPROM content. The EEPROMs I have created so far all worked in my actual BBC Micro.</p>
 <hr>
 
-<h2>Screenshots</h2>
+<h2 id="screenshots">Screenshots</h2>
 
 <img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen">
 <p class="screenshot-caption">Packing a set of BBC Micro files into a 16 KB sideways ROM image</p>
@@ -240,61 +240,61 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 
 <hr>
 
-<h2>Features</h2>
+<h2 id="features">Features</h2>
 
 <div class="feature-grid">
     <div class="feature-item">
-        <h3>Pack files into ROM images</h3>
+        <h3 id="feature_pack">Pack files into ROM images</h3>
         <p>Drag and drop a set of files onto the app, or pick them with the <b>Add files</b> button, and pack them into a standard 16&nbsp;KB sideways ROM image. BBC Micro filenames, load addresses, and execution addresses are read from <code>.inf</code> sidecar files if present.</p>
     </div>
     <div class="feature-item">
-        <h3>Both RFS formats</h3>
+        <h3 id="feature_both_formats">Both RFS formats</h3>
         <p>Build either a compressed (CompRFS) ROM or a standard, uncompressed RFS ROM from the same file list, using the Compressed / Uncompressed toggle.</p>
     </div>
     <div class="feature-item">
-        <h3>Extract from ROM images</h3>
+        <h3 id="feature_extract">Extract from ROM images</h3>
         <p>Open any compatible RFS ROM image, compressed or uncompressed &#8212; the format is detected from the ROM header &#8212; and extract its files back to a folder, generating <code>.inf</code> sidecar files in the format that has become the de facto standard for preserving BBC Micro metadata &#8212; filename, load and execution addresses, and file length.</p>
     </div>
     <div class="feature-item">
-        <h3>Edit file content in place</h3>
+        <h3 id="feature_edit_content">Edit file content in place</h3>
         <p>The preview pane doubles as a hex editor for the selected file. Overstrike bytes in either the hex or the ASCII column, then press Apply to rebuild the ROM image around your changes. Edits are made to the copy held for packing, so the files on your PC are never modified. See <a href="#editing_file_content">Editing file content</a>.</p>
     </div>
     <div class="feature-item">
-        <h3>Edit load and exec addresses</h3>
+        <h3 id="feature_edit_addresses">Edit load and exec addresses</h3>
         <p>Type a new load or execution address into its field and press Enter, and the ROM image is rebuilt around it. Both are shown in full as eight hex digits so a host address such as <code>FFFF1900</code> reads as the BBC states it. The length is shown alongside but is not editable. See <a href="#editing_addresses">Editing load and execution addresses</a>.</p>
     </div>
     <div class="feature-item">
-        <h3>Disk image files understood</h3>
+        <h3 id="feature_disk_image_files">Disk image files understood</h3>
         <p>Files exported from a <code>.ssd</code> or <code>.dsd</code> image keep their BBC names: the <code>0_$.</code> drive and directory prefix is stripped, and where two files clash the directory letter is offered as a prefix instead. Matching <code>.inf</code> files are read as metadata rather than packed. See <a href="#disk_image_files">Files exported from a disk image</a>.</p>
     </div>
     <div class="feature-item">
-        <h3>Compression feedback</h3>
+        <h3 id="feature_compression_feedback">Compression feedback</h3>
         <p>The pack output shows each file&#8217;s raw and compressed sizes so you can see at a glance how efficiently your files compress, and whether everything fits in the 16&nbsp;KB slot.</p>
     </div>
     <div class="feature-item">
-        <h3>comprom.pl compatible</h3>
+        <h3 id="feature_comprom_compatible">comprom.pl compatible</h3>
         <p>Produces byte-identical ROM images to the original comprom.pl v2.10 Perl script by Greg Cook, so ROMs built with BeebRFSMaker work with any
         <a href="https://bbcmicro.computer/" target="_blank">BBC Microcomputer</a> or emulator such as
         <a href="https://codeberg.org/chrisn/beebem-windows/releases/" target="_blank">BeebEm</a>.</p>
     </div>
     <div class="feature-item">
-        <h3>ROM header options</h3>
+        <h3 id="feature_rom_header_options">ROM header options</h3>
         <p>Customise the ROM title (shown by <code>*ROMS</code>) and the catalogue title (shown by <code>*CAT</code>), each in its own field above the preview pane. The catalogue title applies to compressed ROMs.</p>
     </div>
     <div class="feature-item">
-        <h3>Command-line interface</h3>
+        <h3 id="feature_command_line">Command-line interface</h3>
         <p>A corresponding command-line tool, <a href="BeebRFSTool.htm">BeebRFSTool</a>, which uses the same pack and extract classes as the GUI app, provides a full command-line interface for scripting and automation, compatible with batch files and build pipelines.</p>
     </div>
 </div>
 
 <hr>
 
-<h2>How the resulting ROM appears on a BBC Micro or emulator</h2>
+<h2 id="rom_on_the_beeb">How the resulting ROM appears on a BBC Micro or emulator</h2>
 <img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Beeb Screenshot 01.png" alt="A BeebRFSMaker ROM image as seen by a BBC Micro or emulator"  style="max-width: 70%;" >
 
 <hr>
 
-<h2>How it works</h2>
+<h2 id="how_it_works">How it works</h2>
 
 <p>The Compressed ROM Filing System format, created by Greg Cook, stores files in a standard BBC Micro 16&nbsp;KB sideways ROM using a compressed stream that begins after a conventional Acorn ROM header at &amp;8000 and a small 6502 decompressor stub at &amp;8040. The stream uses four compression mechanisms: a digraph table of up to 31 frequent two-byte pairs each encoded as a single byte token, a dictionary of up to 128 longer repeated sequences each referenced by a two-byte address token, run-length encoding for repeated byte values, and literal escape sequences for bytes that cannot otherwise be represented. Dictionary entries may chain up to nine levels deep, and since the ROM Filing System requires each file header to be directly addressable, each file&#8217;s stream is generated separately and chained to the next via a link field. The result is a self-delimiting compressed stream that the decompressor stub decodes on the fly in response to standard MOS ROM Filing System service calls, requiring no RAM workspace beyond a handful of zero-page locations.</p>
 
@@ -317,10 +317,10 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 
 <hr>
 
-<h2>Download and Install</h2>
+<h2 id="download">Download and Install</h2>
 
 <div class="download-box">
-    <h3>BeebRFSMaker</h3>
+    <h3 id="download_beebrfsmaker">BeebRFSMaker</h3>
     <p>The app can be installed from:</p>
     <ul>
         <li>The <a href="https://apps.microsoft.com/detail/9N5B7WBFK2BZ" target="_blank">Microsoft Store web page</a></li>
@@ -331,7 +331,7 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 
 <hr>
 
-<h2>Compatibility</h2>
+<h2 id="compatibility">Compatibility</h2>
 
 <p>BeebRFSMaker handles both the <b>Compressed ROM Filing System v2.10</b> format and <b>standard, uncompressed RFS</b>. ROM images produced by BeebRFSMaker can be used with:</p>
 
