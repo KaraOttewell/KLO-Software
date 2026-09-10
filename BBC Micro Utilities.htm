@@ -152,6 +152,18 @@ is what the program actually holds, so it goes back byte for byte identical.</p>
 <pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext MyProg.bbc MyProg.txt --noindent</span>
 <span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext MyProg.txt MyProg.bbc --tokenize</span></pre>
 
+<p><code>--noindent</code> means the same thing in both directions, which is the other way to keep a program from
+growing. Listing without it adds no indentation; <b>tokenizing</b> without it takes the indentation off again, so a
+listing that was indented to be read does not carry those spaces back into the program. That matters when you want
+the listing indented &mdash; you are editing it, after all &mdash; and still want the program to stay the size it
+was:</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext MyProg.bbc MyProg.bbcbas</span>
+<span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcbasictotext MyProg.bbcbas --tokenize --noindent</span></pre>
+
+<p>Without it on the second command a program round-tripped over and over grows by its own indentation every
+time. With it, the program is the same size on the tenth trip as it was on the first.</p>
+
 <p>The other half of that is what does <b>not</b> go into the file. The running commentary &mdash; which file is
 being processed, how it went, where the output landed, the count at the end &mdash; goes to the console only, so
 what you are left with is the listing and nothing but the listing. Redirect the output somewhere and you still see
@@ -398,6 +410,29 @@ addresses and the lock flag; and finally <code>--directory</code> and <code>--si
 seven characters DFS allows. A name shaped like the convention but starting with something that is not a drive &mdash;
 <code>1_T.RFSROM</code> when <code>2_T.RFSROM</code> was meant &mdash; is queried rather than quietly imported under an
 odd name.</p>
+
+<p><code>--import</code> may be given more than once and the lists are combined, so
+<code>--import=*.bbc --import=SCREENS\*</code> takes both, exactly as naming them in one option separated by
+commas always did. Where two specifications name the same file &mdash; overlapping wildcards, or a wildcard and
+the file itself &mdash; it is imported once.</p>
+
+<h4 id="importing_listings">Importing a listing: no separate tokenize step</h4>
+
+<p>A plain text BASIC listing is <b>tokenized on the way in</b>. Text is no use to a BBC Micro &mdash; imported as
+it stands it would sit on the disk as a file that cannot be <code>CHAIN</code>ed &mdash; so a listing edited on the
+PC goes back onto a disk in one command rather than two:</p>
+
+<pre class="console"><span class="prompt">C:\Beeb\Basic&gt;</span> <span class="cmd">bbcreaddiskimage GamesDisk.ssd --import=BatAndBall.bbcbas</span></pre>
+
+<p>It is given the BASIC load and execution addresses, <code>&amp;FF1900</code> and <code>&amp;FF8023</code>, unless a
+matching <code>.INF</code> says otherwise &mdash; the sidecar always has the last word. With a wildcard a whole
+folder of edited listings goes on at once.</p>
+
+<p>Only a listing is treated this way, and the test is deliberately narrow, since guessing wrong would quietly
+rewrite a file. A program that is <b>already tokenized</b> goes in untouched, so does a <code>PRINT#</code>
+<b>data file</b>, so does anything holding the control bytes that text does not, and so does <b>text with no line
+numbers</b> &mdash; which is what leaves a <code>!BOOT</code> alone, that being the text the machine reads at
+<b>SHIFT-BREAK</b> rather than a program.</p>
 
 <p>A <code>!BOOT</code> file whose <code>.INF</code> records a boot option, as <code>OPT4=3</code> or
 <code>BOOT=3</code>, sets that option on the disk just as <code>*OPT 4,3</code> would. That is what lets a disk
@@ -670,8 +705,13 @@ beside the grammar, both sets can be kept: give the block a
 <code>"[*Light*]"</code> or <code>"[*Dark*]"</code> heading and Visual Studio Code will follow whichever theme
 you are in, which is something Visual Studio cannot be asked to do.</p>
 
-<p>If you want to edit your code in one of these editors and then tokenize and add to a disk image using
-a command file such as the following:</p>
+<p>Editing in one of these editors and putting the result back on a disk is now a single command, because
+<code>--import</code> <a href="#importing_listings">tokenizes a listing on the way in</a>:</p>
+
+<div class="indent"><span class="cmd">bbcreaddiskimage GamesDisk.ssd --import=BatAndBall.bbcbas --force</span></div>
+
+<p>The command file below does the same thing in two steps, and is still worth having if you want the argument
+checking and the errorlevel tests, or if you are working with a version older than 1.0.82:</p>
 <div style="background:#121314; font-family:Consolas; font-size:10.5pt; line-height:14.25pt; white-space:pre;">
 <span style="color:#FF7B72">REM addbasic.cmd</span>
 <span style="color:#D4D4D4">@</span><span style="color:#FF7B72">echo</span> <span style="color:#FF7B72">off</span>
@@ -746,6 +786,12 @@ though any file on it with the same name will be ovewritten.</p>
         <h3 id="feature_paging_and_line_limits">Paging and line limits</h3>
         <p>View long listings and dumps a screenful at a time with <code>--more</code>, or take just the start or
         end with <code>--head</code> and <code>--tail</code>.</p>
+    </div>
+    <div class="feature-item">
+        <h3 id="feature_import_listings">Edit on the PC, one command back</h3>
+        <p>A plain text listing is tokenized as it is imported, so a program edited in an editor goes back onto a
+        disk image in a single command. Anything that is not a listing &#8212; a tokenized program, a data file,
+        a <code>!BOOT</code> &#8212; goes in exactly as it is.</p>
     </div>
     <div class="feature-item">
         <h3 id="feature_sidecars_on_demand">Sidecars on demand</h3>
