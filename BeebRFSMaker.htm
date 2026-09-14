@@ -21,17 +21,18 @@
 <span class="badge">Free</span>
 
 <p>BeebRFSMaker is a Windows application for packing files into a BBC Micro ROM Filing System image,
-    and extracting files back out again. It handles both RFS formats: <b>compressed</b> (CompRFS), compatible with the
-    <b>comprom.pl v2.10</b> format by Greg Cook, and <b>standard, uncompressed</b> RFS. It produces
+    and extracting files back out again. It handles three RFS formats: <b>standard, uncompressed</b> RFS,
+    <b>comprom</b> (CompRFS), compatible with the <b>comprom.pl v2.10</b> format by Greg Cook, and
+    <b>KLOComp Lempel-Ziv</b>, which fits the most into the same 16&nbsp;KB. It produces
     sideways ROM images that can be used directly with a <a href="https://bbcmicro.computer/" target="_blank">BBC Microcomputer</a> or
     <a href="https://codeberg.org/chrisn/beebem-windows/releases/" target="_blank">emulator</a>.</p>
 
 <img src="BeebRFSMaker/BeebRFSMakerROMBoard.png" alt="BeebRFSMaker app icon" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
 <p>To use it, simply drag and drop files from your PC onto the area labelled "Drop PC files here". The files will be listed
-     in the area below with their names, load and exec addresses, and sizes in bytes. The files in the list are compressed
-     into a ROM image. By using the radio buttons at the top you can see the content of the selected file from the list,
+     in the area below with their names, load and exec addresses, and sizes in bytes. The files in the list are packed
+     into a ROM image, compressed or not according to the format you choose. By using the radio buttons at the top you can see the content of the selected file from the list,
      or the ROM image, or the Event Log, in the preview window, which takes up most of the left-hand side of the app. When
-     a file is shown, that preview window is also a hex editor &#8212; see <a href="#editing_file_content">Editing file content</a>. If the
+     a file is shown, that preview window is also a hex editor. See <a href="#editing_file_content">Editing file content</a>. If the
      total file size after compression fits within a 16&nbsp;KB ROM then the <b>Save RFS ROM</b> button, which shows how
      many files are in the image, will be enabled, and you can choose where to save the ROM image with a
      <b><code>.rom</code></b> extension. If you attempt to
@@ -41,21 +42,25 @@
 <img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 01.png" alt="BeebRFSMaker opening screen" style="clear: both;">
 <p class="screenshot-caption">BeebRFSMaker launch screen</p>
 
-<p>The <b>Compressed / Uncompressed</b> toggle chooses which RFS format to build. Compressed is the usual choice, since it
-    fits far more into the same 16&nbsp;KB; uncompressed produces a plain RFS ROM with no decompressor stub.
-</p>
+<p>The <b>RFS Type</b> selector above the drop area chooses which of the three formats to build. <b>Standard</b> is plain
+    RFS with nothing to decode at run time, readable by any tool. <b>Comprom</b> is Greg Cook's format and fits far more
+    into the same 16&nbsp;KB. <b>LZ77</b> is KLOComp Lempel-Ziv, which fits more still. You can switch between them at any
+    time and the image is rebuilt from the same file list.</p>
 
-<p>The same six files make the point. As they stand they amount to 14,163 bytes, and a standard ROM built from them fills
-14,709 of the 16&nbsp;KB &#8212; 89%, with barely room for anything else. Compressed, the same content comes to 10,856 bytes
-and the finished image occupies 12,819, or 78%, leaving space for another file or two. In both cases the ROM used is larger
-than the content total, because every file carries block headers and checksums, and a compressed ROM additionally carries
-the decompressor stub and its dictionary.</p>
+<p>The same seven files make the point. As they stand they amount to 14,608 bytes, and a standard ROM built from them
+fills 15,218 of the 16&nbsp;KB, or 92%, with barely room for anything else. Under comprom the content comes to
+11,293 bytes and the finished image occupies 13,231, or 80%. Under Lempel-Ziv it comes to 10,775 and the image occupies
+12,111, or 73%, leaving over 4&nbsp;KB spare. In every case the ROM used is larger than the content total, because each
+file carries block headers and checksums, and a compressed ROM additionally carries its decompressor stub, with comprom
+carrying its dictionary as well.</p>
 
-<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 02.png" alt="Six files packed as a standard uncompressed RFS ROM, filling 89% of the ROM">
-<p class="screenshot-caption">Six files as a standard RFS ROM &#8212; 14,709 bytes used, 89% of the 16&nbsp;KB</p>
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 02.png" alt="Seven files packed as a standard uncompressed RFS ROM, filling 92% of the ROM">
+<p class="screenshot-caption">Seven files as a standard RFS ROM, using 15,218 bytes, 92% of the 16&nbsp;KB. With Standard selected the
+<b>Catalog</b> field is greyed out, since a plain RFS ROM has no catalogue title to put there</p>
 
-<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 10.png" alt="The same six files packed as a compressed RFS ROM, filling 78% of the ROM">
-<p class="screenshot-caption">The same six files compressed &#8212; 12,819 bytes used, 78%. The <b>L</b> in the file list marks a locked file, and <b>(*)</b> a file edited but not yet applied</p>
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 10.png" alt="The same seven files packed as a comprom RFS ROM, filling 80% of the ROM">
+<p class="screenshot-caption">The same seven files under comprom, using 13,231 bytes, 80%. The <b>(*)</b> marks a file edited but not yet
+applied; an <b>L</b> in the list marks a locked file</p>
 <div style="clear:both;"></div>
 
 <p class="local-copy-notice">
@@ -71,23 +76,25 @@ files went, and the same wording stays on the status line at the bottom of the w
 successful build.</p>
 
 <img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 05.png" alt="BeebRFSMaker ROM Full message on a compressed ROM, with the overflow also shown in orange on the status line">
-<p class="screenshot-caption">Too much content for a 16&nbsp;KB compressed ROM &#8212; the shortfall is given in bytes, in decimal and hex</p>
+<p class="screenshot-caption">Too much content for a 16&nbsp;KB compressed ROM. The shortfall is given in bytes, in decimal and hex</p>
 
-<p>A standard, uncompressed ROM words it slightly differently, as <i>at least</i> so many bytes. Packing a compressed
-ROM works out the whole layout before it discovers the overflow, so the figure is the exact total; packing an
+<p>A standard, uncompressed ROM words it slightly differently, as <i>at least</i> so many bytes. Either compressed
+format works out the whole layout before it discovers the overflow, so the figure is the exact total; packing an
 uncompressed one stops at the first block that will not fit, so what it can honestly report is a lower bound. Either
-way it tells you the order of the problem &#8212; whether you are a couple of hundred bytes over or several thousand.</p>
+way it tells you the order of the problem, whether you are a couple of hundred bytes over or several thousand.</p>
 
 <img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 04.png" alt="BeebRFSMaker ROM Full message on a standard uncompressed ROM, reporting a lower bound">
 <p class="screenshot-caption">The same situation on a standard RFS ROM, where the shortfall is reported as a minimum</p>
 
 <p>Nothing is lost. The ROM image you had before the change is kept and is still what the ROM Image pane shows, and the
 <b>Save RFS ROM</b> button stays disabled so a ROM that does not match the file list can never be written out. Remove a
-file, shorten one, or switch from uncompressed to compressed, and the image is rebuilt around what is left.</p>
+file, shorten one, or switch to a format that holds more, standard to comprom or comprom to Lempel-Ziv, and the image
+is rebuilt around what is left.</p>
 
 <p>The status line is worth watching before you get that far. It reports the total content size and how much of the ROM
-the built image actually occupies, as a byte count and a percentage &#8212; the ROM header, and for compressed ROMs the
-decompressor stub and dictionary, take up room that the content total alone does not account for.</p>
+the built image actually occupies, as a byte count and a percentage. The ROM header takes up room that the content
+total alone does not account for, and so do the decompressor stub of either compressed format and, under comprom, its
+dictionary.</p>
 
 <hr>
 
@@ -104,11 +111,11 @@ and tools in the BBC Micro ecosystem.</p>
 
 <p>Where:</p>
 <ul style="line-height:1.8">
-    <li><code>$.FILENAME</code> &mdash; the BBC Micro filename, including the DFS directory prefix (usually <code>$</code> for the default directory, not used in the cassette or ROM filing systems)</li>
-    <li><span class="yl" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">LLLLLLLL</span> &mdash; the load address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
-    <li><span class="wh" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">EEEEEEEE</span> &mdash; the execution address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
-    <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSS</span> &mdash; the file length in bytes, in hex</li>
-    <li><span class="dg" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">Locked</span> &mdash; optional. Present only when the file is locked, and absent otherwise</li>
+    <li><code>$.FILENAME</code>: the BBC Micro filename, including the DFS directory prefix (usually <code>$</code> for the default directory, not used in the cassette or ROM filing systems)</li>
+    <li><span class="yl" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">LLLLLLLL</span> is the load address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
+    <li><span class="wh" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">EEEEEEEE</span> is the execution address as an 8-digit hex value (e.g. <code>FFFF1900</code>)</li>
+    <li><span class="num" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">SSSSSS</span> is the file length in bytes, in hex</li>
+    <li><span class="dg" style="background:#222; padding:1px 4px; font-family:Courier,monospace;">Locked</span> is optional. Present only when the file is locked, and absent otherwise</li>
 </ul>
 
 <p>Both addresses are <b>written</b> as eight hex digits, so a full 32-bit address is stated outright. Sidecar files are
@@ -123,7 +130,7 @@ For non-executable files such as data files these two addresses are often identi
 accommodate the Master 128&#8217;s extended address space, though on a Model B only the lower 16&nbsp;bits are significant.</p>
 
 <p>The <b>lock</b> field marks a file as protected. A locked file can be <code>*RUN</code> on a BBC Micro but not
-<code>*LOAD</code>ed &#8212; an attempt to load it answers with <code>Locked</code> &#8212; which was the usual way of
+<code>*LOAD</code>ed, an attempt to load it answering with <code>Locked</code>. That was the usual way of
 discouraging casual copying in the cassette era. BeebRFSMaker reads the field when packing and sets the protection bit in
 the ROM image, so the BBC treats the file as locked, and a locked file is shown with an <b>L</b> after its size in the
 Beeb file list. Extracting puts the lock back into the <code>.inf</code> file it writes.</p>
@@ -133,7 +140,7 @@ tools write. Both are accepted when reading. <code>Locked</code> is always what 
 reader of the format understands. The field sits after the length, but the length itself is optional in the wider
 convention, so it is recognised wherever it appears rather than by counting along the line.</p>
 
-<p>Example &mdash; a BBC BASIC program called <code>GAME</code>, and a locked machine code file:</p>
+<p>Example: the .inf files for a BBC BASIC program called <code>GAME</code>, and a locked machine code file:</p>
 
 <pre class="bbc">$.GAME  <span class="yl">00001900</span>  <span class="wh">00008023</span>  <span class="num">003A4F</span>
 $.DEFENMC  <span class="yl">00001900</span>  <span class="wh">00000E00</span>  <span class="num">002300</span>  <span class="dg">Locked</span></pre>
@@ -141,7 +148,7 @@ $.DEFENMC  <span class="yl">00001900</span>  <span class="wh">00000E00</span>  <
 <img src="BeebRFSMaker/BeebRFSMaker Screenshot 07.png" alt="BeebRFSMaker file drop area and file details" style="float: left; margin-right: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 18%;">
 <img src="BeebRFSMaker/BeebRFSMaker Screenshot 08.png" alt="BeebRFSMaker ROM Image Detected dialog offering to extract files" style="float: right; margin-left: 16px; margin-bottom: 8px; border-radius: 12px; max-width: 35%;">
 <p>
-If you drop a <code>.rom</code> file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. Both compressed and uncompressed RFS ROMs are recognised, and the Event Log records which kind was detected and which files came out of it. You can also <b>use this feature just to extract files from a compatible ROM image</b>. The corresponding <code>.inf</code> file will be created during extraction.
+If you drop a <code>.rom</code> file onto the app it will offer to extract the content into a location of your choice, and optionally add those files to whatever is already in the list. All three formats are recognised, standard, comprom and KLOComp Lempel-Ziv, and the Event Log records which kind was detected and which files came out of it. You can also <b>use this feature just to extract files from a compatible ROM image</b>. The corresponding <code>.inf</code> file will be created during extraction.
 </p>
 <div style="clear:both;"></div>
 <hr>
@@ -163,9 +170,10 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
 
 <p>Files you have edited are marked with <code>(*)</code> in the file list, meaning that file now differs from the ROM
     image last built from it. Press <b>Apply</b> to rebuild the image around your edits, at which point the markers
-    clear. The rebuild is deliberately not automatic: in a compressed ROM the whole file set shares a single dictionary,
+    clear. The rebuild is deliberately not automatic: in a comprom ROM the whole file set shares a single dictionary,
     so one changed byte can alter the compression of every file, and repacking on each keystroke would be both slow and
-    confusing to watch. Saving the ROM image applies any outstanding edits first, so what you save always matches what
+    confusing to watch. A Lempel-Ziv ROM compresses each file on its own, so the effect is contained, but the rebuild
+    still waits for Apply so that the two formats behave the same way. Saving the ROM image applies any outstanding edits first, so what you save always matches what
     you see.</p>
 
 <p><b>Nothing is written back to the files on your PC.</b> Edits apply only to the app&#8217;s in-memory copy of the
@@ -174,7 +182,7 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
 
 <p>The <b>ROM</b> and <b>Event Log</b> views are read-only. A ROM image is regenerated from the file list every time it
     is built, so editing its bytes directly would only be undone by the next rebuild. The parts of the image that are
-    yours to set &#8212; the ROM title and the catalogue title, the latter labelled <b>Catalog</b> in the app &#8212; have
+    yours to set are the ROM title and the catalogue title, the latter labelled <b>Catalog</b> in the app, and both have
     their own text boxes above the preview pane.</p>
 
 <hr>
@@ -191,26 +199,26 @@ If you drop a <code>.rom</code> file onto the app it will offer to extract the c
     a complete address and can never be left half-finished. Only the hex digits <code>0</code>&#8211;<code>9</code> and
     <code>A</code>&#8211;<code>F</code> are accepted.</p>
 
-<p>The <b>Size</b> field alongside them is shown for reference but cannot be edited &#8212; a file&#8217;s length is
+<p>The <b>Size</b> field alongside them is shown for reference but cannot be edited. A file&#8217;s length is
     whatever its contents amount to, and the hex editor above deliberately preserves it.</p>
 
 <p>A BBC BASIC program dropped in without a <code>.inf</code> file beside it is now given the host addresses
-    <code>FFFF1900</code> and <code>FFFF8023</code> &#8212; <code>PAGE</code> and the BASIC entry point, marked as being
-    in the host rather than across the tube, which is what a program loaded from a ROM filing system wants.</p>
+    <code>FFFF1900</code> and <code>FFFF8023</code>. Those are <code>PAGE</code> and the BASIC entry point, marked as
+    being in the host rather than across the tube, which is what a program loaded from a ROM filing system wants.</p>
 
 <hr>
 
 <h2 id="disk_image_files">Files exported from a disk image</h2>
 
-<p>Files taken off a <code>.ssd</code> or <code>.dsd</code> disk image &#8212; by
-    <a href="BBC Micro Utilities.htm">BBCReadDiskImage</a> or a similar tool &#8212; arrive with the drive and directory
+<p>Files taken off a <code>.ssd</code> or <code>.dsd</code> disk image, by
+    <a href="BBC Micro Utilities.htm">BBCReadDiskImage</a> or a similar tool, arrive with the drive and directory
     written into the PC file name, as <code>0_$.MAKERFS</code> or <code>0_P.MakeRFS</code>. Drop those in and the drive
     and directory are stripped off, since a ROM filing system has no directories: they go in as <code>MAKERFS</code> and
     <code>MakeRFS</code>. A name can no longer keep a dot either, which the BBC would read as a directory separator.</p>
 
 <p>Where two files differ only by the directory they came from, their names collide once the directory is dropped. You
-    are offered the directory letter as a prefix so both can go in &#8212; the copy from <code>P</code> becomes
-    <code>PMakeRFS</code> &#8212; or you can decline and leave that file out. The root directory <code>$</code> is never
+    are offered the directory letter as a prefix so both can go in, so that the copy from <code>P</code> becomes
+    <code>PMakeRFS</code>, or you can decline and leave that file out. The root directory <code>$</code> is never
     offered as a prefix, since it says nothing about where a file came from.</p>
 
 <p>A <code>.inf</code> file dropped alongside the file it describes is read for that file&#8217;s addresses and quietly
@@ -232,11 +240,23 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 
 <h2 id="screenshots">Screenshots</h2>
 
-<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker packing screen">
-<p class="screenshot-caption">Packing a set of BBC Micro files into a 16 KB sideways ROM image</p>
+<p>The Event Log shows what each format made of the same seven files, so the three can be compared directly. The same
+14,608 bytes of content fills 15,218 bytes of ROM as standard RFS (92%), 13,231 under comprom (80%), and 12,111 under
+Lempel-Ziv (73%).</p>
+
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 03.png" alt="BeebRFSMaker Event Log for a standard uncompressed RFS ROM build">
+<p class="screenshot-caption">Packing as a <b>standard</b> RFS ROM, where the files are stored as they stand</p>
+
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 03-1.png" alt="BeebRFSMaker Event Log for a comprom RFS ROM build">
+<p class="screenshot-caption">The same files under <b>comprom</b>, showing what each one compressed to</p>
+
+<img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 03-2.png" alt="BeebRFSMaker Event Log for a KLOComp Lempel-Ziv RFS ROM build">
+<p class="screenshot-caption">The same files under <b>Lempel-Ziv</b>, with 14,608 bytes of files compressed to 10,775 and 1,336 bytes of
+header, decompressor and catalogue on top, filling 12,111 of the 16&nbsp;KB and leaving 4,273 spare. The asterisks mark
+two files stored as they stand, because compressing them made them bigger</p>
 
 <img class="screenshot" src="BeebRFSMaker/BeebRFSMaker Screenshot 06.png" alt="BeebRFSMaker extraction screen">
-<p class="screenshot-caption">Extracting files from an existing CompRFS ROM image, with optional <code>.inf</code> sidecar files</p>
+<p class="screenshot-caption">Extracting files from an existing RFS ROM image, with optional <code>.inf</code> sidecar files</p>
 
 <hr>
 
@@ -248,12 +268,12 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
         <p>Drag and drop a set of files onto the app, or pick them with the <b>Add files</b> button, and pack them into a standard 16&nbsp;KB sideways ROM image. BBC Micro filenames, load addresses, and execution addresses are read from <code>.inf</code> sidecar files if present.</p>
     </div>
     <div class="feature-item">
-        <h3 id="feature_both_formats">Both RFS formats</h3>
-        <p>Build either a compressed (CompRFS) ROM or a standard, uncompressed RFS ROM from the same file list, using the Compressed / Uncompressed toggle.</p>
+        <h3 id="feature_both_formats">Three RFS formats</h3>
+        <p>Build a standard, uncompressed RFS ROM, a comprom (CompRFS) ROM, or a KLOComp Lempel-Ziv ROM from the same file list, using the <b>RFS Type</b> selector. Switching format repacks the same files, so you can see what each one costs before choosing.</p>
     </div>
     <div class="feature-item">
         <h3 id="feature_extract">Extract from ROM images</h3>
-        <p>Open any compatible RFS ROM image, compressed or uncompressed &#8212; the format is detected from the ROM header &#8212; and extract its files back to a folder, generating <code>.inf</code> sidecar files in the format that has become the de facto standard for preserving BBC Micro metadata &#8212; filename, load and execution addresses, and file length.</p>
+        <p>Open any compatible RFS ROM image in any of the three formats, the format being detected from the ROM header, and extract its files back to a folder. The <code>.inf</code> sidecar files generated alongside them use the format that has become the de facto standard for preserving BBC Micro metadata: filename, load and execution addresses, and file length.</p>
     </div>
     <div class="feature-item">
         <h3 id="feature_edit_content">Edit file content in place</h3>
@@ -279,7 +299,7 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
     </div>
     <div class="feature-item">
         <h3 id="feature_rom_header_options">ROM header options</h3>
-        <p>Customise the ROM title (shown by <code>*ROMS</code>) and the catalogue title (shown by <code>*CAT</code>), each in its own field above the preview pane. The catalogue title applies to compressed ROMs.</p>
+        <p>Customise the ROM title (shown by <code>*ROMS</code>) and the catalogue title (shown by <code>*CAT</code>), each in its own field above the preview pane. The catalogue title applies to comprom ROMs only, and the field is greyed out for the other two formats, neither of which writes one.</p>
     </div>
     <div class="feature-item">
         <h3 id="feature_command_line">Command-line interface</h3>
@@ -311,9 +331,23 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
     all benefit from the same tokens.</p>
 
 <p>A <b>standard, uncompressed RFS</b> ROM is simpler: after the Acorn ROM header comes a short service handler, and then
-    the file blocks are stored verbatim &#8212; no dictionary, no digraph table and no decompressor stub. It holds far less in
+    the file blocks are stored verbatim, with no dictionary, no digraph table and no decompressor stub. It holds far less in
     the same 16&nbsp;KB, but the layout is plain to read and nothing has to be decoded at run time. Because such a ROM has no
     language of its own, the language entry point at &amp;8000 is left unused.</p>
+
+<p>The <b>KLOComp Lempel-Ziv</b> format takes a different approach again. Each file is compressed as an LZ77 stream over a
+    192-byte sliding window, and a format descriptor carrying the signature <code>KZ</code> sits at a fixed
+    <code>&amp;8040</code> so a tool can identify the image without first working out how long the code is. Its advantage
+    over comprom comes from three places: there is no dictionary or digraph table to carry, the decompressor stub is
+    smaller, and the cassette block headers the MOS asks for are synthesised as it asks for them rather than being stored,
+    which on a ROM holding a dozen files is a useful amount of space not spent on framing. A catalogue of the files is held
+    uncompressed so that any one of them can be found directly.</p>
+
+<p>Each file is compressed on its own, starting from an empty window, rather than the whole set sharing one stream. That
+    gives up a little compression on small files, and a file that would grow is simply stored as it stands, marked
+    with an asterisk in the Event Log. What it buys is that reaching the last file does not require expanding every file
+    before it, so any single file loads at once. Unlike a plain RFS ROM, the language entry point holds a real
+    <code>JMP</code>, which is also what tells the format apart from the other two at a glance.</p>
 
 <hr>
 
@@ -333,13 +367,18 @@ the EEPROM content. The EEPROMs I have created so far all worked in my actual BB
 
 <h2 id="compatibility">Compatibility</h2>
 
-<p>BeebRFSMaker handles both the <b>Compressed ROM Filing System v2.10</b> format and <b>standard, uncompressed RFS</b>. ROM images produced by BeebRFSMaker can be used with:</p>
+<p>BeebRFSMaker handles the <b>Compressed ROM Filing System v2.10</b> format, <b>standard, uncompressed RFS</b>, and
+<b>KLOComp Lempel-Ziv</b>. ROM images produced by BeebRFSMaker can be used with:</p>
 
 <ul style="line-height:1.8">
     <li>A real BBC Micro Model B, B+, or Master 128 with a suitable ROM board</li>
     <li>BeebEm and other BBC Micro emulators that support sideways ROMs</li>
-    <li>Any other tool that reads the comprom.pl v2.10 format</li>
+    <li>Any other tool that reads the comprom.pl v2.10 format, for ROMs built in that format</li>
 </ul>
+
+<p>All three formats are self-contained sideways ROMs that need nothing but the ROM socket, so the choice between them is
+about how much fits rather than about what will run it. Comprom is the one to pick where another tool has to read the
+image back, since it is the only one of the three with an existing implementation elsewhere.</p>
 
 <p>When reading an uncompressed ROM, the unused language entry point at &amp;8000 may be filled with either three
  <code>NOP</code> instructions or three zero bytes; both conventions are recognised.</p>
