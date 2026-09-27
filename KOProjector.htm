@@ -16,7 +16,8 @@
         Rescue <b>old home movie projects</b> from video-editing software that no longer runs. <b>KOProjector</b> reads projects made
         with <b>Roxio VideoWave</b>, <b>Windows Movie Maker&nbsp;2</b> and <b>Windows Live Movie Maker</b>, hunts down the
         photographs and video clips that have been renamed, reorganised and swept into the cloud in the twenty years
-        since, and rebuilds the whole production as a <b>CyberLink PowerDirector</b> project you can open and finish today.
+        since, and rebuilds the whole production as a <b>CyberLink PowerDirector</b> project you can open and finish today
+        &mdash; or as <b>FCPXML</b> for <b>DaVinci Resolve</b> and <b>Final Cut Pro</b>.
     </p>
 
     <span class="badge">Windows</span>
@@ -42,7 +43,9 @@
     </p>
     <p>
         The result opens in <b>PowerDirector&nbsp;24</b> with the clips, trims, transitions, soundtrack, camera moves and
-        titles in place &mdash; ready to adjust and produce, rather than ready to rebuild from scratch.
+        titles in place &mdash; ready to adjust and produce, rather than ready to rebuild from scratch. Or, if PowerDirector
+        is not the editor you want to live with, it writes <a href="#Resolve">FCPXML</a> that DaVinci Resolve can import
+        instead.
     </p>
 
     <p class="local-copy-notice">
@@ -53,7 +56,7 @@
     <h2 id="Formats">What it reads and writes</h2>
 
     <p>
-        Five source formats, spanning about twenty years of consumer video editing, and one destination:
+        Five source formats, spanning about twenty years of consumer video editing, and two destinations:
     </p>
 
     <ul>
@@ -80,10 +83,20 @@
             <b>Windows Live Movie Maker</b> projects &mdash; <b>.wlmp</b>, the later and much simpler format.
         </li>
         <li>
-            <b>CyberLink PowerDirector</b> projects &mdash; <b>.pds</b> &mdash; which is both what everything is written
-            out as, and a format it can <a href="#Relinking">read back in</a>.
+            <b>CyberLink PowerDirector</b> projects &mdash; <b>.pds</b> &mdash; which is both a destination and a
+            format it can <a href="#Relinking">read back in</a>.
+        </li>
+        <li>
+            <b>FCPXML</b> &mdash; <b>.fcpxml</b>, Apple's documented interchange format, which
+            <a href="#Resolve">DaVinci Resolve and Final Cut Pro import</a>. A destination only, and written from every
+            source above, PowerDirector included.
         </li>
     </ul>
+
+    <p>
+        It also reads its own <b>JSON</b>, written with <b>--json</b>, which comes back as <b>exactly</b> the project it
+        was written from &mdash; a way of <a href="#Archive">keeping projects</a> that depends on no editor at all.
+    </p>
 
     <p>
         The format is worked out by <b>looking inside the file rather than at its extension</b>. Extensions turn out to be a
@@ -213,7 +226,8 @@
         ready to open or to send to somebody. Any other extension gives text: plain, or with the colours embedded in it if
         you asked for <b>--colour always</b>. And <b>--json</b> writes a complete description of the project &mdash; every
         clip with its position and trim points, the transitions, titles, sound and a deduplicated media list &mdash; which
-        is enough to redraw the timeline without the project file.
+        is enough to redraw the timeline without the project file. That same file doubles as an
+        <a href="#Archive">archive</a> KOProjector can read back in.
     </p>
 
     <p>
@@ -470,7 +484,8 @@ Reports\YRL_pds.htm</div>
     </p>
 
     <p>
-        Give KOProjector a <b>.pds</b> as its source and it writes a copy pointing at where the media actually is, and
+        Give KOProjector a <b>.pds</b> as its source and another <b>.pds</b> as its destination, and it writes a copy
+        pointing at where the media actually is, and
         <b>changes nothing else whatsoever</b>. That is not a claim about intent &mdash; it is checked by putting the
         paths back afterwards and confirming the file is byte-for-byte what it was.
     </p>
@@ -492,6 +507,138 @@ Reports\YRL_pds.htm</div>
         film uses and the material <a href="#Finding">only sitting in "My Media"</a>, which an established project tends to
         have a good deal of.
     </p>
+    <hr>
+
+    <h2 id="Archive">Keeping projects as JSON</h2>
+
+    <p>
+        Converting to PowerDirector solves today's problem, and quietly sets up the same one again. <b>No other editor
+        can open a .pds</b>, and PowerDirector writes nothing another editor can read. If PowerDirector goes the way of
+        VideoWave, the projects are stranded a second time.
+    </p>
+
+    <p>
+        So KOProjector can keep a project in a form of its own, documented and plain text, that it reads back in
+        <b>exactly</b> as it was:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "*.*" --json=Archive\*.json</b></div>
+
+    <p>
+        That keeps every project in the folder as JSON, one file each, and converts nothing. (Make the
+        <b>Archive</b> folder first &mdash; KOProjector never creates folders for you.) Later &mdash; with the
+        original gone, or the program that made it &mdash; the JSON is a source like any other:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "Archive\Christmas2004_dmsm.json" "Christmas2004.pds"</b></div>
+
+    <p>
+        Each file has two halves. The first is a <b>report</b> for reading: every clip with its place on the timeline,
+        the sound, titles and transitions, figures rounded to something sensible. The last section, <b>model</b>, is
+        the <b>archive</b>: every value the project was read as, exactly and unrounded, including what the report
+        leaves out &mdash; pan and zoom, whether a clip's own sound was muted, a volume curve drawn by hand, the name of
+        each transition's effect. Only that section is ever read back, so nothing worked out for the report can creep
+        into the project on its way in.
+    </p>
+
+    <p>
+        It is tested the only way that means anything: write a project out, read it back, write it again, and demand
+        the two agree character for character &mdash; and, to be sure that check can actually fail, delete one value at a
+        time from a written file and demand that it then <em>does</em>. Real productions of 19, 34 and 206 clips come
+        back identical. As everywhere else, folder names are written as <b>%ONEDRIVE%</b> and the like, so an archived
+        project carries no account name.
+    </p>
+    <hr>
+
+    <h2 id="Resolve">Taking a project to DaVinci Resolve</h2>
+
+    <p>
+        No other editor can open a PowerDirector project, and PowerDirector exports nothing another editor can read. So
+        KOProjector also writes <b>FCPXML</b> &mdash; Apple's documented interchange format, which DaVinci Resolve (free)
+        and Final Cut Pro both import. Name the destination <b>.fcpxml</b> and that is what you get, from any source:
+    </p>
+
+    <div class="cli-block"><b>KOProjectorTool "ChoirConcert.pds" "ChoirConcert.fcpxml" --trim</b></div>
+
+    <p>
+        In Resolve, bring it in with <b>File &rsaquo; Import &rsaquo; Timeline</b>. A whole folder goes the same way as it
+        does to PowerDirector &mdash; <b>KOProjectorTool "*.dmsm" "*.fcpxml" --trim</b> &mdash; and a project kept as
+        <a href="#Archive">JSON</a> converts just as well as the original.
+    </p>
+
+    <p>
+        <b>If your media lives in OneDrive, use --trim.</b> Resolve opens every file the FCPXML names, and opening a
+        file that is only in the cloud downloads it. Without <b>--trim</b> that includes everything you ever imported into
+        the project and never used: one choir project here plays less than 0.1 GB from the cloud and carries 16 GB it
+        does not play. With it, only what the film actually shows and plays is named.
+    </p>
+
+    <p>
+        One thing comes across <b>better</b> than it does to PowerDirector. A VideoWave transition overlaps the two clips
+        it joins, and a PowerDirector one cannot, so a film converted to PowerDirector grows by the length of every
+        transition. FCPXML's transitions can overlap, so the film keeps <b>exactly its original length</b>, with every
+        clip, sound and title where it was.
+    </p>
+
+    <p>
+        Some things come across less well. Every transition becomes a <b>cross dissolve</b> &mdash; which most of them
+        were anyway &mdash; and the others are named in the conversion log. Titles arrive as editable text in the right
+        words, typeface, size and colour, but <b>centred and without their animation</b>. A slideshow's own animated
+        backdrop becomes black, with a marker saying what belonged there. As with every conversion, each run lists what
+        did not make the journey.
+    </p>
+
+    <h3 id="ResolveThingsToKnow">What Resolve can and cannot open</h3>
+
+    <p>
+        Tried in DaVinci Resolve 21 on real projects: a PowerDirector slideshow imports matching its length to the frame,
+        with its music, titles and transitions, and a Movie Maker slideshow's pans and zooms move as they did. A few
+        things are worth knowing before you start:
+    </p>
+
+    <ul>
+        <li>
+            <b>iPhone photographs in HEIC</b> (the format iPhones have saved in since 2017) <b>will not open in Resolve on
+            Windows</b>. Resolve marks such a clip <b>"Media Offline"</b>, which is misleading: the file is there, on your
+            disk, exactly where the project says &mdash; Resolve simply cannot read it, and "offline" is what it says about
+            any file it cannot use. KOProjector deals with this
+            <b>automatically</b>, with no option to set: when writing FCPXML, if a <b>.jpg of exactly the same name</b>
+            sits beside a <b>.heic</b>, the FCPXML names the .jpg instead. The photographs themselves are not touched, and a
+            PowerDirector conversion keeps the .heic, which PowerDirector reads. Any HEIC without a copy is listed at the end
+            of the run, together with the ImageMagick command that makes the copies:
+        </li>
+    </ul>
+
+    <div class="cli-block"><b>magick mogrify -path "C:\Pictures\Holiday" -format jpg -quality 95 -auto-orient "C:\Pictures\Holiday\*.heic"</b></div>
+
+    <p style="margin-left: 2em;">
+        That writes a .jpg beside each .heic and leaves the originals alone; <b>-auto-orient</b> turns each picture upright
+        in the copy itself. Then convert the project again.
+    </p>
+
+    <ul>
+        <li>
+            <b>Very old video will not open either.</b> Resolve refuses the MPEG-1 <b>.MPG</b> files that early-2000s digital
+            cameras made &mdash; a project using them imports with those clips marked <b>"Media Offline"</b> in the same
+            misleading way, however correct the FCPXML. So if Resolve says a clip is offline, check first whether the file
+            is actually there: if it is, the format is the problem, not the path. These need converting to a modern format
+            first.
+        </li>
+        <li>
+            <b>Pans and zooms arrive as Resolve's own <i>Dynamic Zoom</i></b>, which you can adjust afterwards: select the
+            picture, and choose <b>Dynamic Zoom</b> from the small menu under the bottom-left corner of the timeline viewer
+            to see the start (green) and end (red) frames. Movie Maker's slideshow zooms are gentle &mdash; about 15% over
+            a photograph's time on screen &mdash; so they are easy to miss at first.
+        </li>
+        <li>
+            <b>Use --trim</b> if your media is in OneDrive, as above.
+        </li>
+    </ul>
+
+    <div class="note">
+        <b>Note:</b> this is newer than the PowerDirector route and has so far been tried in Resolve only, not Final Cut
+        Pro. As with any conversion, check the result against the original before setting the original aside.
+    </div>
     <hr>
 
     <h2 id="Faithful">How faithful is the conversion?</h2>
@@ -775,7 +922,8 @@ Reports\YRL_pds.htm</div>
     </p>
 
     <p>
-        There are a few more: <b>--json</b> writes a complete description of the project for inspection;
+        There are a few more: <b>--json</b> writes a complete description of the project, for inspection and as an
+        <a href="#Archive">archive</a> that can be read back in;
         <b>--transitions</b> supplies your own effect mapping in place of the built-in one; and <b>--no-titles</b> converts
         without titles, which is the quickest way to find out whether a title is behind a problem opening the result.
         <b>--help</b> explains them all.
@@ -811,6 +959,16 @@ Reports\YRL_pds.htm</div>
         <div class="feature-item">
             <h3 id="FeatureRelink">Relink, Don't Rebuild</h3>
             <p>An existing PowerDirector project gets new paths and nothing else &mdash; proved byte-for-byte, so no effect or grade is lost.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3 id="FeatureResolve">DaVinci Resolve Too</h3>
+            <p>Any project, PowerDirector's included, written as FCPXML for Resolve or Final Cut &mdash; transitions overlapping as they did.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3 id="FeatureArchive">An Archive You Own</h3>
+            <p>Projects kept as plain JSON read back exactly, so they outlive any editor &mdash; PowerDirector included.</p>
         </div>
 
         <div class="feature-item">
