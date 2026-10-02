@@ -80,7 +80,8 @@
             from scratch.
         </li>
         <li>
-            <b>Windows Live Movie Maker</b> projects &mdash; <b>.wlmp</b>, the later and much simpler format.
+            <b>Windows Live Movie Maker</b> projects &mdash; <b>.wlmp</b>, the later and much simpler format. Its pans
+            and zooms travel too, into PowerDirector and Resolve alike, filling the screen as Movie Maker did.
         </li>
         <li>
             <b>CyberLink PowerDirector</b> projects &mdash; <b>.pds</b> &mdash; which is both a destination and a
@@ -588,6 +589,14 @@ Reports\YRL_pds.htm</div>
         did not make the journey.
     </p>
 
+    <p>
+        A <b>coloured panel keeps its colour</b>: FCPXML has no plain colour clip, so each colour is written as a small
+        picture of that colour, in a folder beside the FCPXML named after it (<b>&hellip;_Colours</b>), which Resolve
+        stretches to fill the screen. And PowerDirector's <b>extra video tracks</b> come across &mdash; the footage and
+        photographs laid over the main picture, cutaways and the like &mdash; as layers in the same order, each with its
+        own sound. So do PowerDirector's own pans and zooms.
+    </p>
+
     <h3 id="ResolveThingsToKnow">What Resolve can and cannot open</h3>
 
     <p>
@@ -604,31 +613,51 @@ Reports\YRL_pds.htm</div>
             any file it cannot use. KOProjector deals with this
             <b>automatically</b>, with no option to set: when writing FCPXML, if a <b>.jpg of exactly the same name</b>
             sits beside a <b>.heic</b>, the FCPXML names the .jpg instead. The photographs themselves are not touched, and a
-            PowerDirector conversion keeps the .heic, which PowerDirector reads. Any HEIC without a copy is listed at the end
-            of the run, together with the ImageMagick command that makes the copies:
+            PowerDirector conversion keeps the .heic, which PowerDirector reads.
         </li>
-    </ul>
-
-    <div class="cli-block"><b>magick mogrify -path "C:\Pictures\Holiday" -format jpg -quality 95 -auto-orient "C:\Pictures\Holiday\*.heic"</b></div>
-
-    <p style="margin-left: 2em;">
-        That writes a .jpg beside each .heic and leaves the originals alone; <b>-auto-orient</b> turns each picture upright
-        in the copy itself. Then convert the project again.
-    </p>
-
-    <ul>
         <li>
             <b>Very old video will not open either.</b> Resolve refuses the MPEG-1 <b>.MPG</b> files that early-2000s digital
             cameras made &mdash; a project using them imports with those clips marked <b>"Media Offline"</b> in the same
             misleading way, however correct the FCPXML. So if Resolve says a clip is offline, check first whether the file
-            is actually there: if it is, the format is the problem, not the path. These need converting to a modern format
-            first.
+            is actually there: if it is, the format is the problem, not the path. KOProjector reads each .mpg's own header
+            to tell MPEG-1 from MPEG-2 (which Resolve reads happily), and treats MPEG-1 as it treats HEIC: a <b>.mp4</b> of
+            the same name beside it is used instead.
         </li>
+        <li>
+            <b>PowerDirector's own cached video needs a copy.</b> Some video a PowerDirector project plays &mdash; stock
+            clips it downloaded, for instance &mdash; lives in PowerDirector's cache as ordinary QuickTime or MP4 files
+            with no file extension, and Resolve will not take a file without one (&ldquo;9 of 29 clips were not yet found&rdquo;).
+            KOProjector recognises them from their contents and copies each, with the right extension, into a
+            <b>_Media</b> folder beside the <b>.fcpxml</b> &mdash; not beside the original, since PowerDirector clears its
+            cache. These can run to gigabytes, so it says how much first and asks; <b>--force</b> copies without asking.
+            Copies made by an earlier run are simply used. Decline, and the copy commands go in the <b>.txt</b> instead.
+        </li>
+    </ul>
+
+    <p>
+        <b>For both, the run makes converting easy.</b> It warns about any file Resolve cannot open, and writes the
+        commands that make copies it can open into a <b>.txt</b> beside the <b>.fcpxml</b>, with the same name &mdash;
+        <b>magick</b> (ImageMagick) for photographs, <b>ffmpeg</b> for video, one line per file, ready to run:
+    </p>
+
+    <div class="cli-block"><b>magick "C:\Pictures\Holiday\IMG_0412.heic" -auto-orient -quality 95 "C:\Pictures\Holiday\IMG_0412.jpg"<br>ffmpeg -n -i "C:\Videos\Snow\MOV00331.MPG" -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a aac -b:a 192k "C:\Videos\Snow\MOV00331.mp4"</b></div>
+
+    <p style="margin-left: 2em;">
+        Each writes a copy beside the original and leaves the original alone (<b>-auto-orient</b> turns a photograph
+        upright in the copy itself; <b>-n</b> stops ffmpeg overwriting anything). Then run the same KOProjectorTool
+        command again: the FCPXML names the copies, and the .txt disappears once nothing is left to convert. ffmpeg is
+        free; the .txt says how to install it if you do not have it.
+    </p>
+
+    <ul>
         <li>
             <b>Pans and zooms arrive as Resolve's own <i>Dynamic Zoom</i></b>, which you can adjust afterwards: select the
             picture, and choose <b>Dynamic Zoom</b> from the small menu under the bottom-left corner of the timeline viewer
             to see the start (green) and end (red) frames. Movie Maker's slideshow zooms are gentle &mdash; about 15% over
-            a photograph's time on screen &mdash; so they are easy to miss at first.
+            a photograph's time on screen &mdash; so they are easy to miss at first. A Movie Maker project does not say
+            which edge of a photograph a zoom closes in on, so KOProjector picks the top, where faces usually are; if a
+            zoom crops the wrong part of a picture, drag its start or end frame here. Moves chosen by name in Movie Maker,
+            such as <i>Zoom in full to top left</i>, are made exactly as their names describe.
         </li>
         <li>
             <b>Use --trim</b> if your media is in OneDrive, as above.
