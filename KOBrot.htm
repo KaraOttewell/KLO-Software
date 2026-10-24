@@ -47,6 +47,23 @@
     </p>
     <hr>
 
+    <h2 id="WhatsNew">What's New in Version 1.0.27</h2>
+
+    <ul>
+        <li><b>Now uses multi-threading</b> &mdash; drawing is shared across all of your processor's cores, so the
+            Mandelbrot set, Julia sets, the 3D landscape and snapshots all appear several times faster.</li>
+        <li><b>Finer detail on high-resolution displays</b> &mdash; if Windows scales your display (125%, 150% and so
+            on), the picture is now drawn at the screen's full resolution rather than enlarged, so the finest filaments
+            stay crisp, on screen and in your snapshots.</li>
+        <li><b>More efficient use of memory</b> &mdash; large snapshots no longer leave memory tied up, so KOBrot stays
+            quick afterwards.</li>
+        <li><b>Cleaner pictures</b> &mdash; no more occasional stray vertical streak, missing top row or faint seam along
+            the horizontal axis, and Julia sets no longer show stray black specks near their edges.</li>
+        <li><b>Watch it draw</b> &mdash; the left-to-right sweep and the random fade-in can now be seen as the picture is
+            drawn, and the fade-in works at every window size.</li>
+    </ul>
+    <hr>
+
     <h2 id="Zooming">Zooming and Panning</h2>
 
     <img class="screenshot shot-right" src="KOBrot/KOBrot_Screenshot_AppViridisMandelbrot.png" alt="KOBrot Mandelbrot set drawn with the Viridis colour map" style="max-width: 44%;">
@@ -70,6 +87,31 @@
     <p>
         The picture above is the classic whole-set view drawn with the <b>Viridis</b> colour map. Because the colouring is
         based on the escape count, the deeper you zoom the more the colour bands reveal the fine structure of the boundary.
+    </p>
+    <div style="clear:both;"></div>
+
+    <h3 id="TreasureMap">Where Am I? The Treasure Map</h3>
+
+    <img class="screenshot shot-center" src="KOBrot/KOBrot_Screenshot_SimpleColourWheelWithJuliaSetAndTreasureMap.png" alt="KOBrot showing a deep zoom drawn with the Colour Wheel map and Simple colouring, the matching Julia set in the sidebar, and the treasure map in the top corner marking where the view sits on the whole Mandelbrot set" style="max-width: 90%;">
+
+    <p>
+        Deep in the fractal it is easy to lose track of where you are. Click the <b>Show position on Mandelbrot</b>
+        button in the top ribbon (the map pin, shown highlighted above) and a <b>treasure map</b> unrolls in the corner
+        of the picture: an old parchment scroll showing the whole Mandelbrot set, with a cross marking the centre of your
+        current view and its coordinates written alongside. The map keeps up as you zoom in and out, step back and forward
+        through your zoom history, and resize the window; click the button again to roll it away.
+    </p>
+
+    <p>
+        The map is a handy shortcut too &mdash; as it says, <i>&ldquo;click ye here&rdquo;</i>. Clicking the map copies the
+        centre coordinates (to 16 decimal places, together with the size of the view) <em>and</em> the picture itself to
+        the clipboard, ready to paste into a document, an email or your own notebook of discoveries.
+    </p>
+
+    <p>
+        The picture above also shows the <b>Colour Wheel</b> map with <b>Simple</b> colouring deep in the fractal, the
+        matching Julia set in the sidebar, the <b>Output &amp; startup</b> section opened out, and the message KOBrot
+        shows after saving a snapshot, with a link straight to the folder it was saved in.
     </p>
     <hr>
 
@@ -121,10 +163,12 @@
         another whenever you want a different one.
     </p>
     <p>
-        You can also choose how the image is <b>drawn</b>: <b>left-to-right</b> fills the picture in tidy columns, while
-        <b>random</b> scatters the pixels so the whole image resolves at once like an old dial-up photo coming into focus.
-        It makes no difference to the finished picture &mdash; just to how it appears while it is being computed &mdash; and
-        your choice is remembered for next time.
+        You can also choose how the image is <b>drawn</b>: <b>left-to-right</b> sweeps across the picture in bands of
+        columns, while <b>random</b> scatters the pixels so the whole image resolves at once like an old dial-up photo
+        coming into focus. It makes no difference to the finished picture &mdash; just to how it appears while it is being
+        computed &mdash; and your choice is remembered for next time. Either way, the work is shared across all of your
+        processor's cores, so on a slow, deeply-zoomed view you can watch it happen, while everyday views appear almost
+        at once.
     </p>
     <h3 id="ColourIndexing">Simple, Smooth and Histogram colouring</h3>
 
@@ -344,6 +388,12 @@
         posed it on screen.
     </p>
 
+    <p>
+        The picture on screen gets the same care: on a high-resolution display that Windows scales up (125%, 150% and so
+        on), KOBrot draws at the screen's full resolution, so the filaments you see are as fine as your display can show
+        &mdash; and a <b>Visible dimensions</b> snapshot saves exactly that detail.
+    </p>
+
     <img class="screenshot shot-center" src="KOBrot/KOBrot_HeroScreenshot.png" alt="KOBrot snapshot example" style="max-width: 75%;">
     <hr>
 
@@ -383,6 +433,11 @@
         </div>
 
         <div class="feature-item">
+            <h3 id="FeatureTreasureMap">Treasure Map</h3>
+            <p>See where you are on a parchment map of the whole set, and copy the coordinates and picture with one click.</p>
+        </div>
+
+        <div class="feature-item">
             <h3 id="FeatureTouchGestures">Touch Gestures</h3>
             <p>Pinch to zoom and drag with two fingers to pan; the mouse wheel and trackpad zoom too.</p>
         </div>
@@ -400,6 +455,16 @@
         <div class="feature-item">
             <h3 id="FeatureSnapshots">Snapshots</h3>
             <p>Save the current fractal as an image at screen, 4K or 8K resolution, with a dedicated Pictures subfolder offered on first run.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3 id="FeatureMultiThreaded">Fast, Multi-threaded Drawing</h3>
+            <p>All of your processor's cores share the work, so pictures, 3D landscapes and snapshots appear several times faster, with efficient use of memory.</p>
+        </div>
+
+        <div class="feature-item">
+            <h3 id="FeatureHighResolution">Crisp on High-Resolution Displays</h3>
+            <p>Drawn at your screen's full resolution, even when Windows scales the display, so the finest filaments stay sharp on screen and in snapshots.</p>
         </div>
     </div>
     <hr>
