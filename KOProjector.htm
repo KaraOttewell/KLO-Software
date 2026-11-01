@@ -14,7 +14,8 @@
     <h1 id="KOProjector">KOProjector</h1>
     <p class="subtitle">
         Rescue <b>old home movie projects</b> from video-editing software that no longer runs. <b>KOProjector</b> reads projects made
-        with <b>Roxio VideoWave</b>, <b>Windows Movie Maker&nbsp;2</b> and <b>Windows Live Movie Maker</b>, hunts down the
+        with <b>Roxio VideoWave</b>, <b>Windows Movie Maker&nbsp;2</b>, <b>Windows Live Movie Maker</b> and
+        <b>DaVinci Resolve</b>, hunts down the
         photographs and video clips that have been renamed, reorganised and swept into the cloud in the twenty years
         since, and rebuilds the whole production as a <b>CyberLink PowerDirector</b> project you can open and finish today
         &mdash; or as <b>FCPXML</b> for <b>DaVinci Resolve</b> and <b>Final Cut Pro</b>.
@@ -56,7 +57,8 @@
     <h2 id="Formats">What it reads and writes</h2>
 
     <p>
-        Five source formats, spanning about twenty years of consumer video editing, and two destinations:
+        Seven source formats, spanning about twenty years of consumer video editing to today's DaVinci Resolve, and
+        two destinations:
     </p>
 
     <ul>
@@ -89,8 +91,16 @@
         </li>
         <li>
             <b>FCPXML</b> &mdash; <b>.fcpxml</b>, Apple's documented interchange format, which
-            <a href="#Resolve">DaVinci Resolve and Final Cut Pro import</a>. A destination only, and written from every
-            source above, PowerDirector included.
+            <a href="#Resolve">DaVinci Resolve and Final Cut Pro import</a>. Written from every source above,
+            PowerDirector included &mdash; and read too, so a timeline exported from Resolve or Final Cut Pro can
+            become a PowerDirector project.
+        </li>
+        <li>
+            <b>DaVinci Resolve</b> project exports &mdash; <b>.drp</b>, Resolve's own undocumented database format. The
+            clips, stills, slow and fast motion, transitions, music and Fusion titles come across, credits rolls
+            included, a photograph zoomed to fill the screen stays filling it, and a clip faded out under the
+            credits still fades, and the credits keep their red headings and green names. A clip's position and volume
+            are not read from a <b>.drp</b> yet.
         </li>
     </ul>
 
@@ -169,6 +179,46 @@
         takes every other rule in it with you.
     </p>
 
+    <p>
+        Here is a small made-up example: a 2004 weekend at a cottage, whose pictures have since moved to OneDrive. One
+        photograph had been tidied into a folder of its own that no rule knew about. Naming the folder found it, the rule
+        that would find it again is offered, and the conversion then has everything:
+    </p>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool CottageWeekend2004.dmsm CottageWeekend2004 --find</span>
+<span class="c-brightcyan">KOProjector (v1.0.0)</span>
+
+<span class="c-brightgreen">   CottageWeekend2004.dmsm: The original tape is in the box marked 2004 in the loft</span>
+
+<span class="c-brightmagenta">1 file used in the production could not be found. Naming a FOLDER searches it,</span>
+<span class="c-brightmagenta">and everywhere beneath it, for this file and for all the others still missing.</span>
+
+<span class="c-brightmagenta">MISSING  </span><span class="c-red">D:\My Pictures\Cottage\Back door.jpg</span>
+<span class="c-grey">         Image, 583,096 bytes, 5.000s</span>
+<span class="c-grey">         in the film at 0:16 (16.10s)-0:21 (21.13s)</span>
+   File or folder, [s]kip, skip [a]ll: <span class="value">%ONEDRIVE%\Pictures\Sorted</span>
+   Found: %ONEDRIVE%\Pictures\Sorted\2004\Back door.jpg
+
+<span class="c-brightgreen">Located 1 of 1: 1 you named, 0 found in those folders without asking.</span>
+
+<span class="c-brightwhite">1 rule would account for what you just found:</span>
+   D:\My Pictures\Cottage
+<span class="c-brightgreen">      -&gt; %ONEDRIVE%\Pictures\Sorted\2004</span>
+
+<span class="c-brightwhite">Add them to </span><span class="c-brightwhite">..\MediaPathRules.json</span><span class="c-brightwhite">? [y/N]: </span><span class="value">n</span>
+<span class="c-grey">Left alone. The answers still apply to this run.</span>
+<span class="c-grey">   &#8230;</span>
+
+Media found    : 6 of 6
+
+<span class="c-brightgreen">Wrote </span><span class="c-brightwhite">CottageWeekend2004.pds</span>
+
+<span class="c-yellow">EXPERIMENTAL - this conversion is incomplete. What did NOT make the journey:</span>
+<span class="c-grey">      4  transition(s) written; the film runs 4.0s longer than the original, because a VideoWave transition overlaps its two clips and a PowerDirector one does not</span>
+
+<span class="c-grey">   Projects written this way open in PowerDirector 24 onwards. Check the result</span>
+<span class="c-grey">   against the original before setting the original project aside.</span></pre>
+
+
     <div class="note">
         <b>Note:</b> answers given to <b>--find</b> <b>extend</b> the rules rather than replacing them &mdash; only files
         the rules could not already place are ever asked about. Decline the offer to save and they still apply to that
@@ -239,20 +289,50 @@
 
     <p>
         The <b>timeline chart</b> is the quickest way to see the shape of a production before deciding anything about it
-        &mdash; what follows what, how long each clip runs, where the transitions fall and where sound sits underneath:
+        &mdash; what follows what, how long each clip runs, where the transitions fall and where sound sits underneath
+        &mdash; and the <b>source material</b> follows it, grouped by the folder each file was found in. Here is the
+        cottage weekend again, before its missing photograph was found:
     </p>
 
-    <pre class="console"><span class="c-white">EnglishCottages.pds TIMELINE  20s total, 4 clip(s)</span>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool CottageWeekend2004.dmsm --report</span>
+<span class="c-grey">   &#8230;</span>
 
-<span class="c-cyan">      |-----------5s-----------|-----------5s------------|-----------5s------------|-----------5s------------|</span>
-<span class="c-cyan">video </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_4-3.png  </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_9-16.png  </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_16-9.png  </span><span class="c-cyan">|</span><span class="c-white">EnglishCottage_16-9_Cont&#8230;</span><span class="c-cyan">|</span>
-<span class="c-cyan">audio </span><span class="c-cyan">|</span><span class="c-white">KaraGuitarChords.m4a                                                                                   </span>
-<span class="c-cyan">                               ^                         ^                                                    </span>
+<span class="c-white">CottageWeekend2004.dmsm TIMELINE  29.2s long (bars drawn end to end: 33s, as its transitions overlap the clips they join and each clip also shows its final frame), 5 clip(s)</span>
 
-<span class="c-white">    ^ at 5s  Dynamic Shift 01, 1s</span>
-<span class="c-white">    ^ at 10s  Camera Shutter, 1s</span>
+<span class="c-cyan">      |--------6s--------|-----------8s-----------|------5s-------|------5s-------|------------9s------------|</span>
+<span class="c-cyan">video </span><span class="c-cyan">|</span><span class="c-white">Front garden.jpg  </span><span class="c-cyan">|</span><span class="c-white">Garden walk.mp4         </span><span class="c-cyan">|</span><span class="c-white">Porch.jpg      </span><span class="c-cyan">|</span><span class="c-white">Back door.jpg  </span><span class="c-cyan">|</span><span class="c-white">Capybara.mp4              </span><span class="c-cyan">|</span>
+<span class="c-cyan">audio </span><span class="c-cyan">|</span><span class="c-white">Guitar.m4a           ~                                                                                 </span>
+<span class="c-cyan">                         ^                        ^               ^               ^                           </span>
 
-<span class="c-white">      (a) = the clip brings its own soundtrack;  ~ = the sound fades</span></pre>
+<span class="c-white">    ^ at 6s  Dissolve, 1s</span>
+<span class="c-white">    ^ at 14s  Dissolve, 1s</span>
+<span class="c-white">    ^ at 19s  Dissolve, 1s</span>
+<span class="c-white">    ^ at 24s  Dissolve, 1s</span>
+
+<span class="c-white">      (a) = the clip brings its own soundtrack;  ~ = the sound fades</span>
+
+<span class="c-brightwhite">CottageWeekend2004.dmsm SOURCE MATERIAL - 5 of 6 items in 3 folders</span>
+<span class="c-grey">   </span><span class="c-brightgreen">5 found by a rule rewriting the path</span><span class="c-grey">, </span><span class="c-green">0 where the project already said</span>
+
+<span class="c-brightwhite">USED IN THE PRODUCTION - 5 items in 3 folders, and 1 more not found - listed below</span>
+
+<span class="c-brightwhite">   %ONEDRIVE%\Pictures\Cottage</span>
+<span class="c-grey">      2 stills</span>
+<span class="c-brightgreen">         Front garden.jpg</span>
+<span class="c-brightgreen">         Porch.jpg</span>
+
+<span class="c-brightwhite">   %ONEDRIVE%\Videos\Garden</span>
+<span class="c-grey">      2 films</span>
+<span class="c-brightgreen">         Capybara.mp4</span>
+<span class="c-brightgreen">         Garden walk.mp4</span>
+
+<span class="c-brightwhite">   %ONEDRIVE%\Music</span>
+<span class="c-grey">      1 sound</span>
+<span class="c-brightgreen">         Guitar.m4a</span>
+
+<span class="c-brightmagenta">NOT FOUND, AND USED IN THE PRODUCTION (1) - listed at the path the project records:</span>
+<span class="c-red">   D:\My Pictures\Cottage\Back door.jpg</span>
+<span class="c-grey">       Image, 583,096 bytes, 5.000s, starts 0:16 (16.10s) ends 0:21 (21.13s), length 00:00:05.03 (5.03s)</span></pre>
 
     <p>
         A long film does not get squeezed into one unreadable strip. When there is more production than there is width, the
@@ -403,15 +483,25 @@
         each project, and an index over them carrying the table above:
     </p>
 
-    <div class="cli-block"><b>KOProjectorTool *.dmsm,*.pds --report=Reports\*.htm</b></div>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool *.dmsm,*.pds --report=Reports\*.htm</span>
+<span class="c-brightcyan">KOProjector (v1.0.0)</span>
+
+<span class="c-brightwhite">3 projects match *.dmsm,*.pds</span>
+<span class="c-grey">  (--quiet reports each on one line, which is easier to scan)</span>
+<span class="c-grey">Created </span><span class="c-brightwhite">Reports</span>
+<span class="c-grey">   &#8230;</span>
+
+<span class="c-brightgreen">Wrote the index to </span><span class="c-brightwhite">Reports\index.htm</span>
+<span class="c-brightwhite">3 projects, 2 with every file present. 15 of 16 media located.</span></pre>
 
     <p>
-        Read across a folder of two projects, that writes <b>three</b> files:
+        Read across that folder of three projects, it writes <b>four</b> files:
     </p>
 
-    <div class="cli-block">Reports\index.htm             &lt;- ONE table, both projects in it, links to both pages
-Reports\Christmas2004_dmsm.htm    &lt;- timeline and source material
-Reports\YRL_pds.htm</div>
+    <div class="cli-block">Reports\index.htm                   &lt;- ONE table, all three projects in it, linking to each page
+Reports\CottageAndCapybara_pds.htm  &lt;- timeline and source material
+Reports\CottageWeekend2004_dmsm.htm
+Reports\GardenSlideshow_pds.htm</div>
 
     <p>
         <b>The kind is in the name on purpose.</b> Four productions in the collection this was built from exist as
@@ -547,7 +637,33 @@ Reports\YRL_pds.htm</div>
         the two agree character for character &mdash; and, to be sure that check can actually fail, delete one value at a
         time from a written file and demand that it then <em>does</em>. Real productions of 19, 34 and 206 clips come
         back identical. As everywhere else, folder names are written as <b>%ONEDRIVE%</b> and the like, so an archived
-        project carries no account name.
+        project carries no account name in its paths.
+    </p>
+
+    <p>
+        <b>Each archive also says what it was made from</b>, at the top where it is easy to find: when the JSON was
+        written, the kind of project it came from by name, the author where the old project names one, and the
+        original file's size, date and <b>SHA-256 fingerprint</b>:
+    </p>
+
+    <pre class="console"><span class="c-white">"writtenAt": "2026-10-21T19:17:31-07:00",
+"source": {
+  "file": "%ONEDRIVE%\\Videos\\Videowave Projects\\CottageWeekend2004.dmsm",
+  "format": "Roxio VideoWave movie production",
+  "videoWaveSchemaVersion": "9.0",
+  "sizeInBytes": 8786,
+  "lastModifiedUtc": "2004-11-07T20:41:12Z",
+  "sha256": "dfb23611c7cb7afa619b87fe41b70f5716de1189a8851dab6f14ad74e53d29ff"
+}</span></pre>
+
+    <p>
+        The fingerprint is what outlives the path. Files get renamed, moved and copied; years later, hashing a
+        <b>.dmsm</b> found on a backup drive says for certain whether it is the one the archive came from, and a
+        different answer says the original has been changed since. The figures are taken once, from the original as
+        it is read, so an archive written out again from an archive still describes the original. The author is only
+        there when the old format recorded one &mdash; PowerDirector and Movie Maker&nbsp;2 do, VideoWave and Live
+        Movie Maker do not &mdash; and since it is often a name or an e-mail address, look before you send an archive
+        to anyone.
     </p>
     <hr>
 
@@ -559,7 +675,36 @@ Reports\YRL_pds.htm</div>
         and Final Cut Pro both import. Name the destination <b>.fcpxml</b> and that is what you get, from any source:
     </p>
 
-    <div class="cli-block"><b>KOProjectorTool "ChoirConcert.pds" "ChoirConcert.fcpxml" --trim</b></div>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool GardenSlideshow.pds GardenSlideshow.fcpxml --trim</span>
+<span class="c-brightcyan">KOProjector (v1.0.0)</span>
+
+Project        : GardenSlideshow.pds
+Schema version : PowerDirector project (CLVSMODE 2)
+Aspect ratio   : 1.7778
+Frame rate     : 29.9700
+
+Clips          : 5
+Transitions    : 2
+Attached audio : 0
+Titles         : 0
+Distinct media : 5
+
+Timeline length: 20.02s
+Source declares: 20.02s  (difference 0.000s)
+
+Media found    : 5 of 5
+<span class="c-grey">Trimmed 1 medium the film never plays - the timeline is unchanged.</span>
+
+<span class="c-brightgreen">Wrote </span><span class="c-brightwhite">GardenSlideshow.fcpxml</span>
+
+<span class="c-yellow">EXPERIMENTAL - this conversion is incomplete. What did NOT make the journey:</span>
+<span class="c-brightred">      2  </span><span class="c-grey">kind(s) of transition written as a Cross Dissolve, FCPXML naming other effects only by one editor's own plug-ins: Ces Dsp Tr 3 D PDR12 Break Apart 3, Ces Dsp Tr D2 D Overlapping 03</span>
+
+<span class="c-grey">      2  transition(s) written, at the same length as the original</span>
+
+<span class="c-yellow">   FCPXML is written for DaVinci Resolve and Final Cut Pro, and has been tried in</span>
+<span class="c-yellow">   Resolve 21 only. Import it with File &gt; Import &gt; Timeline in Resolve, and</span>
+<span class="c-yellow">   check it against the original before setting the original aside.</span></pre>
 
     <p>
         In Resolve, bring it in with <b>File &rsaquo; Import &rsaquo; Timeline</b>. A whole folder goes the same way as it
@@ -583,7 +728,9 @@ Reports\YRL_pds.htm</div>
 
     <p>
         Some things come across less well. Every transition becomes a <b>cross dissolve</b> &mdash; which most of them
-        were anyway &mdash; and the others are named in the conversion log. Titles arrive as editable text in the right
+        were anyway &mdash; and the others are named in the conversion log. That is Resolve's limit rather than
+        KOProjector's: Resolve reads no other kind of transition from FCPXML, and even one it exported itself comes
+        back as a cross dissolve. Titles arrive as editable text in the right
         words, typeface, size and colour, but <b>centred and without their animation</b>. A slideshow's own animated
         backdrop becomes black, with a marker saying what belonged there. As with every conversion, each run lists what
         did not make the journey.
@@ -600,9 +747,10 @@ Reports\YRL_pds.htm</div>
     <h3 id="ResolveThingsToKnow">What Resolve can and cannot open</h3>
 
     <p>
-        Tried in DaVinci Resolve 21 on real projects: a PowerDirector slideshow imports matching its length to the frame,
-        with its music, titles and transitions, and a Movie Maker slideshow's pans and zooms move as they did. A few
-        things are worth knowing before you start:
+        <b>Confirmed in DaVinci Resolve&nbsp;21</b> on real projects: pictures and video, music with its fades and
+        hand-drawn levels, titles with their line breaks, pans and zooms, coloured panels, picture-in-picture layers
+        (a nine-panel virtual choir lands square for square), and slow and fast motion. A PowerDirector slideshow
+        imports matching its length to the frame. A few things are worth knowing before you start:
     </p>
 
     <ul>
@@ -674,7 +822,7 @@ Reports\YRL_pds.htm</div>
     <h2 id="Faithful">How faithful is the conversion?</h2>
 
     <p>
-        The honest answer is <b>very, with three named exceptions</b> &mdash; and KOProjector tells you what they are at
+        The honest answer is <b>very, with two named exceptions</b> &mdash; and KOProjector tells you what they are at
         the end of every run rather than leaving you to discover them. A run that lost nothing says so, in as many words,
         instead of printing a warning anyway: a caution that appears every time is a caution people learn to skip, and then
         they miss the run where it mattered.
@@ -709,9 +857,12 @@ Reports\YRL_pds.htm</div>
             <b>Titles and credits</b> &mdash; the words, their line breaks, timing, placing, styling, and how they arrive and
             leave.
         </li>
+        <li>
+            <b>Slow and fast motion</b>, as PowerDirector's own speed settings, or as a time map in FCPXML.
+        </li>
     </ul>
 
-    <p>The three things that are approximate or absent, and why:</p>
+    <p>The two things that are approximate, and why:</p>
 
     <ul>
         <li>
@@ -724,19 +875,13 @@ Reports\YRL_pds.htm</div>
             title has the right words in roughly the right place &mdash; and since PowerDirector's title editor is a slow
             thing to type into, having the text already there is worth a great deal more than having it perfect.
         </li>
-        <li>
-            <b>A changed playback speed is not carried across yet.</b> Where the original author slowed a clip down or ran
-            it fast, the conversion lays the timeline out correctly around it but the clip itself plays at its normal rate,
-            so the speed has to be set again by hand. It stays on the list rather than in the finished column because it is
-            genuinely rare &mdash; two clips in a collection of seventy-odd projects &mdash; and everything else was a
-            better use of the time.
-        </li>
     </ul>
 
     <div class="note">
         <b>Note:</b> KOProjector never overwrites or modifies your original project files or your media. It only ever reads
-        them, and writes a new <b>.pds</b> alongside. Keep the originals; check the conversion against them before you set
-        anything aside.
+        them, and writes a new <b>.pds</b> or <b>.fcpxml</b> alongside. If that new file is already there - a conversion
+        you have since edited, say - it warns you and asks <b>Yes / No / All</b> before replacing it; <b>--force</b>
+        replaces without asking. Keep the originals; check the conversion against them before you set anything aside.
     </div>
     <hr>
 
@@ -756,7 +901,29 @@ Reports\YRL_pds.htm</div>
         whatever length the file itself claims:
     </p>
 
-    <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm"</b></div>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool CottageWeekend2004.dmsm</span>
+<span class="c-brightcyan">KOProjector (v1.0.0)</span>
+
+<span class="c-brightgreen">   CottageWeekend2004.dmsm: The original tape is in the box marked 2004 in the loft</span>
+Project        : CottageWeekend2004.dmsm
+Schema version : 9.0
+Aspect ratio   : 1.7778
+Frame rate     : 29.9700
+
+Clips          : 5
+Transitions    : 4
+Attached audio : 1
+Titles         : 0
+Distinct media : 6
+
+Timeline length: 29.16s
+Source declares: 29.16s  (difference 0.000s)
+
+Media found    : 5 of 6
+
+<span class="c-brightmagenta">MISSING, used on the timeline (1) - these affect the film:</span>
+<span class="c-red">   D:\My Pictures\Cottage\Back door.jpg</span>
+<span class="c-grey">       Image, 583,096 bytes, 5.000s, starts 0:16 (16.10s) ends 0:21 (21.13s), length 00:00:05.03 (5.03s)</span></pre>
 
     <p>
         <b>Report on it.</b> The timeline drawn as a chart, scaled to the width of your console &mdash; what follows what,
@@ -892,7 +1059,11 @@ Reports\YRL_pds.htm</div>
         one that went wrong:
     </p>
 
-    <div class="cli-block"><b>KOProjectorTool *.dmsm Converted\*.pds --quiet</b></div>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool *.dmsm,*.pds *.pds --quiet</span>
+CottageAndCapybara.pds: 3 clip(s), 0 transition(s), 1 attached audio, 25.0s, 5/5 media found, → CottageAndCapybara_pds_CONVERTED.pds
+<span class="c-brightgreen">   CottageWeekend2004.dmsm: The original tape is in the box marked 2004 in the loft</span>
+CottageWeekend2004.dmsm: 5 clip(s), 4 transition(s), 1 attached audio, 29.2s, 5/6 media found, → CottageWeekend2004_dmsm_CONVERTED.pds
+GardenSlideshow.pds: 5 clip(s), 2 transition(s), 0 attached audio, 20.0s, 5/5 media found, → GardenSlideshow_pds_CONVERTED.pds</pre>
 
     <p>
         Naming <em>one</em> output file for several projects is refused rather than left to overwrite itself, with the
@@ -956,8 +1127,34 @@ Reports\YRL_pds.htm</div>
         <a href="#Archive">archive</a> that can be read back in;
         <b>--transitions</b> supplies your own effect mapping in place of the built-in one; and <b>--no-titles</b> converts
         without titles, which is the quickest way to find out whether a title is behind a problem opening the result.
-        <b>--help</b> explains them all.
+        <b>--help</b> explains them all, in colour:
     </p>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool --help</span>
+<span class="c-brightcyan">KOProjector (v1.0.0)</span>
+
+<span class="c-white">Reads a video project - Roxio VideoWave, a Roxio disc, either Movie Maker,</span>
+<span class="c-white">or PowerDirector itself - reports what it contains, finds the media it names</span>
+<span class="c-white">wherever that has moved to, and converts it into a PowerDirector .pds project</span>
+<span class="c-white">or into FCPXML for DaVinci Resolve and Final Cut Pro.</span>
+
+<span class="c-brightwhite">USAGE</span>
+<span class="c-brightcyan">  KOProjectorTool </span><span class="c-brightcyan">[options] </span><span class="c-brightgreen">source</span><span class="c-white"> [</span><span class="c-brightgreen">destination</span><span class="c-white">]</span>
+
+<span class="c-brightwhite">OPTIONS</span>
+<span class="c-brightcyan">  --quiet                   </span><span class="c-white">Report the whole run on one line instead of in full.</span>
+<span class="c-white">                            </span><span class="c-white">Intended for converting a folder of projects in a loop, where</span>
+<span class="c-white">                            </span><span class="c-white">a page of report per project buries the one that went wrong.</span>
+<span class="c-grey">   &#8230;</span>
+
+<span class="c-brightwhite">EXAMPLES</span>
+<span class="c-brightcyan">  KOProjectorTool </span><span class="c-brightgreen">Christmas2004.dmsm</span>
+<span class="c-grey">                            </span><span class="c-grey">Summarise a production, and report where each medium was</span>
+<span class="c-grey">                            </span><span class="c-grey">found using the rules file kept beside this program.</span>
+
+<span class="c-brightcyan">  KOProjectorTool </span><span class="c-brightgreen">Christmas2004.dmsm </span><span class="c-brightgreen">Christmas2004</span>
+<span class="c-grey">                            </span><span class="c-grey">Convert it, writing Christmas2004.pds.</span>
+<span class="c-grey">   &#8230;</span></pre>
+
 
     <p>
         A command line it cannot make sense of is <b>refused rather than partly obeyed</b>. A mistyped option, a missing
@@ -965,7 +1162,12 @@ Reports\YRL_pds.htm</div>
         one:
     </p>
 
-    <div class="cli-block">'--repot' is not an option. Did you mean '--report'?</div>
+    <pre class="console"><span class="prompt">&gt;</span> <span class="cmd">KOProjectorTool CottageWeekend2004.dmsm --repot</span>
+<span class="c-brightcyan">KOProjector (v1.0.0)</span>
+
+<span class="c-brightred">'--repot' is not an option. Did you mean '--report'?</span>
+
+<span class="c-grey">Run with --help for the full list.</span></pre>
 
     <p>
         Paths in the output are shortened using <b>%ONEDRIVE%</b>, <b>%ProgramFiles%</b> and the like in place of real folder
@@ -977,8 +1179,8 @@ Reports\YRL_pds.htm</div>
     <h2 id="Features">Features</h2>
     <div class="feature-grid">
         <div class="feature-item">
-            <h3 id="FeatureSourceFormats">Five Source Formats</h3>
-            <p>VideoWave .dmsm and .dmss, Roxio disc projects .dmsd, Movie Maker 2 .MSWMM, Live Movie Maker .wlmp, and PowerDirector .pds.</p>
+            <h3 id="FeatureSourceFormats">Seven Source Formats</h3>
+            <p>VideoWave .dmsm and .dmss, Roxio disc projects .dmsd, Movie Maker 2 .MSWMM, Live Movie Maker .wlmp, PowerDirector .pds, FCPXML .fcpxml and DaVinci Resolve .drp.</p>
         </div>
 
         <div class="feature-item">
@@ -1062,6 +1264,11 @@ Reports\YRL_pds.htm</div>
         </div>
 
         <div class="feature-item">
+            <h3 id="FeatureSpeed">Slow and Fast Motion</h3>
+            <p>A clip slowed down or sped up plays at the same speed after conversion, in PowerDirector and Resolve alike.</p>
+        </div>
+
+        <div class="feature-item">
             <h3 id="FeatureTimelineChart">Timeline Chart</h3>
             <p>See the shape of a production before converting it &mdash; continued over further sets of rows, like a score, when one will not hold it.</p>
         </div>
@@ -1099,13 +1306,14 @@ Reports\YRL_pds.htm</div>
         <h3 id="DownloadKOProjector">KOProjector</h3>
         <p>
             KOProjector is <b>experimental and not yet released</b>. It converts real projects successfully &mdash;
-            productions from 2003, 2004, 2005 and 2018 have all been converted and opened in PowerDirector&nbsp;24 &mdash;
+            productions from 2003 to 2026 have been converted and opened in PowerDirector&nbsp;24 and in
+            DaVinci Resolve&nbsp;21 &mdash;
             but it is a command-line tool aimed at a fairly specific problem, and it is still learning new things about
             these formats as it meets more of them.
         </p>
         <p>
-            The collection it has been built against runs to a little over <b>seventy projects</b> in five formats,
-            twenty years of family films and community productions, and roughly two thousand pieces of source material
+            The collection it has been built against runs to over <b>a hundred projects</b> in six formats,
+            twenty years of family films and community productions, and many thousands of pieces of source material
             scattered across folders that have been renamed, reorganised and moved into the cloud several times over.
             Nearly all of it is now found automatically.
         </p>
@@ -1114,7 +1322,7 @@ Reports\YRL_pds.htm</div>
             <a href="index.htm#contact_info">get in touch</a> &mdash; knowing which formats and which vintages people
             actually have is exactly what decides what gets built next.
         </p>
-        <p>Requires Windows 10 or later, and CyberLink PowerDirector to open what it produces.</p>
+        <p>Requires Windows 10 or later, and CyberLink PowerDirector or DaVinci Resolve to open what it produces.</p>
     </div>
 
     <p style="font-size:9pt; color:#666;">
