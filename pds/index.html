@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Kara Ottewell's free software for OpenVMS on the VAX and Alpha: the VMS Performance Meter, XBeeb, LinkSys router logger, WHOIS, Web Count, Mandelsteg, GIFMerge, TGD, LiteClue, MBOX, GIFShuf, SNOW and PGP from TPU, with source code.">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+<title>Free Software for OpenVMS — KLO Software</title>
+<link rel="stylesheet" href="../KLO.css">
+<style>
+/* Page-specific additions to KLO.css. The rest of the look, light and dark,
+   comes from KLO.css and the shared theme switch, like the other KLO pages. */
+
+/* The 1990s screenshots and icons are small GIFs, so they keep their own size
+   and sit beside the text rather than being stretched to the page width. */
+img.vintage { height: auto; }
+
+/* Each program's downloads, in the KLO download box */
+.download-box ul { margin: 0.3em 0 0 0; padding-left: 1.2em; }
+.download-box li { margin-bottom: 0.2em; }
+
+/* The contents list near the top, laid out in columns on a wide screen */
+ul.program-contents { columns: 2; column-gap: 2em; }
+@media (max-width: 600px) { ul.program-contents { columns: 1; } }
+
+/* "Last updated" dates under each program's heading */
+.released { font-size: 9pt; color: #666; margin-top: 0; }
+body.theme-dark .released { color: #8b949e; }
+@media (prefers-color-scheme: dark) { body:not(.theme-light):not(.theme-dark) .released { color: #8b949e; } }
+</style>
+</head>
+<body>
+<div id="theme-toggle-icon" title="Change theme">🖥️</div>
+<a class="back-link" href="../index.htm">&#8592; Back to KLO Software</a>
+
+<h1 id="Top_Of_Page">Free Software for OpenVMS</h1>
+<p class="subtitle">
+    Rare finds for the VAX and Alpha: a collection of Motif, X11 and command line programs that I wrote for, or
+    ported to, VMS between 1996 and 2002, nearly all with full source code, plus a WHOIS client that works the
+    same on VMS and Windows.
+</p>
+
+<span class="badge">OpenVMS</span>
+<span class="badge">VAX</span>
+<span class="badge">Alpha</span>
+<span class="badge">Motif</span>
+<span class="badge">Source code</span>
+<span class="badge">Free</span>
+
+<p>
+    Software for VMS is hard to come by these days, so dust off that VAXstation, fire up the Alpha, or boot an
+    emulator, and help yourself. The word <em>porting</em> doesn’t necessarily imply that I did much work! If the
+    code was written in ANSI C, it often just meant writing a <code>DESCRIP.MMS</code> for MMS or for
+    <a href="https://github.com/endlesssoftware/mmk" target="_blank" rel="noopener">MMK</a>, the free make utility
+    for VMS, and a <code>SETUP.COM</code> to create the foreign command symbol. Most of these programs should also
+    build on Unix.
+</p>
+<p>
+    These pages used to live on my old WordPress site, and before that on my own web pages, where they started in
+    1996. If you would like some background on VMS itself, see <a href="../../KLO-Tutorials/vms_course/vms.html">Kara’s
+    OpenVMS Page</a>, and if you are new to VMS, try <a href="../../KLO-Tutorials/vms_course/index.html">Kara’s VMS
+    Tutorial</a>.
+</p>
+
+<div class="note">
+    <p><b>About the downloads.</b> Each zip file is exactly as I released it, and each has a detached,
+    ASCII-armoured PGP signature (<code>.asc</code>), so you can be sure it hasn’t been altered since I put it
+    here. My public key is in the <a href="../index.htm#contact_info">PGP Key and Contact Information</a> section
+    of my KLO Software page. You don’t actually <b>need</b> PGP to use any of the software (except PGP from TPU, of
+    course): the signatures are just a way of guaranteeing that the files haven’t been tampered with. The original
+    <code>.SIG</code> files from the 1990s were made with PGP keys I no longer use, so these new signatures replace
+    them.</p>
+    <p>Though this software is all free to download and use, it isn’t necessarily public domain, and should not be
+    distributed elsewhere, and certainly not modified or sold, without the permission of the author. The programs
+    I ported are by the authors named below, and their own terms, in the files that come with each one, apply to
+    their code.</p>
+</div>
+
+<h2 id="Contents">The Programs</h2>
+<ul class="program-contents">
+    <li><a href="#Performance_Meter">VMS Performance Meter V2.5</a></li>
+    <li><a href="#LinkSysLog">LinkSys Router Logging Program</a></li>
+    <li><a href="#WHOIS">WHOIS for VMS and Windows</a></li>
+    <li><a href="#WebCount">Web Count 2.4</a></li>
+    <li><a href="#XBeeb">XBeeb</a></li>
+    <li><a href="#MBOX">MBOX</a></li>
+    <li><a href="#pgp_from_tpu">Using PGP from TPU</a></li>
+    <li><a href="#Mandelsteg">Mandelsteg</a></li>
+    <li><a href="#TGD">TGD and GD</a></li>
+    <li><a href="#LiteClue">LiteClue 1.3</a></li>
+    <li><a href="#GIFMerge">GIFMerge</a></li>
+    <li><a href="#GIFShuf">GIFShuf and SNOW</a></li>
+    <li><a href="#Binaries">Precompiled Binaries</a></li>
+    <li><a href="#Older_Versions">Older Versions and Odds and Ends</a></li>
+    <li><a href="#Running_Today">Running These Programs Today</a></li>
+    <li><a href="#Other_Sources">More VMS Software Elsewhere</a></li>
+</ul>
+<hr>
+
+<div class="software-entry">
+<h2 id="Performance_Meter">VMS Performance Meter V2.5</h2>
+<p class="released">Last updated 21 March 2000</p>
+<p>
+    <span class="badge">Motif</span>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Source code</span>
+</p>
+<img class="screenshot vintage" src="perf_meter_window.gif" width="434" height="199" alt="The VMS Performance Meter window, showing CPU modes, a history graph and disk and memory statistics">
+<p>
+    Originally written for the old VWS window system by Robert Heller, this program was enhanced, converted to
+    Motif and made to work on Alphas by myself, Mark Pizzolato, Joe Kazimierczyk and Dean Schamberger, giving the
+    2.3 VMS Performance Meter. I modified the 2.4 version to optionally use a “dynamic” icon display. When the
+    Performance Meter is iconized, the state bar graph, with different coloured bars for User, Supervisor,
+    Executive, Kernel and Interrupt time, is shown in the icon window. When the application is “out on the
+    desktop”, the CPU state, a history graph, and various disk and memory statistics are shown as well as the state
+    graph. Some memory leaks in the old code were found and fixed along the way. Clicking the “top CPU” process
+    toggle button brings up an additional window with more information about that process.
+</p>
+<img class="screenshot vintage shot-left" src="perf_meter_icon.gif" width="88" height="98" alt="The Performance Meter icon, with its bar graph and tomato of memory">
+<p>
+    Another new feature is the “tomato of memory”, which appears in the graph window and the icon window. It is a
+    pie chart of free and modified pages against total memory.
+</p>
+<p>
+    The window titles have changed slightly, so that the system version and memory are shown in the main window’s
+    title bar, and the machine name has moved to the start of the icon title, to make life easier if you
+    <code>SET DISPLAY/NODE=</code><i>node</i> to one machine from several different nodes. Using the remote
+    display feature of X Windows, I once monitored 27 different machines at the same time from one workstation.
+</p>
+<p>
+    Thanks to Chris Sharman, version 2.5 has corrected CPU percentage calculations, which should ensure that you
+    never see anything using more than 100 percent of the CPU.
+</p>
+<p>
+    Full source code is provided. Build it with <code>MAKE_PERF_METER.COM</code>. It runs on VAX VMS V5.5 to
+    V7.3 and Alpha VMS V6.1 to V7.3 (it hasn’t been tested on Alpha VMS V1.5, but should work), and is compatible
+    with Motif 1.1 to Motif 1.2-4. <code>PFM$STARTUP.COM</code> shows how to define the logical names it needs.
+    Edit the command file <code>PERF_METER.COM</code>, and add <code>@<i>disk</i>:[<i>dir</i>]PERF_METER.COM</code>
+    to your Applications menu to run the Performance Meter.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="perf_meter-2-5.zip">PERF_METER-2-5.ZIP</a> (114 KB), <a href="perf_meter-2-5.zip.asc">PGP signature</a></li>
+        <li>Precompiled binaries for the VAX and Alpha are listed under <a href="#Binaries">Precompiled Binaries</a> below.</li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="LinkSysLog">LinkSys Router Logging Program</h2>
+<p class="released">Last updated 10 August 2002</p>
+<p>
+    <span class="badge">Motif</span>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Source code</span>
+</p>
+<a href="linksyslog.gif"><img class="screenshot vintage shot-left" src="linksyslogsmall.gif" width="192" height="137" alt="The LinkSysLog window, with inbound and outbound connections in two panes (select for a larger picture)"></a>
+<p>
+    This is a Motif/X Window application for OpenVMS VAX and Alpha machines, which displays and saves the logging
+    information broadcast by LinkSys gateway firewall routers such as the BEFSR41. It shows the inbound and
+    outbound connections being made, or refused, through the firewall, and lets you search the text and copy it to
+    the clipboard. The window is split into two panes, one for inbound and one for outbound connections. The lists
+    can optionally be filtered by port number and IP address, though everything is still captured in the log file.
+    The <code>LINKSYSLOG.HLP</code> file describes the various options, such as beeping on incoming connections,
+    and changing the log file name.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code, with binaries for VAX VMS 6.2 and Alpha VMS 7.3: <a href="linksyslog.zip">LINKSYSLOG.ZIP</a> (278 KB), <a href="linksyslog.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="WHOIS">WHOIS for VMS and Windows</h2>
+<p class="released">Last updated 31 March 2002</p>
+<p>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Windows</span>
+    <span class="badge">Command line</span>
+    <span class="badge">Source code</span>
+</p>
+<img class="screenshot vintage shot-left" src="whois.gif" width="64" height="64" alt="The WHOIS icon, enlarged">
+<p>
+    There are two versions of WHOIS here: a command line version, with source code and make files for both
+    OpenVMS (VAX and Alpha) and Windows, and a Windows MFC version, binaries only, for Intel and Alpha.
+</p>
+<p>
+    The first is a command line WHOIS client, as described in RFC 954, which I wrote to work on VMS and Windows NT
+    to XP. It sends a query about an internet domain to a suitable server. It recognises <code>.com</code>,
+    <code>.mil</code>, <code>.uk</code> and various other domains, and tries to pick a sensible server, and if the
+    first server refers it elsewhere, it repeats the lookup there. If you know the server you want, you can force
+    it with a command line switch. Here are some examples, from 2002:
+</p>
+<pre class="console">
+<span class="prompt">$</span> <span class="cmd">WHOIS</span>
+Usage: whois [ -h nic_server ] name_to_find [ &gt; output_file ]
+
+For a list of whois servers try: whois -h whois.indiana.edu whois-servers
+
+<span class="prompt">$</span> <span class="cmd">WHOIS jafsoft.co.uk</span>
+Using WHOIS server whois.nic.uk, port 43, to find jafsoft.co.uk
+
+
+    Domain Name:
+        jafsoft.co.uk
+
+    Registrant:
+        Jafsoft Ltd
+            .
+            .
+</pre>
+<p>
+    The WHOIS protocol itself hasn’t changed much (RFC 954 has since been replaced by
+    <a href="https://www.rfc-editor.org/rfc/rfc3912" target="_blank" rel="noopener">RFC 3912</a>), but many of the
+    servers have, so the built-in list of servers is now out of date, and the Indiana server in the usage message is
+    long gone. The <code>-h</code> switch lets you name a current server.
+</p>
+<p>
+    It builds on VAX or Alpha VMS 6.2 to 7.3 with UCX 4.2 or TCP/IP Services 5.1, and on Windows NT 4.0, 2000 or
+    XP. On VMS, build it with MMS or MMK, or <code>@MAKE</code> if you don’t have either, then set up the foreign
+    command symbol with <code>@SETUP</code>. On Windows, set up the Visual C++ command line environment (in those
+    days by running <code>VCVARS32.BAT</code>; today, open a Developer Command Prompt), then
+</p>
+<pre class="console">
+<span class="prompt">C:\&gt;</span> <span class="cmd">NMAKE whois.mak</span>
+</pre>
+<p>
+    and copy the executable to a folder on your <code>PATH</code>. The command is used in exactly the same way on
+    Windows and VMS.
+</p>
+<p>
+    The second is a Windows Visual C++ WHOIS client, also written by me. Unzip it into a folder of your choice and
+    add a shortcut to <code>Whois.exe</code>. It needs the MFC 4.2 run-time library, <code>MFC42.DLL</code>, which
+    is still included with Windows. There is also an InstallShield version of the Intel client, which unpacks and
+    sets everything up for you. These are 1998 binaries, built for Windows 95, 98 and NT, so I can’t promise how
+    they behave on a modern version of Windows.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Command line WHOIS for VAX and Alpha VMS, and Windows, source and binaries: <a href="whois.zip">WHOIS.ZIP</a> (69 KB), <a href="whois.zip.asc">PGP signature</a></li>
+        <li>Windows WHOIS client, Intel binaries: <a href="winwhoisi.zip">WINWHOISI.ZIP</a> (13 KB), <a href="winwhoisi.zip.asc">PGP signature</a></li>
+        <li>Windows WHOIS client, Intel, with InstallShield setup: <a href="whoisi.zip">WHOISI.ZIP</a> (552 KB), <a href="whoisi.zip.asc">PGP signature</a></li>
+        <li>Windows NT WHOIS client, Alpha binaries: <a href="winwhoisa.zip">WINWHOISA.ZIP</a> (15 KB), <a href="winwhoisa.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="WebCount">Web Count 2.4</h2>
+<p class="released">Last updated 31 March 2001</p>
+<p>
+    <span class="badge">CGI</span>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Source code</span>
+</p>
+<p>
+    This is a VMS port of Muhammad A. Muquit’s popular
+    <a href="https://www.muquit.com/muquit/software/Count/Count.html" target="_blank" rel="noopener">Web Count</a>
+    2.4 program, which displays a web page’s hit count in a number of styles, including the “car odometer”. It can
+    show the time and date too. It was tested on VAX and Alpha VMS 6.2, with the DECthreads OSU HTTP Server
+    versions 1.9 to 3.9, and with Purveyor. You will need DEC C to build it, not VAX C. GNU C should work if you
+    build the counter with Robert Byer’s <code>GCC_MAKE_COUNT.COM</code>, then use <code>INSTALL.COM</code> (which
+    normally builds <em>and</em> installs) just to install it. <code>INSTALL.COM</code> handles MMS better than it
+    used to, though some people have reported that MMS can fall over.
+</p>
+<p>
+    Version 2.4P adds support for <a href="https://www.process.com/" target="_blank" rel="noopener">Process
+    Software</a>’s Purveyor web server, and full VMS lock manager locking of the counter data files, which were
+    provided by <a href="https://neilrieck.net/" target="_blank" rel="noopener">Neil Rieck</a>. The hit counter on
+    the original version of this page was produced by Web Count 2.4P.
+</p>
+<p>
+    There are some restrictions in the VMS version. For example, an explicit <code>df=</code><i>datafile</i> isn’t
+    allowed. Instead, the referring URL is turned into a VMS file name, by a routine kindly written by my colleague
+    Gonzalo San Martin, and that file stores the hits for the page. The July 1997 maintenance release put a
+    “no-cache” fix into <code>COUNT.COM</code>, thanks to Philip Taylor of Royal Holloway and Bedford New College.
+    The <code>README.VMS</code> file in the distribution explains how to build and install the counter.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="wwwcount2_4p.zip">WWWCOUNT2_4P.ZIP</a> (548 KB), <a href="wwwcount2_4p.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="XBeeb">XBeeb</h2>
+<p class="released">Last updated 5 March 1997</p>
+<p>
+    <span class="badge">X11</span>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">BBC Micro</span>
+    <span class="badge">Source code</span>
+</p>
+<img class="screenshot vintage shot-left" src="xbeeb.gif" width="160" height="130" alt="Killer Gorilla running in XBeeb">
+<p>
+    This is a VMS port of <a href="https://www.cloud9.co.uk/james/" target="_blank" rel="noopener">James
+    Fidell’s</a> XBeeb, which emulates a BBC Model B microcomputer. A BBC Micro on a VAX: yes, really. It runs on
+    VMS 6.2 onwards, VAX and Alpha, and compiles with DEC C 5.3 onwards. Make sure you read the
+    <code>README.VMS</code> file, which explains how to build the program, how to install the Teletext fonts on
+    your workstation, and how to turn off automatic KeyRelease events on VAXstations. A “must have” for BBC Micro
+    nostalgia sufferers.
+</p>
+<p>
+    For copyright reasons, I can’t make the BBC operating system ROM available here, but if you
+    <a href="../index.htm#contact_info">get in touch</a>, I will help you take a copy from an old Beeb that you
+    might have access to.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="xbeeb-0_3.zip">XBEEB-0_3.ZIP</a> (368 KB), <a href="xbeeb-0_3.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="MBOX">MBOX</h2>
+<p class="released">Last updated 28 April 1997</p>
+<p>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">MACRO-32</span>
+    <span class="badge">Source code</span>
+</p>
+<p>
+    This is VMS guru Neill Clift’s utility to display information about a mailbox and the messages in it. It
+    accepts wildcards, and the <code>/GROUP</code> qualifier makes it easy to limit the view to the mailboxes in a
+    particular UIC group. This version works on VMS 5.5 to 7.3, VAX and Alpha.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="mbox.zip">MBOX.ZIP</a> (23 KB), <a href="mbox.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="pgp_from_tpu">Using PGP from TPU on VMS</h2>
+<p class="released">Last updated 3 April 1997</p>
+<p>
+    <span class="badge">TPU</span>
+    <span class="badge">DCL</span>
+    <span class="badge">VMS MAIL</span>
+    <span class="badge">PGP</span>
+</p>
+<p>
+    This is a TPU procedure and a command procedure that I wrote to integrate PGP into VMS MAIL, or any
+    application that lets you use the TPU editor. Press <kbd>Ctrl</kbd>+<kbd>P</kbd> to encrypt, decrypt or sign
+    the text you are editing. It works with both the terminal version of the EVE editor and the DECwindows Motif
+    interface. The <a href="pgp_from_tpu.txt">PGP_FROM_TPU.TXT</a> file contains a command procedure to set up the
+    PGP command and its logical names, plus the TPU procedure and installation instructions.
+</p>
+<p>
+    It was written for PGP 2.6.3i, which was the international version of PGP at the time, and it uses PGP 2.6’s
+    command line options, so it would need changes to work with a modern OpenPGP program such as
+    <a href="https://gnupg.org/" target="_blank" rel="noopener">GnuPG</a>. Bear in mind too that it passes your pass
+    phrase to PGP on the command line of a subprocess. The procedure was also available from Ståle Schumacher’s
+    International PGP Home Page, which has since disappeared.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Text file: <a href="pgp_from_tpu.txt">PGP_FROM_TPU.TXT</a> (12 KB), <a href="pgp_from_tpu.txt.asc">PGP signature</a>. The file still carries my original 1997 PGP 2.6 signature, made with my old key.</li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="Mandelsteg">Mandelsteg</h2>
+<p class="released">Last updated 26 February 1997</p>
+<p>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Steganography</span>
+    <span class="badge">Source code</span>
+</p>
+<img class="screenshot vintage shot-left" src="mandel.gif" width="196" height="128" alt="Part of the Mandelbrot set, drawn by Mandelsteg">
+<p>
+    This is a VMS port of Henry Hastur’s MANDELSTEG and GIFEXTRACT programs, which use GIF files of parts of the
+    Mandelbrot set to hide or extract data. It is used like this:
+</p>
+<pre class="console">
+<span class="prompt">$</span> <span class="cmd">mandelsteg -e mandel.gif &lt; somefile</span>
+</pre>
+<p>
+    This hides the contents of <i>somefile</i> in a 640×480 pixel image in <code>MANDEL.GIF</code>. It works with
+    text files or binaries (but see the caveat below), though it is really “intended” to hide PGP encrypted files,
+    preferably ones that have had their headers stripped with the Stealth program, which I haven’t ported yet.
+</p>
+<p>To extract the hidden file:</p>
+<pre class="console">
+<span class="prompt">$</span> <span class="cmd">gifextract mandel.gif &gt; output_file</span>
+</pre>
+<p>
+    The output from GIFEXTRACT seems to get padded with blank characters (or random characters, if you use the
+    <code>-r</code> option when encoding), and this can give error messages about over-long records when you edit
+    the output file. If, as intended, you hide a PGP output file in the GIF, then it doesn’t really matter, because
+    PGP still interprets its input correctly. Please <a href="../index.htm#contact_info">let me know</a> if you find
+    a workaround that doesn’t stop the utilities working on files produced on other platforms.
+</p>
+<p>
+    One of the pictures on this page has a message hidden in it. No prizes for guessing which one, but do drop me a
+    line if you decode it.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="mandsteg.zip">MANDSTEG.ZIP</a> (50 KB), <a href="mandsteg.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="TGD">TGD and GD</h2>
+<p class="released">Last updated 8 May 1997</p>
+<p>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">GIF</span>
+    <span class="badge">Source code</span>
+</p>
+<p>
+    TGD, written by Bradley K. Sherman, reads text files of commands and writes out GIF files. You can use it with
+    plain text files, or with Perl or another scripting language if you want to do clever stuff. This makes it
+    ideal for creating dynamic GIFs for web servers such as the OSU DECthreads HTTP Server. The distribution also
+    contains the source of Tom Boutell’s GD library, which TGD needs. GD is still going strong, as
+    <a href="https://libgd.github.io/" target="_blank" rel="noopener">libgd</a>.
+</p>
+<p>
+    The May 1997 update added a <a href="tgd.hlp">TGD.HLP</a> help file, kindly provided by Martin P. J. Zinser,
+    and a <code>README.VMS</code> file, which I was too lazy to write when I first released the code.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="tgd1_2c.zip">TGD1_2C.ZIP</a> (243 KB), <a href="tgd1_2c.zip.asc">PGP signature</a></li>
+        <li>Help file on its own: <a href="tgd.hlp">TGD.HLP</a> (4 KB), <a href="tgd.hlp.asc">PGP signature</a></li>
+        <li>Precompiled Alpha binaries are listed under <a href="#Binaries">Precompiled Binaries</a> below.</li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="LiteClue">LiteClue 1.3</h2>
+<p class="released">Last updated 17 January 1997</p>
+<p>
+    <span class="badge">Motif</span>
+    <span class="badge">Athena</span>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Source code</span>
+</p>
+<p>
+    This is a VMS port of Gary Aviv’s LiteClue widget, which gives X Window programs “help bubbles”. It works with
+    Motif and Athena widgets, popping up a little box of help text if the mouse pointer lingers over a widget for
+    more than a set time. Gary wrote it at Computer Generation Incorporated (CGI), whose FTP server was its original
+    home.
+</p>
+<p>
+    The distribution contains the manual in PostScript, HTML and plain text. It’s very easy to add a LiteClue to a
+    widget, and example programs for both Motif and Athena are included.
+</p>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="liteclue.zip">LITECLUE.ZIP</a> (40 KB), <a href="liteclue.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="GIFMerge">GIFMerge</h2>
+<p class="released">Last updated 27 February 1997</p>
+<p>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Animated GIF</span>
+    <span class="badge">Source code</span>
+</p>
+<p>
+    This is my port, to VMS on the VAX and Alpha, of Rene Mueller’s excellent GIF animation tool, GIFMerge. Build
+    it with MMK, and use <code>@SETUP.COM</code> to set up a foreign command symbol pointing to the right
+    executable. Wildcard expansion and the Unix <code>&gt;</code> redirection are all done in the program, so you
+    can use it just like the Unix version; <code>gifmerge -h</code> tells you how. The <code>-pos</code> arguments,
+    for small, incremental GIF merges, now work correctly.
+</p>
+<pre class="console">
+<span class="dg">Example:</span>
+
+<span class="prompt">$</span> <span class="cmd">@some$disk:[PDS.GIFMERGE]GIFMERGE</span>  <span class="dg">! Set up the command</span>
+<span class="prompt">$</span> <span class="cmd">gifmerge -25 -l0 step%.gif &gt; animated.gif</span>
+            ^    ^     ^            ^
+            |    |     |            |
+Centisec delay   |     |    Output file spec
+                 |     |
+  0 = Loop forever     |
+                       |
+          Wildcard input spec
+</pre>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>Source code: <a href="gifmerge.zip">GIFMERGE.ZIP</a> (12 KB), <a href="gifmerge.zip.asc">PGP signature</a></li>
+        <li>Precompiled VAX and Alpha binaries are listed under <a href="#Binaries">Precompiled Binaries</a> below.</li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<div class="software-entry">
+<h2 id="GIFShuf">GIFShuf and SNOW</h2>
+<p class="released">Last updated 23 December 1998</p>
+<p>
+    <span class="badge">VAX</span>
+    <span class="badge">Alpha</span>
+    <span class="badge">Steganography</span>
+    <span class="badge">Source code</span>
+</p>
+<img class="screenshot vintage shot-left" src="gifshuf.gif" width="135" height="168" alt="A picture with a message shuffled into its colour map by GIFShuf">
+<p>
+    These are VMS ports, for the VAX and Alpha, of Matthew Kwan’s
+    <a href="http://www.darkside.com.au/gifshuffle/" target="_blank" rel="noopener">GIFShuffle</a> and
+    <a href="http://www.darkside.com.au/snow/" target="_blank" rel="noopener">SNOW</a>, which are both
+    steganography tools, just for a bit of fun. SNOW conceals messages in the whitespace of an ASCII text file,
+    optionally encrypting them too with the <a href="http://www.darkside.com.au/ice/index.html" target="_blank"
+    rel="noopener">ICE</a> algorithm. GIFShuffle uses cunning colour map ordering to conceal information, and also
+    provides compression and encryption. All of Matthew’s code is copyright free, but I’m sure he’d like an
+    acknowledgement if you use it in your own programs.
+</p>
+<p>
+    The sources unpack into <code>[.GIFSHUF]</code> and <code>[.SNOW]</code>. Go into each directory and build the
+    program with MMK or MMS, then use <code>@SETUP.COM</code> to create a foreign command symbol pointing to the
+    right executable. Here are some examples of how to use the programs:
+</p>
+<pre class="console">
+<span class="prompt">$</span> <span class="cmd">gifshuf -h</span>                                  <span class="dg">! Get help on GIFShuf</span>
+<span class="prompt">$</span> <span class="cmd">gifshuf -m "Hello World" in.gif out.gif</span>     <span class="dg">! Hide a message in a GIF</span>
+<span class="prompt">$</span> <span class="cmd">gifshuf gifshuf.gif</span>                         <span class="dg">! Extract the message from a GIF</span>
+
+<span class="prompt">$</span> <span class="cmd">snow -h</span>                                     <span class="dg">! Get help on SNOW</span>
+<span class="prompt">$</span> <span class="cmd">snow "-C" message.txt</span>                       <span class="dg">! Decode the message hidden in a text file</span>
+</pre>
+<div class="download-box">
+    <h3>Download</h3>
+    <ul>
+        <li>GIFShuf source code: <a href="gifshuf.zip">GIFSHUF.ZIP</a> (129 KB), <a href="gifshuf.zip.asc">PGP signature</a></li>
+        <li>SNOW source code: <a href="snow.zip">SNOW.ZIP</a> (87 KB), <a href="snow.zip.asc">PGP signature</a></li>
+    </ul>
+</div>
+</div>
+<hr>
+
+<h2 id="Binaries">Precompiled Binaries</h2>
+<p>
+    For anyone without a compiler to hand, here are precompiled binaries for some of the programs. The Performance
+    Meter V2.4 binaries come with the UID file the Motif interface needs; the V2.5 Alpha kit is object files only,
+    to link with <code>MAKE_PERF_METER.COM</code> from the V2.5 source code.
+</p>
+<table class="options">
+<thead>
+<tr><th>Program</th><th>Platform</th><th>Download</th></tr>
+</thead>
+<tbody>
+<tr><td>Performance Meter V2.5</td><td>Alpha VMS 7.1 (object files)</td><td><a href="perf_meter-2-5_binaries_alpha_7-1.zip">PERF_METER-2-5_BINARIES_ALPHA_7-1.ZIP</a> (23 KB), <a href="perf_meter-2-5_binaries_alpha_7-1.zip.asc">signature</a></td></tr>
+<tr><td>Performance Meter V2.4</td><td>VAX VMS 5.5-2</td><td><a href="perf_meter_binaries_vax_5-2.zip">PERF_METER_BINARIES_VAX_5-2.ZIP</a> (25 KB), <a href="perf_meter_binaries_vax_5-2.zip.asc">signature</a></td></tr>
+<tr><td>Performance Meter V2.4</td><td>VAX VMS 6.2</td><td><a href="perf_meter_binaries_vax_6-2.zip">PERF_METER_BINARIES_VAX_6-2.ZIP</a> (25 KB), <a href="perf_meter_binaries_vax_6-2.zip.asc">signature</a></td></tr>
+<tr><td>Performance Meter V2.4</td><td>VAX VMS 7.1</td><td><a href="perf_meter_binaries_vax_7-1.zip">PERF_METER_BINARIES_VAX_7-1.ZIP</a> (25 KB), <a href="perf_meter_binaries_vax_7-1.zip.asc">signature</a></td></tr>
+<tr><td>Performance Meter V2.4</td><td>Alpha VMS 6.2</td><td><a href="perf_meter_binaries_alpha_6-2.zip">PERF_METER_BINARIES_ALPHA_6-2.ZIP</a> (38 KB), <a href="perf_meter_binaries_alpha_6-2.zip.asc">signature</a></td></tr>
+<tr><td>Performance Meter V2.4</td><td>Alpha VMS 7.1</td><td><a href="perf_meter_binaries_alpha_7-1.zip">PERF_METER_BINARIES_ALPHA_7-1.ZIP</a> (38 KB), <a href="perf_meter_binaries_alpha_7-1.zip.asc">signature</a></td></tr>
+<tr><td>GIFMerge</td><td>VAX VMS 5.5-2</td><td><a href="gifmerge_binaries_vax_5-2.zip">GIFMERGE_BINARIES_VAX_5-2.ZIP</a> (12 KB), <a href="gifmerge_binaries_vax_5-2.zip.asc">signature</a></td></tr>
+<tr><td>GIFMerge</td><td>Alpha VMS 6.2</td><td><a href="gifmerge_binaries_alpha_6-2.zip">GIFMERGE_BINARIES_ALPHA_6-2.ZIP</a> (21 KB), <a href="gifmerge_binaries_alpha_6-2.zip.asc">signature</a></td></tr>
+<tr><td>TGD 1.2c and GD 1.2</td><td>Alpha VMS 6.2</td><td><a href="tgd1_2c_binaries_alpha_6-2.zip">TGD1_2C_BINARIES_ALPHA_6-2.ZIP</a> (238 KB), <a href="tgd1_2c_binaries_alpha_6-2.zip.asc">signature</a></td></tr>
+</tbody>
+</table>
+<p>
+    The LinkSys logger and command line WHOIS zips above already include VAX and Alpha executables.
+</p>
+<hr>
+
+<h2 id="Older_Versions">Older Versions and Odds and Ends</h2>
+<p>
+    For the completists, and for anyone whose old VMS system matches an earlier release, here are the previous
+    versions that were on the original page, and one curiosity.
+</p>
+<table class="options">
+<thead>
+<tr><th>Program</th><th>Released</th><th>Download</th></tr>
+</thead>
+<tbody>
+<tr><td>VMS Performance Meter V2.4 source code</td><td>March 1998</td><td><a href="perf_meter-2-4.zip">PERF_METER-2-4.ZIP</a> (47 KB), <a href="perf_meter-2-4.zip.asc">signature</a></td></tr>
+<tr><td>Web Count 2.4 source code, before the Purveyor and locking changes</td><td>December 1997</td><td><a href="wwwcount2_4.zip">WWWCOUNT2_4.ZIP</a> (534 KB), <a href="wwwcount2_4.zip.asc">signature</a></td></tr>
+<tr><td>Web Count 2.3 source code</td><td>July 1997</td><td><a href="wwwcount2_3.zip">WWWCOUNT2_3.ZIP</a> (303 KB), <a href="wwwcount2_3.zip.asc">signature</a></td></tr>
+<tr><td>TGD 1.2b source code, before the help file and <code>README.VMS</code></td><td>October 1996</td><td><a href="tgd1_2b.zip">TGD1_2B.ZIP</a> (329 KB), <a href="tgd1_2b.zip.asc">signature</a></td></tr>
+<tr><td>Fair NL Loop, a Year 2000 compliance tester for the VMS null device, <code>NL:</code>. Note the date.</td><td>1 April 1998</td><td><a href="fairnlloop.c">FAIRNLLOOP.C</a> (4.5 KB), <a href="fairnlloop.c.asc">signature</a></td></tr>
+</tbody>
+</table>
+<hr>
+
+<h2 id="Running_Today">Running These Programs Today</h2>
+<p>
+    All of these programs were written for VMS on the VAX and Alpha, between VMS 5.5 and 7.3, and I haven’t tried
+    them on Itanium or x86-64. Most of them are portable C, so there is a fair chance that they will build on a
+    current version of OpenVMS, and the Motif programs need DECwindows Motif. MBOX is the exception: it is
+    written in MACRO-32 and reads VMS’s internal data structures in kernel mode, so it is the least likely to work
+    unchanged on a newer architecture. To run VMS yourself:
+</p>
+<ul>
+    <li>VSI’s <a href="https://vmssoftware.com/community/community-license/" target="_blank" rel="noopener">Community
+        License</a> lets you run OpenVMS, with its compilers and layered products, free of charge for learning, open
+        source development and sharing knowledge of the system. It replaced the old hobbyist licence programme,
+        which ended in 2020. Check VSI’s page for which platforms it currently covers.</li>
+    <li>The <a href="https://opensimh.org/" target="_blank" rel="noopener">Open SIMH</a> emulator will pretend to be a
+        VAX, and <a href="https://github.com/lenticularis39/axpbox" target="_blank" rel="noopener">AXPbox</a> is an
+        open source Alpha emulator.</li>
+    <li>Or find a real VAXstation or AlphaStation. There are some suggestions on
+        <a href="../../KLO-Tutorials/vms_course/vms.html#VAX_Systems">Kara’s OpenVMS Page</a>.</li>
+</ul>
+<hr>
+
+<h2 id="Other_Sources">More VMS Software Elsewhere</h2>
+<ul>
+    <li><a href="http://decwarch.free.fr/" target="_blank" rel="noopener">The DECW and VMS CENA archive</a>, Patrick
+        Moreau’s excellent collection of X Window and Motif programs ported to VMS, including the XVMSUTILS package
+        (<code>getopt</code>, <code>getpwuid</code> and other Unix functions).</li>
+    <li><a href="https://www.goatley.com/" target="_blank" rel="noopener">Hunter Goatley</a>, formerly of MadGoat
+        Software, with lots of OpenVMS utilities.</li>
+    <li><a href="https://www.process.com/" target="_blank" rel="noopener">Process Software</a>, makers of the
+        MultiNet TCP/IP stack for VMS.</li>
+    <li><a href="https://github.com/endlesssoftware/mmk" target="_blank" rel="noopener">MMK</a>, the free make
+        utility for VMS, which builds most of the programs on this page.</li>
+    <li>The <a href="https://www.jafsoft.com/asctohtm/" target="_blank" rel="noopener">critically acclaimed
+        AscToHTM</a> converts text documents to HTML, intelligently handling bulleted lists, emphasis, tables and code
+        samples. It used to have a free VMS version, and JafSoft offer a free trial of the current one. I’m not just
+        saying that because I used to work with Jaf. I’m saying it because he threatened physical violence if I
+        didn’t ;-) Just kidding: it’s a great utility.</li>
+    <li>More VMS links are on <a href="../../KLO-Tutorials/vms_course/vms.html#VMS_Web_Links">Kara’s OpenVMS
+        Page</a>.</li>
+</ul>
+<hr>
+
+<h2 id="Thats_All">That’s All, Folks!</h2>
+<p>
+    I hope you enjoy these programs, whether on a real VAX or Alpha, or an emulated one. Please send me your
+    comments, and (printable) suggestions; my email address can be found from my PGP public key, as described in
+    the <a href="../index.htm#contact_info">PGP Key and Contact Information</a> section of my KLO Software page.
+</p>
+<p><a href="#Top_Of_Page">Back to Top</a></p>
+<p class="released">© Kara Ottewell 1996–2026</p>
+<script src="../KLODarkModeSwitch.js" defer></script>
+</body>
+</html>

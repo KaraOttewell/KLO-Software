@@ -1,0 +1,7 @@
+# The downloads in this folder are published exactly as they were signed. The
+# repository's core.autocrlf=true would otherwise store these CRLF text files
+# with LF line endings, so the copies GitHub Pages serves would no longer match
+# their detached PGP signatures (.asc). -text tells git to leave the bytes alone.
+*.txt -text
+*.c   -text
+*.hlp -text
