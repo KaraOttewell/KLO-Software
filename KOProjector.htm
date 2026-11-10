@@ -96,8 +96,8 @@
         </li>
         <li>
             <b>DaVinci Resolve</b> project exports (<b>.drp</b>), Resolve's own undocumented format. Clips,
-            stills, slow and fast motion, transitions, music and Fusion titles come across, including credits rolls and
-            their colours, and so do a photograph's zoom and a clip's fade in or out. A clip's position and volume are
+            stills, slow and fast motion, transitions, music and titles come across (Fusion titles, credits rolls and
+            their colours included, and Rich Text titles too), and so do a photograph's zoom and a clip's fade in or out. A clip's position and volume are
             not read from a <b>.drp</b> yet. See <a href="#FromResolve">bringing a Resolve project to
             PowerDirector</a>.
         </li>
@@ -258,15 +258,15 @@ Media found    : 6 of 6
     <p>
         There is one reporting option, <b>--report</b>, and it covers the three questions worth asking of an old project:
         <em>what shape is it, what is it made of, and what has gone missing?</em> On its own it puts all of that on the
-        screen. Given a file name it is written straight there instead, no redirection needed, and none of the
-        banner or the run summary comes with it:
+        screen. Given a file name it is written to that file as well, no redirection needed: the project's summary,
+        its timeline, its source material and what is missing, one after the other, without the banner:
     </p>
 
     <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" --report=Christmas2004.htm</b></div>
 
     <p>
         Name the file <b>.htm</b> or <b>.html</b> and a <b>web page</b> is written: properly coloured, self-contained,
-        ready to open or to send to somebody. Any other extension gives text: plain, or with the colours embedded in it if
+        with links at the top to each part, and ready to open or to send to somebody. Any other extension gives text: plain, or with the colours embedded in it if
         you asked for <b>--colour always</b>. And <b>--json</b> writes a complete description of the project (every
         clip with its position and trim points, the transitions, titles, sound and a deduplicated media list), which
         is enough to redraw the timeline without the project file. That same file doubles as an
@@ -339,7 +339,8 @@ Media found    : 6 of 6
         A timeline and a media listing answer questions about <em>one</em> production. There is a different question:
         <em>which of my projects can I actually open, and what is stopping the rest?</em> That is only worth asking across a
         collection at once, so it is answered by <b>a single table for the entire run</b> however many projects the
-        wildcard matched, written to the file you name, or gathered into the index when you asked for a page each:
+        wildcard matched, written to the file you name, or gathered into the index when you asked for a page each.
+        (For a single project, the file you name holds its whole report, and the table is the last part of it.)
     </p>
 
     <div class="cli-block"><b>KOProjectorTool *.dmsm,*.pds --report=missing.htm</b></div>
@@ -624,6 +625,23 @@ Reports\GardenSlideshow_pds.htm</div>
     </p>
 
     <p>
+        The report half also says what kind of film it is, in the words an editor's settings would use, beside the
+        numbers it was worked out from:
+    </p>
+
+    <pre class="console"><span class="c-white">"settings": {
+  "aspectRatio": 1.7777777777777777,
+  "frameRate": 24,
+  "aspectRatioName": "16:9",
+  "frameRateName": "24 fps",
+  "description": "16:9 film at 24 fps"
+}</span></pre>
+
+    <p>
+        The earliest VideoWave projects record neither, and the description then says so rather than guessing.
+    </p>
+
+    <p>
         Real productions of 19, 34 and 206 clips have been written out this way and read back identical. As everywhere
         else, folder names are written as <b>%ONEDRIVE%</b> and the like, so an archived
         project carries no account name in its paths.
@@ -653,6 +671,12 @@ Reports\GardenSlideshow_pds.htm</div>
         there when the old format recorded one (PowerDirector and Movie Maker&nbsp;2 do, VideoWave and Live
         Movie Maker do not), and since it is often a name or an e-mail address, look before you send an archive
         to anyone.
+    </p>
+
+    <p>
+        <b>For programmers</b>, a small C# library alongside the tool reads these files back as a timeline to move
+        about in: the tracks, what is on each and when, whether a clip fades, and which titles and music play during
+        it. It is the groundwork for a graphical, scrolling version of the reports, which is not written yet.
     </p>
     <hr>
 
@@ -811,7 +835,8 @@ Media found    : 5 of 5
 
     <p>
         An FCPXML exported from Resolve's timeline works as well, but the <b>.drp</b> carries more: Resolve's
-        Fusion titles, credits rolls included, with their words, colours and sizes; the fades at a clip's head and tail;
+        Fusion titles, credits rolls included, with their words, colours and sizes; its Rich Text titles, with their
+        words, font and colour; the fades at a clip's head and tail;
         and a photograph zoomed to fill the screen. Clips, trims, stills, music, transitions, and slow and fast motion
         come across from either. A five-minute choir film made in Resolve&nbsp;21, with slowed-down stock footage, a
         still, and a three-minute performance fading to black under 82 lines of scrolling credits, converts and plays
@@ -946,7 +971,7 @@ Media found    : 5 of 6
     <div class="cli-block"><b>KOProjectorTool "Christmas2004.dmsm" --report</b></div>
 
     <p>
-        <b>Keep it.</b> Name a file after the option and it goes there instead, as a
+        <b>Keep it.</b> Name a file after the option and it goes there as well, as a
         <a href="#Reports">coloured web page</a> if the name ends <b>.htm</b>:
     </p>
 
