@@ -26,7 +26,8 @@
     <p class="subtitle">
         Contour map display for elevation data files or DEM elevation servers such as
         <a href="https://www.opentopodata.org/" target="_blank">Open Topo Data</a> and
-        <a href="https://portal.opentopography.org/" target="_blank">OpenTopography</a>.
+        <a href="https://portal.opentopography.org/" target="_blank">OpenTopography</a> &mdash; and not only for the
+        Earth: it can also map <a href="#MoonAndMars">the Moon, Mercury, Venus, Mars, Vesta, Ceres, Pluto and Charon</a>.
     </p>
 
     <span class="badge">Windows</span>
@@ -58,6 +59,13 @@ T     53.231479474    -6.297182063    1709.2</pre>
         commas. In the sections below there are screenshots showing how the main features work.
     </p>
 
+    <p>
+        Data files that KOContour creates for you have one more column at the end, headed <code>body</code>, which names
+        the world the data is of &mdash; <code>Earth</code>, <code>Moon</code>, <code>Mars</code>, <code>Pluto</code> and so on &mdash; on the
+        first data line only, like the name and description. You do not need to add it to your own files: a file without
+        a <code>body</code> column is taken to be of the Earth. See <a href="#MoonAndMars">Maps of Other Worlds</a>.
+    </p>
+
     <p class="local-copy-notice">
         The most up to date version of this information will always be the <a href="KOContour.htm">online version</a>.
     </p>
@@ -67,7 +75,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <img src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_V2.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 10%;">
     <h2 id="UseDEMServer">Use a DEM Server (recommended for most people)</h2>
-    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Dialog_Screenshot_V2.png" alt="KOContour DEM data download dialog" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Dialog_Screenshot_V3.png" alt="KOContour DEM data download dialog, with Planet/Body set to Earth" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
     <p>
         There are a number of Digital Elevation Model (DEM) servers on the internet, and KOContour can fetch your
         elevation grid directly from two of them &mdash; no external website needed. These are built in, choose one from the
@@ -89,6 +97,9 @@ T     53.231479474    -6.297182063    1709.2</pre>
     </ul>
         <p>You should <b>type the URL of your chosen server in the DEM server box</b>. KOContour knows how to &ldquo;talk&rdquo; to these,
         and any others which use the same protocol, such as if you run your own in a <i>Docker</i> environment.</p>
+        <p>These two servers hold data for the <b>Earth</b>. To get elevation data for the <b>Moon</b>, <b>Mars</b> or another world, set the
+        <b>Planet/Body</b> drop-down at the top of the same dialog instead: the right server is then chosen for you and
+        no key is needed. See <a href="#MoonAndMars">Maps of Other Worlds</a>.</p>
         <p style="clear:both;">
             <b>Open Topo Data</b> &mdash; <b><code>https://api.opentopodata.org/</code></b><br>
             <b>OpenTopography</b> &mdash; <b><code>https://portal.opentopography.org/</code></b><br><br>
@@ -124,7 +135,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
         WCS but is <b>not</b> WCS &mdash; it is its own thing.
     </p>
     <div style="clear:both;"></div>
-    <img class="screenshot" src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Dimensions_Suggestions_V2.png" alt="KOContour grid dimensions suggestions" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+    <img class="screenshot" src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Dimensions_Suggestions_V3.png" alt="KOContour grid dimensions suggestions" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
     <p>
         When you have chosen your server, make sure you enter the <b>API key</b> using the <b>padlock</b> button in the lower right of the
         dialog. The grid resolution dropdown below the dataset name will be populated with suitable values (you may have to &ldquo;tab off&rdquo;
@@ -219,6 +230,158 @@ T     53.231479474    -6.297182063    1709.2</pre>
         sub-ice <code>GEBCOSubIceTopo</code>, which are rarely needed for contour maps.)
     </p>
 
+    <!-- ===== START SECTION: Maps of Other Worlds ===== -->
+    <!-- The id stays "MoonAndMars" (its original name) so that existing links into this section keep working. -->
+    <h2 id="MoonAndMars">Maps of Other Worlds</h2>
+
+    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Dialog_Moon_V3.png" alt="KOContour DEM data download dialog set to the Moon for the Apollo 17 landing site: the USGS server is fixed, the dataset is LOLA_elev, and the Country selector and Create GPX File option are switched off" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+
+    <p>
+        KOContour is not limited to the Earth. The <b>Planet/Body</b> drop-down at the very top of the
+        <b>Download data from DEM server</b> dialog chooses which world the elevation data is for. It starts on
+        <b>Earth</b>, and also offers the <b>Moon</b>, <b>Mercury</b>, <b>Venus</b>, <b>Mars</b>, the asteroid
+        <b>Vesta</b>, the dwarf planets <b>Ceres</b> and <b>Pluto</b>, and Pluto's moon <b>Charon</b>. Choose one of
+        those and the rest of the dialog adjusts itself:
+    </p>
+    <ul>
+        <li>The <b>DEM server</b> becomes the
+            <a href="https://planetarymaps.usgs.gov/" target="_blank">USGS Astrogeology</a> server
+            (<code>https://planetarymaps.usgs.gov/</code>), which publishes the elevation models of all these worlds. It is
+            the only source for them, so the server box simply shows it and cannot be changed. It needs <b>no key</b>, so
+            the padlock button is hidden.</li>
+        <li>The <b>dataset</b> drop-down holds the single elevation dataset for that body (see the table below).</li>
+        <li>The <b>grid resolution</b> drop-down offers the full range of grid sizes, up to 840&times;472 points.</li>
+        <li><b>Extent Units</b> switches to <b>Degrees</b>, the unit the suggested maps on this page are given in (going back
+            to the Earth restores the units you had before). You can still choose miles or kilometres if you prefer.</li>
+        <li>The things that only exist for the Earth are switched off: the place-name search in the <b>Title</b> field,
+            the <b>Country</b> selector, the GeoNames button and the <b>Create GPX file</b> option. The title is then just
+            a title, which you type yourself.</li>
+    </ul>
+
+    <table class="datasets">
+        <thead>
+            <tr><th>Body</th><th>Dataset</th><th>Res</th><th>Elevations are measured from</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Moon</td><td><code>LOLA_elev</code></td><td>~118&nbsp;m</td><td>A sphere of radius 1737.4&nbsp;km</td><td>Lunar Orbiter Laser Altimeter (Lunar Reconnaissance Orbiter). Whole Moon, roughly &minus;9,100&nbsp;m to +10,800&nbsp;m.</td></tr>
+            <tr><td>Mercury</td><td><code>Messenger_elev</code></td><td>~665&nbsp;m</td><td>A sphere of radius 2439.4&nbsp;km</td><td>Built by the USGS from the MESSENGER spacecraft's images, so a little rougher than laser data. Whole planet, roughly &minus;5,400&nbsp;m to +4,500&nbsp;m.</td></tr>
+            <tr><td>Venus</td><td>Magellan topography</td><td>~4.6&nbsp;km</td><td>A sphere of radius 6051&nbsp;km</td><td>Magellan radar altimeter. Venus's clouds hide its surface from cameras, so only radar can measure it, and the detail is coarse: best for large areas. Maxwell Montes rises to about 11&nbsp;km.</td></tr>
+            <tr><td>Mars</td><td><code>MOLA_elev</code></td><td>~463&nbsp;m</td><td>The <em>areoid</em>, Mars's equivalent of sea level</td><td>Mars Orbiter Laser Altimeter (Mars Global Surveyor). Whole planet, roughly &minus;8,200&nbsp;m to +21,200&nbsp;m.</td></tr>
+            <tr><td>Vesta</td><td>Dawn stereo model</td><td>~92&nbsp;m</td><td>A sphere of radius 255&nbsp;km</td><td>From the Dawn spacecraft's images. Vesta is far from round (about 286&nbsp;&times;&nbsp;279&nbsp;&times;&nbsp;223&nbsp;km), so its heights include its overall shape and run to tens of kilometres either side of zero. About 95% of Vesta is covered.</td></tr>
+            <tr><td>Ceres</td><td>Dawn stereo model</td><td>~137&nbsp;m</td><td>A sphere of radius 470&nbsp;km</td><td>From the Dawn spacecraft's images. Ceres is flattened (wider at the equator), so its heights include that shape too.</td></tr>
+            <tr><td>Pluto</td><td>New Horizons stereo model</td><td>300&nbsp;m</td><td>A sphere of radius 1188.3&nbsp;km</td><td>New Horizons flew past once, so <b>only the hemisphere it saw in detail has data</b>, centred near 180&deg;E and including the Sputnik Planitia ice plain.</td></tr>
+            <tr><td>Charon</td><td>New Horizons stereo model</td><td>300&nbsp;m</td><td>A sphere of radius 606&nbsp;km</td><td>As for Pluto, <b>only one hemisphere has data</b>, centred near 0&deg;E.</td></tr>
+        </tbody>
+    </table>
+
+    <p>
+        You describe the area exactly as you do for the Earth: a centre latitude and longitude, and a horizontal extent
+        in whichever units you like. A few things are worth knowing:
+    </p>
+    <ul>
+        <li><b>Longitudes run from &minus;180 to 180, with east positive</b>, as on the Earth. Maps of other worlds often
+            quote longitudes from 0 to 360 east; subtract 360 from anything over 180. Olympus Mons on Mars, at 226.2&deg;E,
+            is entered as <code>-133.8</code>.</li>
+        <li><b>The same distance covers more degrees on a smaller world.</b> KOContour allows for this: with the extent
+            given in kilometres or miles, the <em>Degrees</em> figure shown beneath it is worked out for the body you have
+            chosen. 100&nbsp;km is about 0.9&deg; of longitude at the Earth's equator, 1.7&deg; at Mars's, 3.3&deg; at the
+            Moon's &mdash; and about 22&deg; on little Vesta.</li>
+        <li><b>On Pluto and Charon, only half of the world has data</b> (see the table). If some points of your area
+            have no data, KOContour warns you before saving, and those parts of the map are left blank: the contour lines
+            stop at the edge of the data, the shaded and 3D views leave the area empty, and the status text says how
+            many points have no data. Keep the area inside the covered half to fill the whole map.</li>
+    </ul>
+    <p>
+        Behind the scenes the elevations arrive in two different ways, and KOContour handles both for you. For the Moon,
+        Mercury and Mars, the USGS map service cuts out just your area and sends it in one go (it wants the area in degrees
+        for the Moon and in metres on the body's own map grid for Mercury and Mars; KOContour converts for you). The other
+        worlds' elevation models are single whole-world files of between 64&nbsp;MB and 591&nbsp;MB, so KOContour reads
+        only the parts of the file your area needs &mdash; typically from a few hundred kilobytes to a few megabytes,
+        depending on the size of the area and the number of grid points. The progress popup shows how much is being downloaded, and you are asked first if it would be more
+        than 100&nbsp;MB.
+    </p>
+
+    <h3 id="ExampleCopernicus">Example: the Copernicus crater on the Moon</h3>
+
+    <p>
+        Click the <b>Create data</b> button and set <b>Planet/Body</b> to <b>Moon</b>. Type <em>Copernicus crater</em> as
+        the title and a description of your choice, paste <code>9.62, -20.08</code> into <b>Paste lat,lon here</b>, and set
+        the horizontal extent to <code>8</code> with the units set to <b>Degrees</b> (about 240&nbsp;km). Pick a grid
+        resolution &mdash; 280&times;156 is a good start &mdash; click <b>Generate TSV from DEM server</b>, and save the file
+        as <em>Moon_Copernicus.tsv</em>. When the download finishes, <a href="#LoadData">load</a> the file: the crater, some
+        96&nbsp;km across with its central peaks, fills the map. Try the <a href="#ThreeDView">3D relief view</a> on it.
+    </p>
+
+    <img class="screenshot" src="KOContour/KOContour_MoonCopernicusCrater.png" alt="3D relief view of the Copernicus crater on the Moon, with its terraced walls and central peaks, drawn with the Terrain + water colour scheme">
+    <p class="screenshot-caption">
+        The Copernicus crater in the 3D relief view. The <a href="#ColourSchemes">Terrain + water</a> colour scheme is
+        used here, so the blues are not water: they mark ground below the Moon's reference sphere &mdash; the crater
+        floor lies some 3.5&nbsp;km below it (see <a href="#OffWorldMaps">the height key</a> below).
+    </p>
+
+    <h3 id="OtherWorldExamples">Good first maps of the other worlds</h3>
+    <p>Enter these the same way: the centre in <b>Paste lat,lon here</b>, and the extent in <b>Degrees</b>.</p>
+    <table class="datasets">
+        <thead>
+            <tr><th>Body</th><th>Feature</th><th>Centre</th><th>Extent</th><th>What you will see</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Mercury</td><td>Rachmaninoff basin</td><td><code>27.6, 57.4</code></td><td><code>14</code></td><td>A double-ringed crater about 300&nbsp;km across whose floor holds Mercury's lowest point, some 5.4&nbsp;km below the reference sphere.</td></tr>
+            <tr><td>Venus</td><td>Maxwell Montes</td><td><code>65.2, 3.3</code></td><td><code>16</code></td><td>Venus's highest mountains, rising about 11&nbsp;km from the plains around them.</td></tr>
+            <tr><td>Mars</td><td>Olympus Mons</td><td><code>18.65, -133.8</code></td><td><code>20</code></td><td>The largest volcano in the solar system, some 21&nbsp;km above the areoid, with its summit caldera.</td></tr>
+            <tr><td>Vesta</td><td>Rheasilvia basin</td><td><code>-71.95, 86.3</code></td><td><code>60</code></td><td>The middle of the giant impact basin, 450&nbsp;km across, that covers much of Vesta's southern hemisphere: its broad central mound stands well over 10&nbsp;km above the surrounding basin floor. Expect large negative heights: the basin lies far inside the 255&nbsp;km reference sphere.</td></tr>
+            <tr><td>Ceres</td><td>Ahuna Mons</td><td><code>-10.48, -43.8</code></td><td><code>4</code></td><td>A lone mountain about 4&nbsp;km high, thought to be an ice volcano.</td></tr>
+            <tr><td>Pluto</td><td>Sputnik Planitia</td><td><code>20, 175</code></td><td><code>30</code></td><td>Part of Pluto's great nitrogen-ice plain and its surroundings: heights from about 2&nbsp;km below the reference sphere to about 3&nbsp;km above it.</td></tr>
+        </tbody>
+    </table>
+
+    <img class="screenshot" src="KOContour/KOContour_Mars_OlympusMons.png" alt="3D relief view of Olympus Mons on Mars, rising over 21 km, with its summit caldera and a place marker">
+    <p class="screenshot-caption">
+        Olympus Mons on Mars in the 3D relief view, from the example in the table above. The volcano rises from the plains
+        to over 21&nbsp;km above the areoid, with its summit caldera marked by a saved place; the scale bar is 100&nbsp;km.
+    </p>
+
+    <h3 id="OffWorldMaps">What is different about a map of another world</h3>
+    <p>
+        A data file remembers which body it is of (see the <code>body</code> column described in the
+        <a href="#Overview">Overview</a>), so once a file of another world is loaded everything is worked out for that body:
+    </p>
+    <ul>
+        <li><b>The status text</b> names the body, and says what its elevations are measured from.</li>
+        <li><b>Distances are right for that world.</b> The distance scale, the extent shown in the status text and the
+            <a href="#DistanceAndBearing">distance and bearing tool</a> all use that body's own mean radius &mdash; for
+            example 1737.4&nbsp;km for the Moon, 3389.5&nbsp;km for Mars and 262.7&nbsp;km for Vesta &mdash; rather than the
+            Earth's.</li>
+        <li><b>The height key means something slightly different.</b> On the Earth the heights in the key on the left of
+            the map are heights above sea level. No other world here has a sea, so their heights are measured from an
+            agreed reference surface &mdash; usually a perfect sphere (the table above gives its radius for each body), and
+            for Mars the areoid.
+            Zero is therefore just the height of that reference surface, <em>not</em> a shoreline, and
+            <b>negative heights are perfectly normal</b> &mdash; much of the Moon's near side and most of Mars's northern
+            hemisphere lie below zero. A crater floor at &minus;3,500&nbsp;m is 3,500&nbsp;m below the reference surface,
+            not below any water. On Vesta and Ceres, which are not round, the heights also carry the body's overall shape,
+            so over a large area they include a broad slope as well as the craters and hills.</li>
+        <li><b>Colour schemes that suggest water should be read with that in mind.</b> The
+            <a href="#ColourSchemes">Terrain + water</a> scheme colours everything at or below zero blue, and the
+            <b>Hue Ramp</b> starts with a blue &ldquo;sea level&rdquo;. On other worlds those blues simply mark ground
+            below the reference surface. <b>Hypsometric</b>, <b>Greyscale</b> and <b>Viridis</b> carry no such suggestion
+            and often suit these maps better.</li>
+        <li><b>Heights in the data file are in metres</b>, as they are for Earth data downloaded from a DEM server.</li>
+        <li><b>Places belong to a body too</b>, so only places you have added for that body appear on the map, and place
+            names cannot be looked up automatically &mdash; see <a href="#PlacesOnOtherWorlds">Places on other
+            worlds</a>.</li>
+    </ul>
+
+    <img class="screenshot" src="KOContour/KOContour_Screenshot_Moon_Apollo17.png" alt="3D relief view of the Apollo 17 landing site in the Taurus-Littrow valley on the Moon, with a place marker on the valley floor and a height key running from -100 to -2900 metres">
+    <p class="screenshot-caption">
+        The Apollo&nbsp;17 landing site in the Taurus-Littrow valley, downloaded with the settings shown in the dialog at the
+        top of this section (2&deg; across, 700&times;394 grid), in the 3D relief view. Every height in the key is negative:
+        the whole area lies below the Moon's 1737.4&nbsp;km reference sphere, and the landing site on the valley floor is
+        about 2,630&nbsp;m below it. The blues mean &ldquo;below the reference surface&rdquo;, not water. The massifs that
+        hem in the valley rise around it; the scale bar is 10&nbsp;km.
+    </p>
+    <!-- ===== END SECTION: Maps of Other Worlds ===== -->
+
     <h2 id="CreateData">Create elevation data for an area</h2>
 
     <p>
@@ -237,16 +400,15 @@ T     53.231479474    -6.297182063    1709.2</pre>
     </p>
 
     <p>
-        Alternatively, here is a link to <a href="https://drive.google.com/file/d/1ctRFKvqf59-r3CVI-bwBHndlTzCWMeWb/view?usp=sharing" target="_blank">
-            download
-            Maui.tsv
-        </a> — a tab-separated data file for Maui, ready to use. As always, do a virus scan just as you would for
-        any file you download.
+        Alternatively, here is a <a href="https://drive.google.com/drive/folders/1v5BkhSWcdHPQNdPok2gDE65DVpmu-o7M?usp=sharing" target="_blank">folder
+        of ready-made data files</a> to download &mdash; tab-separated files ready to load, including Maui and examples
+        from the <a href="#MoonAndMars">Moon, Mars and Pluto</a>. As always, do a virus scan just as you would for any
+        file you download.
     </p>
 
     <h2 id="ExampleMaui">Example: Create data for Maui</h2>
 
-    <img class="screenshot shot-right" src="KOContour/KOContour_Create_GPX_Data_Dialog_Screenshot_V2.png" alt="KOContour Create Data dialog" style="max-width: 35%;">
+    <img class="screenshot shot-right" src="KOContour/KOContour_Create_GPX_Data_Dialog_Screenshot_V3.png" alt="KOContour Create Data dialog" style="max-width: 35%;">
 
     <p>
         Find the centre of your area in your favourite map source, e.g. <a href="https://maps.google.com/"
@@ -412,7 +574,8 @@ T     53.231479474    -6.297182063    1709.2</pre>
     </p>
     <ul>
         <li><b>Hue Ramp</b> &mdash; HSL hue ramp, blue "sea level" then green through violet.</li>
-        <li><b>Greyscale</b> &mdash; dark for low ground through to near-white for the highest.</li>
+        <li><b>Greyscale</b> &mdash; dark for low ground through to near-white for the highest, optionally with a
+            gentle colour cast (see <b>Hue</b> below).</li>
         <li><b>Hypsometric</b> &mdash; the classic atlas terrain tints: green lowlands through yellow and tan to
             brown uplands and grey/white peaks.</li>
         <li><b>Terrain + water</b> &mdash; like hypsometric, but sea level and below are shown in blue (deeper =
@@ -427,13 +590,18 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <ul>
         <li><b>Hue start</b> and <b>Hue range</b> &mdash; shift and widen the band of colours used by the
             <b>Hue Ramp</b> scheme.</li>
+        <li><b>Hue</b> &mdash; shown in place of <b>Hue start</b> while <b>Greyscale</b> is selected. Fully left
+            is plain grey; moving it right gives the greys a soft cast running from red through orange, yellow,
+            green and blue to violet &mdash; a touch of red for Mars, for example. The strip under the slider shows
+            the cast at each position, and the setting is remembered between sessions.</li>
         <li><b>Shade mute</b> &mdash; tones down (desaturates) the filled <b>Hypsometric</b> colours towards grey, so
             large shaded areas look less garish. Its setting is remembered between sessions.</li>
     </ul>
     <p>
         The map updates live as you change the scheme, the sliders, or the switches below, so you can see the effect
-        straight away. <b>Reset</b> puts everything back to how it was when you opened the chooser, <b>Cancel</b>
-        discards your changes, and <b>OK</b> keeps them. The chosen scheme applies to every display mode, including
+        straight away. <b>Reset</b> puts the selected scheme's sliders back to their standard settings (for the
+        Hue Ramp, the automatic colours chosen to suit your data), <b>Cancel</b> puts everything back to how it was
+        when you opened the chooser, and <b>OK</b> keeps your changes. The chosen scheme applies to every display mode, including
         the 3D view, and is remembered between sessions.
     </p>
     <p>
@@ -446,10 +614,11 @@ T     53.231479474    -6.297182063    1709.2</pre>
         <li>
             <details>
                 <summary><b>Mystery Bonus</b></summary>
-                <b>Sandy rock with dinosaur fossils</b> &mdash; just for fun: draws those walls as a dark sandy rock
+                <b>Edge decoration</b> &mdash; just for fun: draws those walls as a dark sandy rock
                 face with the occasional dinosaur skeleton (a T-Rex, a long-necked sauropod, a plated stegosaurus, a
                 horned triceratops &mdash; plus the odd bone, ammonite, fish or footprint) embedded in the strata.
-                The fossils stay put in the rock as you rotate.
+                The fossils stay put in the rock as you rotate. On a <a href="#MoonAndMars">map of another world</a>,
+                look closely: whatever is buried there, it is not dinosaurs.
             </details>
             Both switches are remembered between sessions.</li>
     </ul>
@@ -489,9 +658,64 @@ T     53.231479474    -6.297182063    1709.2</pre>
         the <b>Add or Edit a Place</b> button afterwards re-opens the dialog pre-filled with it.
     </p>
 
+    <h3 id="PlacesOnOtherWorlds">Places on other worlds</h3>
+    <p>
+        Every place records which world it is on. The <b>Planet/Body</b> drop-down at the top of the
+        <b>Add or Edit a Place</b> dialog shows it: for a new place it starts on the body of the map you have loaded, and
+        for an existing place it shows that place's own body. A place only ever appears on maps of its own body, so a town
+        on the Earth and a crater on the Moon can share a latitude and longitude without turning up on each other's maps.
+    </p>
+    <p>
+        Place names can only be looked up for the Earth (GeoNames is a gazetteer of the Earth), so a place on any other
+        world is entered by hand: with <b>Planet/Body</b> set to another body, the place-name search and the
+        <b>Country</b> selector are switched off, and you type the name and description and paste in the coordinates
+        yourself. The Apollo&nbsp;11 landing site, for instance, is at <code>0.67416, 23.47314</code> on the Moon. As with
+        any place, you can leave the elevation blank and have one suggested from the loaded map when you next open the
+        place for editing.
+    </p>
+    <p>
+        On a map of another world, <b>right-clicking</b> offers <b>Add a place here on Mars&hellip;</b> (naming whichever
+        world it is), which opens the dialog with the coordinates of the point you clicked and its elevation already filled
+        in, followed by any of your own places nearby. Longitudes are from &minus;180 to 180 with east positive, as
+        described in <a href="#MoonAndMars">Maps of Other Worlds</a>.
+    </p>
+
+    <h3 id="ExampleApollo18">Example: the proposed Apollo&nbsp;18 landing site</h3>
+    <p>
+        Apollo&nbsp;18 never flew: it was cancelled, with Apollo&nbsp;19, in September 1970. Its target changed during
+        planning &mdash; Schr&ouml;ter's Valley and the crater Gassendi were both considered &mdash; but NASA's last plan before
+        the cancellation, in March 1970, sent it to the <b>Copernicus</b> crater. No exact landing point was ever fixed, so
+        this example uses the crater's official centre, which lies among its central peaks.
+    </p>
+    <ol>
+        <li>Load the Copernicus map from the <a href="#ExampleCopernicus">example above</a>.</li>
+        <li>Click the <b>Add or Edit a Place</b> button. Because a Moon map is loaded, <b>Planet/Body</b> is already set to
+            <b>Moon</b>, and the place-name search and <b>Country</b> selector are switched off.</li>
+        <li>Type <code>Apollo 18 (proposed)</code> as the <b>Place Name</b> and something like
+            <code>Proposed Apollo 18 landing site, Copernicus crater, Moon</code> as the <b>Description</b>.</li>
+        <li>Paste <code>9.62, -20.08</code> into <b>Paste lat,lon here</b>.</li>
+        <li>Leave the <b>Elevation</b> blank, and click <b>Add Place</b>. The place appears on the Copernicus map, and as a
+            flagpole in the <a href="#ThreeDView">3D relief view</a>.</li>
+        <li>To fill in its elevation, open the place again (double-click it in the <a href="#PlacesList">places list</a>):
+            KOContour suggests one from the loaded map, highlighted in purple. Click <b>Update Place</b> to keep it.</li>
+    </ol>
+    <p>
+        As a shortcut, right-click the middle of the crater on the map and choose <b>Add a place here on Moon&hellip;</b>:
+        the dialog opens with the coordinates of the point you clicked and its elevation already filled in, so you only
+        need to type the name and description. The place is saved as a place on the Moon, so it never appears on a map of
+        the Earth, even one that covers the same latitude and longitude.
+    </p>
+    <p>
+        Places you saved with earlier versions of KOContour did not record a body; they are all treated as places on the
+        Earth, which is what they were. The same goes for places files <a href="#FeaturePlaceImportExport">exported</a>
+        from earlier versions when you import them.
+    </p>
+
+    <h3 id="ExampleLahaina">Example: adding Lahaina on the Earth</h3>
+
     <p>As an example, let's add Lahaina.</p>
 
-    <img class="screenshot shot-left" src="KOContour/KOContour_Screenshot_Add_Lahaina2_V2.png" alt="Add or Edit a Place dialog for Lahaina" style="max-width: 30%;">
+    <img class="screenshot shot-left" src="KOContour/KOContour_Screenshot_Add_Lahaina2_V3.png" alt="Add or Edit a Place dialog for Lahaina, with Planet/Body set to Earth and GeoNames suggestions listed" style="max-width: 30%;">
 
     <p>
         If you have not yet set up a free <a href="#GeoNames">GeoNames account</a> (and I would strongly recommend that
@@ -504,7 +728,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
     </p>
 
     <div style="clear:both;"></div>
-    <img class="screenshot shot-right" src="KOContour/KOContour_Screenshot_Add_Lahaina3_V2.png" alt="Lahaina details filled in" style="margin-top:0;">
+    <img class="screenshot shot-right" src="KOContour/KOContour_Screenshot_Add_Lahaina3_V3.png" alt="Lahaina details filled in, with Planet/Body set to Earth" style="margin-top:0;">
 
     <p style="margin-top:0;">
         With the coordinates filled in, give the location a name and a short description, and add
@@ -542,12 +766,14 @@ T     53.231479474    -6.297182063    1709.2</pre>
         Try looking for Paia — you can jump to the <em>P</em> section by pressing the <b>P</b> key. Double-click on
         Paia; if the elevation was left as the default (&minus;1000000 means undefined), it will suggest an elevation
         based on the nearest contour line and highlight it as shown &mdash; 200 feet in this case. Places visible on the currently loaded map are
-        shown in cyan, otherwise they are shown in light gray. If you re-type in the place name it will suggest a more accurate
+        shown in cyan, otherwise they are shown in light gray. The list holds your places on every world together; a place
+        counts as on the map only if the map is of the same body, and the tooltip of a place on another world says which
+        it is on. If you re-type in the place name it will suggest a more accurate
         elevation from GeoNames - 232.9 feet - if you have set up your account on that as described below.
     </p>
 
     <div style="clear:both;"></div>
-    <img class="screenshot shot-left" src="KOContour/KOContour_Screenshot_PaiaElevationSuggestion_V2.png" alt="Paia elevation suggestion highlighted in purple" style="margin-top:0; margin-right:32px; max-width:30%;">
+    <img class="screenshot shot-left" src="KOContour/KOContour_Screenshot_PaiaElevationSuggestion_V3.png" alt="Paia elevation suggestion of 200 feet highlighted in purple" style="margin-top:0; margin-right:32px; max-width:30%;">
 
     <p id="GeoNames" style="margin-top:0;">
         GeoNames requires creating an account for programmatic use, but it is totally free and does NOT require a
@@ -602,6 +828,12 @@ T     53.231479474    -6.297182063    1709.2</pre>
         marker will appear. Keep holding <b>Ctrl</b> and click the second point. A line will be drawn between the points
         showing the distance and compass bearing. To remove the measurement tool, click again in the centre of either
         crosshair.
+    </p>
+
+    <p>
+        Distances are worked out over the surface of the world the map is of, so on a
+        <a href="#MoonAndMars">map of another world</a> they use that body's size, not the Earth's. One degree of latitude is
+        about 111&nbsp;km on the Earth, 59&nbsp;km on Mars, 43&nbsp;km on Mercury and 30&nbsp;km on the Moon.
     </p>
 
     <hr>
@@ -667,10 +899,18 @@ T     53.231479474    -6.297182063    1709.2</pre>
         <!-- ===== END NEW-IN-V2 FEATURE TILES ===== -->
 
         <div class="feature-item">
+            <h3 id="FeatureMoonAndMars">Other Worlds</h3>
+            <p>
+                Choose the Moon, Mercury, Venus, Mars, Vesta, Ceres, Pluto or Charon in the download dialog to map craters, volcanoes and ice plains from NASA spacecraft
+                data, with distances worked out for that world and your own places on it. No key needed.
+            </p>
+        </div>
+
+        <div class="feature-item">
             <h3 id="FeatureDEMServer">DEM Server Integration</h3>
             <p>
                 Fetch elevation data directly from Open Topo Data or OpenTopography servers, with automatic rate‑limit
-                handling and progress reporting.
+                handling and progress reporting &mdash; or from USGS Astrogeology for the Moon and seven other worlds.
             </p>
         </div>
 
@@ -741,7 +981,8 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
         <div class="feature-item">
             <h3 id="FeaturePlaceImportExport">Place Import and Export</h3>
-            <p>You can import and export your saved places from the Places List dialog. It will warn if there are duplicates.</p>
+            <p>You can import and export your saved places from the Places List dialog. It will warn if there are duplicates.
+               Each place carries the world it is on; files from earlier versions import as places on the Earth.</p>
         </div>
     </div>
     <hr>
