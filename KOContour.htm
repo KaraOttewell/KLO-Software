@@ -16,6 +16,12 @@
     table.datasets td { background: #ffffff; color: #1a1a1a; }
     table.datasets th { background: #0F4761; color: white; }
     table.datasets tbody tr:nth-child(even) td { background: #f0f6f9; }
+
+    /* Folded-away technical background ("For those who like technical details"). The background is a faint
+       translucent grey and the text colour is inherited, so the box reads well in both the light and dark themes. */
+    details.technical-details { clear: both; margin: 14px 0; padding: 2px 14px; border: 1px solid rgba(128, 128, 128, 0.45);
+                                border-left: 4px solid #0F4761; border-radius: 8px; background: rgba(128, 128, 128, 0.08); }
+    details.technical-details > summary { cursor: pointer; font-weight: 600; padding: 8px 0; }
 </style>
 </head>
 <body>
@@ -41,7 +47,17 @@
     <h1 id="Overview">Overview</h1>
 
     <p>
-        KOContour reads in elevation data files from your computer and displays them as contour maps. A typical data file
+        KOContour draws contour maps &mdash; and 3D relief views &mdash; showing the height of the ground. It can download the
+        heights for any area you choose, anywhere on the Earth (see <a href="#UseDEMServer">Use a DEM Server</a>) or on the
+        Moon, Mars and other worlds (see <a href="#MoonAndMars">Maps of Other Worlds</a>), or open a data file you already
+        have (see <a href="#LoadData">Load Data</a>). The sections below have screenshots showing how the main features work.
+    </p>
+
+    <!-- The data file format, folded away: most people let KOContour download their data, and never need it -->
+    <details class="technical-details">
+    <summary>If you make your own data files: the file format</summary>
+    <p>
+        KOContour reads elevation data files from your computer and displays them as contour maps. A typical data file
         would look like this:
     </p>
 
@@ -56,7 +72,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <p>
         The example above assumes tab-separated columns, which is recommended so that your description field can then use
-        commas. In the sections below there are screenshots showing how the main features work.
+        commas.
     </p>
 
     <p>
@@ -65,6 +81,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
         first data line only, like the name and description. You do not need to add it to your own files: a file without
         a <code>body</code> column is taken to be of the Earth. See <a href="#MoonAndMars">Maps of Other Worlds</a>.
     </p>
+    </details>
 
     <p class="local-copy-notice">
         The most up to date version of this information will always be the <a href="KOContour.htm">online version</a>.
@@ -75,7 +92,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <img src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_V2.png" alt="KOContour top toolbar showing GPX and DEM buttons" style="float: left; margin-right: 16px; margin-bottom: 2px; border-radius: 12px; max-width: 10%;">
     <h2 id="UseDEMServer">Use a DEM Server (recommended for most people)</h2>
-    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Dialog_Screenshot_V3.png" alt="KOContour DEM data download dialog, with Planet/Body set to Earth" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Dialog_Screenshot_V4.png" alt="KOContour DEM data download dialog, with Planet/Body set to Earth" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
     <p>
         There are a number of Digital Elevation Model (DEM) servers on the internet, and KOContour can fetch your
         elevation grid directly from two of them &mdash; no external website needed. These are built in, choose one from the
@@ -108,34 +125,37 @@ T     53.231479474    -6.297182063    1709.2</pre>
         </p>
 
 
+    <img class="screenshot" src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Server_Key_V3.png" alt="KOContour DEM API key entry" style="float: left; margin-top: 2px; margin-right: 16px; border-radius: 12px; max-width: 25%;">
     <p>
-        The <b>&ldquo;Open Topo Data API&rdquo;</b> &mdash; implements a custom REST API:
-        <code>GET/POST /v1/{dataset}?locations=lat,lon|lat,lon</code> &rarr; JSON
-        <code>{results:[{elevation, location}]}</code>. There is no formal standard name; it was deliberately modelled to
-        look similar to the <a href="https://developers.google.com/maps/documentation/elevation/overview" target="_blank">Google Maps Elevation API</a>.
-        It is one of a family of &ldquo;elevation point-query&rdquo; JSON APIs, but they are not drop-in compatible with one another.
+        As well as the public Open Topo Data server (<code>api.opentopodata.org</code>), KOContour can use any
+        <b>self-hosted</b> Open Topo Data server (it is open-source, and meant to be run on your own computer or server) &mdash; or
+        indeed any other elevation server that works the same way.
     </p>
 
-    <img class="screenshot" src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Server_Key_V2.png" alt="KOContour DEM API key entry" style="float: left; margin-top: 2px; margin-right: 16px; border-radius: 12px; max-width: 25%;">
-    <p>
-        This means KOContour can talk to the public Open Topo Data server (<code>api.opentopodata.org</code>) and to any
-        <b>self-hosted</b> Open Topo Data instance (it is open-source and meant to be run on your own server) &mdash; or indeed
-        any other server whose API matches Open Topo Data's format.
-    </p>
-
-    <p>
-        The <b>&ldquo;OpenTopography API&rdquo;</b> &mdash; implements custom REST endpoints
-        (<code>globaldem?demtype=&hellip;</code>, <code>usgsdem?datasetName=&hellip;</code>) that return a <em>raster
-        file</em> for a <i>bounding box</i>. You will need to <a href="https://portal.opentopography.org/requestService?service=api" target="_blank">request</a> an <b>API key</b> to use this, but it is <b>free</b>.
-    </p>
-    <p>
-        The real standard for &ldquo;give me a DEM raster for this bounding box&rdquo; is OGC <b>WCS</b> (Web Coverage
-        Service) &mdash; with its cousins <b>WMS</b> / <b>WMTS</b> for map images. Many DEM servers expose WCS (national
-        mapping agencies, GeoServer / MapServer / THREDDS instances, and so on). OpenTopography's API plays the same role as
-        WCS but is <b>not</b> WCS &mdash; it is its own thing.
-    </p>
+    <!-- Technical background, folded away so the instructions read straight through; click the heading to open it -->
+    <details class="technical-details">
+        <summary>For those who like technical details (you don&rsquo;t need any of this to use KOContour)</summary>
+        <p>
+            The <b>&ldquo;Open Topo Data API&rdquo;</b> implements a custom REST API:
+            <code>GET/POST /v1/{dataset}?locations=lat,lon|lat,lon</code> &rarr; JSON
+            <code>{results:[{elevation, location}]}</code>. There is no formal standard name; it was deliberately modelled to
+            look similar to the <a href="https://developers.google.com/maps/documentation/elevation/overview" target="_blank">Google Maps Elevation API</a>.
+            It is one of a family of &ldquo;elevation point-query&rdquo; JSON APIs, but they are not drop-in compatible with one another.
+        </p>
+        <p>
+            The <b>&ldquo;OpenTopography API&rdquo;</b> implements custom REST endpoints
+            (<code>globaldem?demtype=&hellip;</code>, <code>usgsdem?datasetName=&hellip;</code>) that return a <em>raster
+            file</em> for a <i>bounding box</i>. You will need to <a href="https://portal.opentopography.org/requestService?service=api" target="_blank">request</a> an <b>API key</b> to use this, but it is <b>free</b>.
+        </p>
+        <p>
+            The real standard for &ldquo;give me a DEM raster for this bounding box&rdquo; is OGC <b>WCS</b> (Web Coverage
+            Service) &mdash; with its cousins <b>WMS</b> / <b>WMTS</b> for map images. Many DEM servers expose WCS (national
+            mapping agencies, GeoServer / MapServer / THREDDS instances, and so on). OpenTopography's API plays the same role as
+            WCS but is <b>not</b> WCS &mdash; it is its own thing.
+        </p>
+    </details>
     <div style="clear:both;"></div>
-    <img class="screenshot" src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Dimensions_Suggestions_V3.png" alt="KOContour grid dimensions suggestions" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+    <img class="screenshot" src="KOContour/KOContour_Screenshot_Top_Toolbar_GPX_and_DEM_Dimensions_Suggestions_V4.png" alt="KOContour grid dimensions suggestions" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
     <p>
         When you have chosen your server, make sure you enter the <b>API key</b> using the <b>padlock</b> button in the lower right of the
         dialog. The grid resolution dropdown below the dataset name will be populated with suitable values (you may have to &ldquo;tab off&rdquo;
@@ -147,20 +167,29 @@ T     53.231479474    -6.297182063    1709.2</pre>
     </p>
     <div style="clear:both;"></div>
 
-    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Progress_V2.png" alt="KOContour DEM data download progress dialog" style="float:right; margin-left:16px; max-width:30%;">
+    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Stonehenge_Area_Preview.png" alt="Downloading the area around Stonehenge and Amesbury: the download area outlined in red on a preview map, with the download progress popup below it" style="float:right; margin-left:16px; max-width:40%;">
     <p>
-        You will then see a progress information popup, which you can hide by clicking the <b>Close and keep going</b>
+        While the elevations download, a small map of the area pops up with the area being downloaded outlined in red &mdash;
+        here the country around Stonehenge and Amesbury, on Salisbury Plain &mdash; so you can check at a glance that it is
+        the place you meant. Drag it by its title bar to move it, and use its <b>+</b> and <b>&minus;</b> buttons to zoom
+        out for a wider view. It is a map of the Earth from OpenStreetMap, so it appears only for Earth downloads, and it
+        closes by itself when the download finishes.
+    </p>
+    <p>
+        You will also see a progress information popup, which you can hide by clicking the <b>Close and keep going</b>
         button (click on the main toolbar button to see it again), and you can cancel the operation if, for example, you are
-        warned that the dataset you chose does not have elevations for the points you requested. A good choice for North
-        America and the UK seems to be the <b>Mapzen</b> dataset, and the app will try to default to the best choice, but
-        your mileage may vary. For the opentopodata.org server it is possible to display the actual progress percentage, but for
-        opentopography.org an &ldquo;indeterminate&rdquo; (busy) progress bar has to be used. Once the download is complete you can close the
-        progress box and then use the <a href="#LoadData">Load Data</a> button to load the file you created.
+        warned that the dataset you chose does not have elevations for the points you requested. (The dataset KOContour
+        picks for your country &mdash; see <i>Which dataset?</i> above &mdash; should avoid that.) For the opentopodata.org server it is possible to display the actual progress percentage, but for
+        opentopography.org an &ldquo;indeterminate&rdquo; (busy) progress bar has to be used. When the download is complete,
+        KOContour closes the progress box and loads the new map for you, as long as <b>Load the map as soon as the download
+        finishes</b> is ticked at the bottom of the dialog (it is to begin with, and the app remembers your choice). With it
+        unticked, close the progress box yourself and use the <a href="#LoadData">Load Data</a> button to load the file you
+        created.
     </p>
     <div style="clear:both;"></div>
 
     <h2 id="UsernameOrSecretKeyEntry">Saving Map Service Keys or Usernames</h2>
-    <img style="float: left; margin: 10px 15px 15px 10px;" src="KOContour/KOContour_DEM_Data_Secret_Key_V2.png" width="360" />
+    <img style="float: left; margin: 10px 15px 15px 10px;" src="KOContour/KOContour_DEM_Data_Secret_Key_V3.png" width="360" />
     <p>
         You can register for various free map services with DEM servers, or <a href="#GeoNames">GeoNames</a> which,
         for individual, low-use, are likely more than adequate in the speed and number of daily transactions.
@@ -168,14 +197,29 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <p>
         Once you have your account and username or key, click on the padlock button, and paste the appropriate one into the
         popup dialog.
-        Click <i>Save</i> to securely save the key in the local storage for your app. You are now ready to download data
+        Click <i>Save</i> to save it in KOContour&rsquo;s own settings on this PC. You are now ready to download data
         from the map service
         or elevation data for individual places from GeoNames.
+        Not sure how to get a username or key? The <i>Help me get&hellip;</i> link under the box opens this page at the
+        steps for that service, and leaves the box open so you can paste in what you get.
         <br clear="left" /> <br clear="right" />
     </p>
 
-    <!-- DEM dataset comparison for the dataset dropdown in the DEM-server route. -->
-    <p style="clear:both;">How the main <b>Open Topo Data</b> public datasets compare for resolution/quality:</p>
+    <!-- DEM dataset comparison for the dataset dropdown in the DEM-server route: the essentials here, the full tables
+         folded away below. -->
+    <p style="clear:both;">
+        <b>Which dataset?</b> KOContour picks the best one for the country you have chosen, so you can usually leave it as
+        it is. With <b>Open Topo Data</b> that is <code>eudem25m</code> across Europe, including the UK, <code>ned10m</code>
+        in the USA, <code>nzdem8m</code> in New Zealand and <code>mapzen</code> everywhere else &mdash; and where one of the
+        first three has no data, such as over the sea, KOContour fills the gap from <code>mapzen</code>, so a coastal map
+        comes out complete. With <b>OpenTopography</b> it is <code>USGS10m</code> in the USA and <code>COP30</code>
+        everywhere else. For a very large area, use a coarser 90&nbsp;m dataset (such as <code>COP90</code> on
+        OpenTopography) or make the area smaller.
+    </p>
+
+    <details class="technical-details">
+    <summary>All the datasets compared (for those who like the details)</summary>
+    <p>How the main <b>Open Topo Data</b> public datasets compare for resolution/quality:</p>
 
     <table class="datasets">
         <thead>
@@ -197,7 +241,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
         <li><b><code>aster30m</code></b> is a fine fallback for places mapzen / srtm don't cover well (e.g. far north), but I wouldn't pick it as the everyday choice.</li>
     </ul>
 
-    <p style="clear:both;">The main <b>OpenTopography</b> datasets (chosen from the same dataset dropdown) are:</p>
+    <p>The main <b>OpenTopography</b> datasets (chosen from the same dataset dropdown) are:</p>
 
     <table class="datasets">
         <thead>
@@ -229,12 +273,13 @@ T     53.231479474    -6.297182063    1709.2</pre>
         (The dropdown also offers ellipsoidal-height variants <code>SRTMGL1_E</code> / <code>AW3D30_E</code> and a
         sub-ice <code>GEBCOSubIceTopo</code>, which are rarely needed for contour maps.)
     </p>
+    </details>
 
     <!-- ===== START SECTION: Maps of Other Worlds ===== -->
     <!-- The id stays "MoonAndMars" (its original name) so that existing links into this section keep working. -->
     <h2 id="MoonAndMars">Maps of Other Worlds</h2>
 
-    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Dialog_Moon_V3.png" alt="KOContour DEM data download dialog set to the Moon for the Apollo 17 landing site: the USGS server is fixed, the dataset is LOLA_elev, and the Country selector and Create GPX File option are switched off" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
+    <img class="screenshot" src="KOContour/KOContour_DEM_Data_Download_Dialog_Moon_V4.png" alt="KOContour DEM data download dialog set to the Moon for the Apollo 17 landing site: the USGS server is fixed, the dataset is LOLA_elev, and the Country selector and Create GPX File option are switched off" style="float: right; margin-top: 2px; margin-left: 16px; border-radius: 12px; max-width: 30%;">
 
     <p>
         KOContour is not limited to the Earth. The <b>Planet/Body</b> drop-down at the very top of the
@@ -253,9 +298,11 @@ T     53.231479474    -6.297182063    1709.2</pre>
         <li>The <b>grid resolution</b> drop-down offers the full range of grid sizes, up to 840&times;472 points.</li>
         <li><b>Extent Units</b> switches to <b>Degrees</b>, the unit the suggested maps on this page are given in (going back
             to the Earth restores the units you had before). You can still choose miles or kilometres if you prefer.</li>
-        <li>The things that only exist for the Earth are switched off: the place-name search in the <b>Title</b> field,
-            the <b>Country</b> selector, the GeoNames button and the <b>Create GPX file</b> option. The title is then just
-            a title, which you type yourself.</li>
+        <li>The place-name search in the <b>Title</b> field looks through KOContour's built-in places for that world:
+            type <i>olym</i> on Mars and choose <b>Olympus Mons</b>, and the title, description and centre coordinates
+            are filled in for you (choose the extent yourself). Anywhere else, type your own title and coordinates.</li>
+        <li>The things that only exist for the Earth are switched off: the <b>Country</b> selector, the GeoNames button
+            and the <b>Create GPX file</b> option.</li>
     </ul>
 
     <table class="datasets">
@@ -343,7 +390,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <h3 id="OffWorldMaps">What is different about a map of another world</h3>
     <p>
-        A data file remembers which body it is of (see the <code>body</code> column described in the
+        A data file remembers which body it is of (see the <code>body</code> column in the file format notes in the
         <a href="#Overview">Overview</a>), so once a file of another world is loaded everything is worked out for that body:
     </p>
     <ul>
@@ -408,7 +455,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
 
     <h2 id="ExampleMaui">Example: Create data for Maui</h2>
 
-    <img class="screenshot shot-right" src="KOContour/KOContour_Create_GPX_Data_Dialog_Screenshot_V3.png" alt="KOContour Create Data dialog" style="max-width: 35%;">
+    <img class="screenshot shot-right" src="KOContour/KOContour_Create_GPX_Data_Dialog_Screenshot_V4.png" alt="KOContour Create Data dialog" style="max-width: 35%;">
 
     <p>
         Find the centre of your area in your favourite map source, e.g. <a href="https://maps.google.com/"
@@ -429,8 +476,9 @@ T     53.231479474    -6.297182063    1709.2</pre>
         Select the <b>DEM service</b> option and choose a server &mdash; <b>Open Topo Data</b> (no key needed) or
         <b>OpenTopography</b> (once you have pasted in its key). Pick a dataset and a grid resolution, then click
         <b>Generate TSV from DEM server</b> and save the file as <em>Maui.tsv</em> in your data folder. A progress popup
-        shows while the elevations are fetched; when it finishes, close it and use <a href="#LoadData">Load Data</a> to
-        plot your new map.
+        shows while the elevations are fetched; when it finishes, your new map is loaded and drawn straight away (or, if
+        you have unticked <b>Load the map as soon as the download finishes</b>, close the popup and use
+        <a href="#LoadData">Load Data</a>).
     </p>
 
     <hr>
@@ -666,17 +714,24 @@ T     53.231479474    -6.297182063    1709.2</pre>
         on the Earth and a crater on the Moon can share a latitude and longitude without turning up on each other's maps.
     </p>
     <p>
-        Place names can only be looked up for the Earth (GeoNames is a gazetteer of the Earth), so a place on any other
-        world is entered by hand: with <b>Planet/Body</b> set to another body, the place-name search and the
-        <b>Country</b> selector are switched off, and you type the name and description and paste in the coordinates
-        yourself. The Apollo&nbsp;11 landing site, for instance, is at <code>0.67416, 23.47314</code> on the Moon. As with
-        any place, you can leave the elevation blank and have one suggested from the loaded map when you next open the
+        GeoNames is a gazetteer of the Earth, so on another world the place-name search looks through KOContour's own
+        built-in places for that world instead. With <b>Planet/Body</b> set to Mars, typing <i>mar</i> offers
+        <b>Valles Marineris</b>; choosing it fills in the name, description and coordinates. A place you already have
+        is marked <i>(already in your places)</i>, so you don't add it twice. The <b>Country</b> selector is switched
+        off for other worlds.
+    </p>
+    <p>
+        For anywhere not in the built-in list, type the name and description and paste in the coordinates yourself.
+        The Apollo&nbsp;11 landing site, for instance, is at <code>0.67416, 23.47314</code> on the Moon. As with any
+        place, you can leave the elevation blank and have one suggested from the loaded map when you next open the
         place for editing.
     </p>
     <p>
         On a map of another world, <b>right-clicking</b> offers <b>Add a place here on Mars&hellip;</b> (naming whichever
         world it is), which opens the dialog with the coordinates of the point you clicked and its elevation already filled
-        in, followed by any of your own places nearby. Longitudes are from &minus;180 to 180 with east positive, as
+        in. Below it, nearest first, come your own places on the map (marked &#9733;, to edit them) and up to ten of the
+        built-in places for that world that are on screen and not yet among yours: choosing one of those opens the dialog
+        with its name, description, coordinates and elevation filled in, ready to add. Longitudes are from &minus;180 to 180 with east positive, as
         described in <a href="#MoonAndMars">Maps of Other Worlds</a>.
     </p>
 
@@ -690,7 +745,8 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <ol>
         <li>Load the Copernicus map from the <a href="#ExampleCopernicus">example above</a>.</li>
         <li>Click the <b>Add or Edit a Place</b> button. Because a Moon map is loaded, <b>Planet/Body</b> is already set to
-            <b>Moon</b>, and the place-name search and <b>Country</b> selector are switched off.</li>
+            <b>Moon</b>, the place-name search looks through the built-in Moon places, and the <b>Country</b> selector
+            is switched off.</li>
         <li>Type <code>Apollo 18 (proposed)</code> as the <b>Place Name</b> and something like
             <code>Proposed Apollo 18 landing site, Copernicus crater, Moon</code> as the <b>Description</b>.</li>
         <li>Paste <code>9.62, -20.08</code> into <b>Paste lat,lon here</b>.</li>
@@ -765,7 +821,7 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <p>
         Try looking for Paia — you can jump to the <em>P</em> section by pressing the <b>P</b> key. Double-click on
         Paia; if the elevation was left as the default (&minus;1000000 means undefined), it will suggest an elevation
-        based on the nearest contour line and highlight it as shown &mdash; 200 feet in this case. Places visible on the currently loaded map are
+        read from the map&rsquo;s height data at that point and highlight it as shown. Places visible on the currently loaded map are
         shown in cyan, otherwise they are shown in light gray. The list holds your places on every world together; a place
         counts as on the map only if the map is of the same body, and the tooltip of a place on another world says which
         it is on. If you re-type in the place name it will suggest a more accurate
@@ -776,35 +832,38 @@ T     53.231479474    -6.297182063    1709.2</pre>
     <img class="screenshot shot-left" src="KOContour/KOContour_Screenshot_PaiaElevationSuggestion_V3.png" alt="Paia elevation suggestion of 200 feet highlighted in purple" style="margin-top:0; margin-right:32px; max-width:30%;">
 
     <p id="GeoNames" style="margin-top:0;">
-        GeoNames requires creating an account for programmatic use, but it is totally free and does NOT require a
-        payment card, or credit-card-on-file. I would strongly recommend doing so since it lets
-        you do automated lookups of the latitudes and longitudes of named places, or places you click on the map, and
-        takes only a couple of minutes:
+        <b>Getting a GeoNames username.</b> KOContour looks up place names &mdash; the places near where you right-click
+        the map, and the suggestions as you type a place name &mdash; using GeoNames, a free online directory of places.
+        GeoNames asks each person using it to have their own username. It is completely free, needs no payment card, takes
+        about two minutes, and you only ever do it once:
     </p>
     <ol>
-        <li>Register at <a href="https://www.geonames.org/login" target="_blank">https://www.geonames.org/login</a> — just a username, email, and password.</li>
-        <li>Confirm the email they send you.</li>
+        <li>Sign up at <a href="https://www.geonames.org/login" target="_blank">https://www.geonames.org/login</a> &mdash;
+            just choose a username and a password, and give your email address.</li>
+        <li>Open the email GeoNames sends you, and click the link in it to confirm your address.</li>
         <li>
-            Enable web services — this is the easily-missed step. Log in, go to
+            Switch on the free web services &mdash; this step is easy to miss. Sign in at GeoNames, go to
             <a href="https://www.geonames.org/manageaccount" target="_blank">https://www.geonames.org/manageaccount</a>,
-            and click the link at the bottom to "enable the account for use of the free web services."
-            Until you do this, every API call returns user account not enabled to use the free webservice, even though
-            the account exists.
+            and click the link near the bottom of the page that says it will enable your account for the free web services.
+            Until you do, GeoNames says the account is &ldquo;not enabled to use the free webservice&rdquo;, even though the
+            account itself is there.
         </li>
-        <li>Set GeoHelpers.GeoNamesUserName to that username in the app.</li>
+        <li>Back in KOContour, click the padlock button beside the place name in the <i>Add Place</i> dialog (or in the
+            elevation data download dialog), type your GeoNames username &mdash; just the username, not your password
+            &mdash; and click <i>Save</i>. If you right-click the map before you have done this, KOContour offers to take you
+            straight there: choose <i>Enter my username</i>.</li>
     </ol>
     <img class="screenshot shot-right" src="KOContour/KOContour_Screenshot_PaiaElevationAdded_V2.png" alt="Paia shown on map with elevation" style="max-width: 25%;">
-    <p>
-        The username is the credential — there's no separate API key or secret. You just pass
-        <code>&amp;username=yourname</code> on each request (which is why it's plain http, and why you shouldn't hardcode a
-        username you care about into a widely-distributed app, since anyone can read it and spend your daily quota).
-    </p>
-    <p>
-        You can easily test your account by entering the following into the address field of your browser:<br><br>
-        <code>http://api.geonames.org/searchJSON?name_startsWith=<i><b>&lt;placename&gt;</b></i>&amp;featureClass=P&amp;maxRows=10&amp;username=<i><b>&lt;username&gt;</b></i></code><br><br>
-        Replace <i><b>&lt;placename&gt;</b></i> and <i><b>&lt;username&gt;</b></i> with the appropriate values for your chosen place, and your account.
-        This will return a list of place names and the data for each.
-    </p>
+    <details class="technical-details">
+        <summary>If place look-ups don&rsquo;t work: testing your GeoNames account (technical)</summary>
+        <p>
+            You can check your GeoNames account directly by typing the following into the address bar of your web browser:<br><br>
+            <code>http://api.geonames.org/searchJSON?name_startsWith=<i><b>&lt;placename&gt;</b></i>&amp;featureClass=P&amp;maxRows=10&amp;username=<i><b>&lt;username&gt;</b></i></code><br><br>
+            Replace <i><b>&lt;placename&gt;</b></i> with the start of a place name and <i><b>&lt;username&gt;</b></i> with
+            your GeoNames username. If your account is working, this returns a list of matching places and the details of
+            each. If it says the account is &ldquo;not enabled to use the free webservice&rdquo;, do step&nbsp;3 above.
+        </p>
+    </details>
     <p>Click <b>Update Place</b> to save the place data and elevation, which will then appear on the map under the place name.</p>
     <hr>
 
